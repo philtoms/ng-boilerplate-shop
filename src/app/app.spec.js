@@ -10,7 +10,7 @@ describe( 'AppCtrl', function() {
               $location = _$location_;
               $scope = $rootScope.$new();
               AppCtrl = $controller( 'AppCtrl', { $location: $location, $scope: $scope });
-            })
+            });
       }
       catch (Error){
         console.log(Error);
