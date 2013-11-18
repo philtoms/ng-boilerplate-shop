@@ -13,7 +13,7 @@ describe( 'AppCtrl', function() {
             });
       }
       catch (Error){
-        console.log(Error);
+        console.log("Wrapped: ", Error.message || Error);
         throw Error;
       }
     }
