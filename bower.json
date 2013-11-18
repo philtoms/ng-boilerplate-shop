@@ -1,6 +1,6 @@
 {
-  "name": "ng-boilerplate",
-  "version": "0.3.1",
+  "name": "ng-boilerplate-shop",
+  "version": "0.3.2",
   "devDependencies": {
     "angular": "~1.2.1",
     "angular-mocks": "~1.2.1",
@@ -8,7 +8,7 @@
     "angular-bootstrap": "~0.6.0",
     "angular-ui-router": "~0.2.0",
     "angular-ui-utils": "~0.0.4",
-    "placeholders": "~3.0.1"
+    "placeholders": "git+https://github.com/Iristyle/bower-angular-placeholders.git#0.0.1"
   },
   "dependencies": {}
 }
