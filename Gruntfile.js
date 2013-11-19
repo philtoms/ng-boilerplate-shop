@@ -98,24 +98,13 @@ module.exports = function ( grunt ) {
      * `build_dir`, and then to copy the assets to `compile_dir`.
      */
     copy: {
-      build_app_assets: {
+      build_assets: {
         files: [
           { 
             src: [ '**' ],
             dest: '<%= build_dir %>/assets/',
             cwd: 'src/assets',
             expand: true
-          }
-       ]   
-      },
-      build_vendor_assets: {
-        files: [
-          { 
-            src: [ '<%= vendor_files.assets %>' ],
-            dest: '<%= build_dir %>/assets/',
-            cwd: '.',
-            expand: true,
-            flatten: true
           }
        ]   
       },
@@ -132,7 +121,20 @@ module.exports = function ( grunt ) {
       build_vendorjs: {
         files: [
           {
-            src: [ '<%= vendor_files.js %>' ],
+            src: [
+              '<%= vendor_files.js %>',
+              '<%= vendor_files.dev %>'
+            ],
+            dest: '<%= build_dir %>/',
+            cwd: '.',
+            expand: true
+          }
+        ]
+      },
+      build_fixturejs: {
+        files: [
+          {
+            src: [ '<%= app_files.jsfixture %>' ],
             dest: '<%= build_dir %>/',
             cwd: '.',
             expand: true
@@ -156,17 +158,6 @@ module.exports = function ( grunt ) {
      */
     concat: {
       /**
-       * The `build_css` target concatenates compiled CSS and vendor CSS
-       * together.
-       */
-      build_css: {
-        src: [
-          '<%= vendor_files.css %>',
-          '<%= recess.build.dest %>'
-        ],
-        dest: '<%= recess.build.dest %>'
-      },
-      /**
        * The `compile_js` target is the concatenation of our application source
        * code and all specified vendor source code into a single file.
        */
@@ -177,12 +168,14 @@ module.exports = function ( grunt ) {
         src: [ 
           '<%= vendor_files.js %>', 
           'module.prefix', 
-          '<%= build_dir %>/src/**/*.js', 
+          '<%= build_dir %>/src/**/*.js',
+          '!<%= build_dir %>/src/**/*.fixture.js',
           '<%= html2js.app.dest %>', 
           '<%= html2js.common.dest %>', 
+          '<%= vendor_files.js %>', 
           'module.suffix' 
         ],
-        dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
+        dest: '<%= compile_dir %>/assets/<%= pkg.name %>.js'
       }
     },
 
@@ -194,15 +187,22 @@ module.exports = function ( grunt ) {
      * it in the final build, but we don't want to include our specs there.
      */
     coffee: {
+      options: {
+        bare: true
+      },
       source: {
-        options: {
-          bare: true
-        },
         expand: true,
         cwd: '.',
         src: [ '<%= app_files.coffee %>' ],
         dest: '<%= build_dir %>',
         ext: '.js'
+      },
+      fixture: {
+        expand: true,
+        cwd: '.',
+        src: [ '<%= app_files.coffeefixture %>' ],
+        dest: '<%= build_dir %>',
+        ext: '.fixture.js'
       }
     },
 
@@ -245,7 +245,7 @@ module.exports = function ( grunt ) {
     recess: {
       build: {
         src: [ '<%= app_files.less %>' ],
-        dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css',
+        dest: '<%= build_dir %>/assets/<%= pkg.name %>.css',
         options: {
           compile: true,
           compress: false,
@@ -282,6 +282,12 @@ module.exports = function ( grunt ) {
       test: [
         '<%= app_files.jsunit %>'
       ],
+      fixture: [
+        '<%= app_files.jsfixture %>'
+      ],
+      scenario: [
+        '<%= app_files.jsscenario %>'
+      ],
       gruntfile: [
         'Gruntfile.js'
       ],
@@ -311,6 +317,16 @@ module.exports = function ( grunt ) {
       test: {
         files: {
           src: [ '<%= app_files.coffeeunit %>' ]
+        }
+      },
+      fixture: {
+        files: {
+          src: [ '<%= app_files.coffeefixture %>' ]
+        }
+      },
+      scenario: {
+        files: {
+          src: [ '<%= app_files.coffeescenario %>' ]
         }
       }
     },
@@ -359,6 +375,11 @@ module.exports = function ( grunt ) {
       },
       continuous: {
         singleRun: true
+      },
+      e2e: {
+        options: {
+          configFile: '<%= build_dir %>/karma-e2e.js'
+        }
       }
     },
 
@@ -379,10 +400,13 @@ module.exports = function ( grunt ) {
         src: [
           '<%= vendor_files.js %>',
           '<%= build_dir %>/src/**/*.js',
+          '!<%= build_dir %>/src/**/*.fixture.js',
           '<%= html2js.common.dest %>',
           '<%= html2js.app.dest %>',
           '<%= vendor_files.css %>',
-          '<%= recess.build.dest %>'
+          '<%= recess.build.dest %>',
+          '<%= vendor_files.dev %>',
+          '<%= build_dir %>/src/**/*.fixture.js'
         ]
       },
 
@@ -412,9 +436,11 @@ module.exports = function ( grunt ) {
           '<%= vendor_files.js %>',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>',
-          '<%= test_files.js %>'
+          'vendor/angular-mocks/angular-mocks.js'
         ]
-      }
+      },
+
+      e2e: {}
     },
 
     /**
@@ -527,6 +553,7 @@ module.exports = function ( grunt ) {
       /**
        * When a CoffeeScript unit test file changes, we only want to lint it and
        * run the unit tests. We don't want to do any live reloading.
+       * Karma will compile the CoffeeScript for us.
        */
       coffeeunit: {
         files: [
@@ -536,6 +563,48 @@ module.exports = function ( grunt ) {
         options: {
           livereload: false
         }
+      },
+
+      /**
+       * When a JavaScript data fixture file changes, we want to lint it and then
+       * copy it to the build folder.
+       */
+      jsfixture: {
+        files: [
+          '<%= app_files.jsfixture %>'
+        ],
+        tasks: [ 'jshint:fixture', 'copy:build_fixturejs' ]
+      },
+
+      /**
+       * When a CoffeeScript data fixture file changes, we want to lint it and then
+       * copy it to the build folder.
+       */
+      coffeefixture: {
+        files: [
+          '<%= app_files.coffeefixture %>'
+        ],
+        tasks: [ 'coffeelint:fixture', 'coffee:fixture', 'copy:build_fixturejs' ]
+      },
+
+      /**
+       * When a JavaScript e2e test file changes we just lint it.
+       */
+      jsscenario: {
+        files: [
+          '<%= app_files.jsscenario %>'
+        ],
+        tasks: [ 'jshint:scenario' ]
+      },
+
+      /**
+       * When a CoffeeScript e2e test file changes we just lint it.
+       */
+      coffeescenario: {
+        files: [
+          '<%= app_files.coffeescenario %>'
+        ],
+        tasks: [ 'coffeelint:scenario' ]
       }
     }
   };
@@ -562,9 +631,8 @@ module.exports = function ( grunt ) {
    */
   grunt.registerTask( 'build', [
     'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'recess:build',
-    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-    'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'karmaconfig',
-    'karma:continuous' 
+    'copy:build_assets', 'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_fixturejs',
+    'index:build', 'karmaconfig', 'karma:continuous', 'karma:e2e'
   ]);
 
   /**
@@ -572,7 +640,7 @@ module.exports = function ( grunt ) {
    * minifying your code.
    */
   grunt.registerTask( 'compile', [
-    'recess:compile', 'copy:compile_assets', 'ngmin', 'concat:compile_js', 'uglify', 'index:compile'
+    'recess:compile', 'copy:compile_assets', 'ngmin', 'concat', 'uglify', 'index:compile'
   ]);
 
   /**
@@ -607,6 +675,7 @@ module.exports = function ( grunt ) {
     var cssFiles = filterForCSS( this.filesSrc ).map( function ( file ) {
       return file.replace( dirRE, '' );
     });
+    var dev = this.target === 'build';
 
     grunt.file.copy('src/index.html', this.data.dir + '/index.html', { 
       process: function ( contents, path ) {
@@ -614,7 +683,8 @@ module.exports = function ( grunt ) {
           data: {
             scripts: jsFiles,
             styles: cssFiles,
-            version: grunt.config( 'pkg.version' )
+            version: grunt.config( 'pkg.version' ),
+            dev: dev
           }
         });
       }
@@ -628,8 +698,8 @@ module.exports = function ( grunt ) {
    */
   grunt.registerMultiTask( 'karmaconfig', 'Process karma config templates', function () {
     var jsFiles = filterForJS( this.filesSrc );
-    
-    grunt.file.copy( 'karma/karma-unit.tpl.js', grunt.config( 'build_dir' ) + '/karma-unit.js', { 
+
+    grunt.file.copy( 'karma/karma-' + this.target + '.tpl.js', grunt.config( 'build_dir' ) + '/karma-' + this.target + '.js', {
       process: function ( contents, path ) {
         return grunt.template.process( contents, {
           data: {

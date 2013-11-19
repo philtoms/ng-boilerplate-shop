@@ -9,6 +9,8 @@ src/
   |  |- about/
   |  |- app.js
   |  |- app.spec.js
+  |  |- app.fixture.js
+  |  |- app.scenario.js
 ```
 
 The `src/app` directory contains all code specific to this application. Apart
@@ -37,18 +39,16 @@ require their own submodules.
 As a matter of course, we also require the template modules that are generated
 during the build.
 
-However, the modules from `src/common` should be required by the app
+However, the modules from `src/components` should be required by the app
 submodules that need them to ensure proper dependency handling. These are
 app-wide dependencies that are required to assemble your app.
 
 ```js
 angular.module( 'ngBoilerplate', [
-  'templates-app',
-  'templates-common',
+  'app-templates',
+  'component-templates',
   'ngBoilerplate.home',
   'ngBoilerplate.about'
-  'ui.state',
-  'ui.route'
 ])
 ```
 
@@ -60,30 +60,29 @@ is where we want to start, which has a defined route for `/home` in
 `src/app/home/home.js`.
 
 ```js
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
-  $urlRouterProvider.otherwise( '/home' );
+.config( function ngBoilerplateConfig ( $routeProvider ) {
+  $routeProvider.otherwise({ redirectTo: '/home' });
 })
 ```
 
-Use the main applications run method to execute any code after services
-have been instantiated.
+One of the components included by default is a basic `titleService` that simply
+allows you to set the page title from any of your controllers. The service accepts
+an optional suffix to be appended to the end of any title set later on, so we set
+this now to ensure it runs before our controllers set titles.
 
 ```js
-.run( function run () {
-})
+.run([ 'titleService', function run ( titleService ) {
+  titleService.setSuffix( ' | ngBoilerplate' );
+}])
 ```
 
-And then we define our main application controller. This is a good place for logic
-not specific to the template or route, such as menu logic or page title wiring.
+And then we define our main application controller. It need not have any logic, 
+but this is a good place for logic not specific to the template or route, such as
+menu logic or page title wiring.
 
 ```js
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
-  $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-    if ( angular.isDefined( toState.data.pageTitle ) ) {
-      $scope.pageTitle = toState.data.pageTitle + ' | ngBoilerplate' ;
-    }
-  });
-})
+.controller( 'AppCtrl', [ '$scope', function AppCtrl ( $scope ) {
+}])
 ```
 
 ### Testing
@@ -92,3 +91,7 @@ One of the design philosophies of `ngBoilerplate` is that tests should exist
 alongside the code they test and that the build system should be smart enough to
 know the difference and react accordingly. As such, the unit test for `app.js`
 is `app.spec.js`, though it is quite minimal.
+
+The e2e test is `app.scenario.js`, and it's data fixtures are `app.fixture.js`.
+Data fixtures will only be included in the build copy, not the compiled copy.
+This way they can be used in development and e2e tests.

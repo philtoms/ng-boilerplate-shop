@@ -33,41 +33,29 @@ specified, as shown below.
 
 ```js
 angular.module( 'ngBoilerplate.home', [
-  'ui.state',
-  'titleService',
-  'plusOne'
+  'placeholders',
+  'titleService'
 ])
 ```
 
 Each section or module of the site can also have its own routes. AngularJS will
 handle ensuring they are all available at run-time, but splitting it this way
-makes each module more self-contained. We use [ui-router](https://github.com/angular-ui/ui-router) to create
-a state for our 'home' page. We set the url we'd like to see in the address bar
-as well as the controller and template file to load. Specifying "main" as our view
-means the controller and template will be loaded into the <div ui-view="main"/> element
-of the root template (aka index.html). Read more over at the [ui-router wiki](https://github.com/angular-ui/ui-router/wiki).
-Finally we add a custom data property, pageTitle, which will be used to set the page's
-title (see the app.js controller).
+makes each module more self-contained.
 
 ```js
-.config(function config( $stateProvider ) {
-  $stateProvider.state( 'home', {
-    url: '/home',
-    views: {
-      "main": {
-        controller: 'HomeCtrl',
-        templateUrl: 'home/home.tpl.html'
-      }
-    },
-    data:{ pageTitle: 'Home' }
+.config([ '$routeProvider', function config( $routeProvider ) {
+  $routeProvider.when( '/home', {
+    controller: 'HomeCtrl',
+    templateUrl: 'home/home.tpl.html'
   });
-})
+}])
 ```
 
 And of course we define a controller for our route, though in this case it does
 nothing.
 
 ```js
-.controller( 'HomeCtrl', function HomeController( $scope ) {
-})
+.controller( 'HomeCtrl', [ '$scope', 'titleService', function HomeController( $scope, titleService ) {
+  titleService.setTitle( 'Home' );
+}]);
 ```

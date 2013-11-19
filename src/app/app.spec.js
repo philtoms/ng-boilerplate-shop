@@ -4,20 +4,11 @@ describe( 'AppCtrl', function() {
 
     beforeEach( module( 'ngBoilerplate' ) );
 
-    function wrappedInject(){
-      try {
-        inject( function( $controller, _$location_, $rootScope ) {
-              $location = _$location_;
-              $scope = $rootScope.$new();
-              AppCtrl = $controller( 'AppCtrl', { $location: $location, $scope: $scope });
-            });
-      }
-      catch (Error){
-        console.log("Wrapped: ", Error.message || Error);
-        throw Error;
-      }
-    }
-    beforeEach( wrappedInject);
+    beforeEach( inject( function( $controller, _$location_, $rootScope ) {
+      $location = _$location_;
+      $scope = $rootScope.$new();
+      AppCtrl = $controller( 'AppCtrl', { $location: $location, $scope: $scope });
+    }));
 
     it( 'should pass a dummy test', inject( function() {
       expect( AppCtrl ).toBeTruthy();

@@ -14,6 +14,7 @@
  */
 angular.module( 'ngBoilerplate.home', [
   'ui.router',
+  'titleService',
   'plusOne'
 ])
 
@@ -30,15 +31,15 @@ angular.module( 'ngBoilerplate.home', [
         controller: 'HomeCtrl',
         templateUrl: 'home/home.tpl.html'
       }
-    },
-    data:{ pageTitle: 'Home' }
+    }
   });
 })
 
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope ) {
+.controller( 'HomeCtrl', function HomeController( $scope, titleService ) {
+  titleService.setTitle( 'Home' );
 })
 
 ;

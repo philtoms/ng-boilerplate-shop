@@ -1,6 +1,8 @@
 angular.module( 'ngBoilerplate.about', [
+  'ui.router',
   'placeholders',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'titleService'
 ])
 
 .config(function config( $stateProvider ) {
@@ -11,12 +13,13 @@ angular.module( 'ngBoilerplate.about', [
         controller: 'AboutCtrl',
         templateUrl: 'about/about.tpl.html'
       }
-    },
-    data:{ pageTitle: 'What is It?' }
+    }
   });
 })
 
-.controller( 'AboutCtrl', function AboutCtrl( $scope ) {
+.controller( 'AboutCtrl', function AboutCtrl( $scope, titleService ) {
+  titleService.setTitle( 'What is It?' );
+  
   // This is simple a demo for UI Boostrap.
   $scope.dropdownDemoItems = [
     "The first choice!",
