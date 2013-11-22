@@ -2,11 +2,18 @@ angular.module('checkout',[])
 
 .provider('Checkout', function() {
   
-  var costs,
+  var 
     gateway,
     gatewayProvider,
     cart,
-    scope;
+    scope,
+    mapFn=function(){return {price:0};};
+
+  var costs = {
+    freeShipping:0,
+    shipping:0,
+    tax:20
+  };
 
   var checkout = {
       total:0,
@@ -38,10 +45,11 @@ angular.module('checkout',[])
     var subTotal = 0;
     var count = 0;
     checkout.items=[];
-    angular.forEach(items,function(v,k){
-      var item = checkout.map(k);
-      var totalPrice = item.price * v;
-      item.quantity = v;
+    cart.forEach(function(i){
+      var item = mapFn(i.id);
+      var totalPrice = item.price * i.qty;
+      item.price = item.price.toFixed(2);
+      item.quantity = i.qty;
       item.totalPrice = totalPrice.toFixed(2);
       checkout.items.push(item);
       total+=totalPrice;
@@ -49,7 +57,7 @@ angular.module('checkout',[])
     });
 
     if (total) {
-      if (!costs.freeShipping || total<costs.freeShipping){
+      if (total<costs.freeShipping){
         total+=costs.shipping;
         checkout.shippingCost=costs.shipping;
       }
@@ -63,7 +71,7 @@ angular.module('checkout',[])
       checkout.subTotal=subTotal.toFixed(2);
     }
     else if (!checkout.readOnly) {
-      checkout.onEmpty();
+      scope.$emit('checkout.empty');
     }
   }
 
@@ -73,13 +81,19 @@ angular.module('checkout',[])
     }
   };
 
-  this.setGateway = function(gatewayName) {
+  this.gateway = function(gatewayName) {
+    if (!gatewayName) {
+      return gateway; 
+    }
     gatewayProvider = gatewayName;
     return this;
   };
 
-  this.setCosts = function(_costs) {
-    costs = _costs;
+  this.costs = function(_costs) {
+    if (!_costs){
+      return costs;
+    }
+    costs = angular.extend(costs,_costs);
     return this;
   };
 
@@ -87,6 +101,10 @@ angular.module('checkout',[])
     gateway = gatewayProvider? $injector.get(gatewayProvider) : defaultGateway; 
     cart = ShoppingCart;
     scope = $scope;
-    return checkout;
+    return function(_mapFn){
+      mapFn = _mapFn;
+      update();
+      return checkout;
+    };
   };
 });
