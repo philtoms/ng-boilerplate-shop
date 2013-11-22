@@ -41,8 +41,13 @@ angular.module( 'ngBoilerplateShop', [
   'ngbps.admin',
   'ngbps.shoppingGateway',
   'shoppingCart',
+  'checkout',
   'ui.router'
 ])
+
+.config( function checkoutConfig ( CheckoutProvider ) {
+  CheckoutProvider.setGateway('');
+})
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
   $urlRouterProvider.otherwise( '/home' );

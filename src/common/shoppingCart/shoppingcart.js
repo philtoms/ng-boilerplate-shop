@@ -47,9 +47,9 @@ angular.module('shoppingCart', [])
 
   return cart;
 
-})
+});
 
-.directive('shoppingCart', function(ShoppingCart) {
+angular.module('shoppingCart').directive('shoppingCart', function(ShoppingCart) {
   return {
     replace:true,
     restrict:'AE',

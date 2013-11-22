@@ -1,10 +1,13 @@
-angular.module('shoppingCart')
+angular.module('checkout',[])
 
-.provider('Checkout', function(ShoppingCart) {
+.provider('Checkout', function() {
   
-  var costs;
-  var gateway;
-  var gatewayProvider;
+  var costs,
+    gateway,
+    gatewayProvider,
+    cart,
+    scope;
+
   var checkout = {
       total:0,
       subTotal:0,
@@ -12,20 +15,20 @@ angular.module('shoppingCart')
       gatewayClosed:true,
       payNow: function(){
         checkout.gatewayClosed=false;
-        gateway.pay(checkout);
-        ShoppingCart.clear();
+        gateway.pay(checkout.items);
+        cart.clear();
       },
       clear:function(){
-        ShoppingCart.clear();
+        cart.clear();
         checkout.readOnly=false;
         update();
       },
       addItem:function(code,qty){
-        ShoppingCart.addItem(code,qty);
+        cart.addItem(code,qty);
         update();
       },
       removeItem:function(code) {
-        ShoppingCart.removeItem(code);
+        cart.removeItem(code);
         update();
       }
     };
@@ -64,6 +67,12 @@ angular.module('shoppingCart')
     }
   }
 
+  var defaultGateway = {
+    pay:function(items){
+      scope.$emit('checkout.payNow',items);
+    }
+  };
+
   this.setGateway = function(gatewayName) {
     gatewayProvider = gatewayName;
     return this;
@@ -74,8 +83,10 @@ angular.module('shoppingCart')
     return this;
   };
 
-  this.$get = function($injector,$log) {
-    gateway = $injector.get(gatewayProvider);
+  this.$get = function($scope,$injector,$log,ShoppingCart) {
+    gateway = gatewayProvider? $injector.get(gatewayProvider) : defaultGateway; 
+    cart = ShoppingCart;
+    scope = $scope;
     return checkout;
   };
 });
