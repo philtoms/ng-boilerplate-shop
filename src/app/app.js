@@ -1,8 +1,8 @@
-angular.module( 'ngBoilerplate', [
+angular.module( 'ngBoilerplateShop', [
   'templates-app',
   'templates-common',
   'ngBoilerplate.home',
-  'ngBoilerplate.about',
+  'ngBoilerplateShop.admin',
   'ui.router'
 ])
 
@@ -11,7 +11,7 @@ angular.module( 'ngBoilerplate', [
 })
 
 .run( function run ( titleService ) {
-  titleService.setSuffix( ' | ngBoilerplate' );
+  titleService.setSuffix( ' | ngBoilerplateShop' );
 })
 
 .controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
