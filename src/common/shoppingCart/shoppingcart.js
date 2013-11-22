@@ -1,13 +1,9 @@
 angular.module('shoppingCart', [])
 
 
-.provider('ShoppingCart', function() {
+.factory('ShoppingCart', function() {
 
   var items={};
-  var costs;
-  var checkingOut;
-  var gateway;
-  var gatewayProvider;
 
   var cart = {
     getItemCount:  function() {
@@ -40,45 +36,39 @@ angular.module('shoppingCart', [])
           delete items[code];
         }
       }
+    },
+
+    forEach: function(cb){
+      for (var i in items){
+        cb({id:i,qty:items[i]});
+      }
     }
   };
 
-  this.setGateway = function(gatewayName) {
-    gatewayProvider = gatewayName;
-    return this;
-  };
-
-  this.setCosts = function(_costs) {
-    costs = _costs;
-    return this;
-  };
-
-  this.$get = function($injector,$log) {
-    gateway = $injector.get(gatewayProvider);
-    return _cart;
-  };
+  return cart;
 
 })
 
-
 .directive('shoppingCart', function(ShoppingCart) {
-  var cartTitle;
   return {
     replace:true,
+    restrict:'AE',
     scope:{},
     template: function(element, attrs) {
-      cartTitle = element.text();
-      return "<a class='shoppingcart'>{{cartTitle}}<span class='itemcount'>{{itemCount}}</span></a>";
+      var cartTitle = element.text();
+      return "<a class='shoppingcart'>"+cartTitle+"<span class='itemcount'>{{itemCount}}</span></a>";
     },
     link: function(scope, element, attrs) {
-      scope.cartTitle = cartTitle;
       scope.$watch(ShoppingCart.getItemCount,function(nv){
         scope.itemCount = nv==1? ' 1 item':" "+nv+" items";
       });
       element.bind('click', function(event) {
+        var status=true;
         if (!ShoppingCart.hasItems()){
           event.preventDefault();
+          status=false;
         }
+        scope.$emit('shoppingCart.clicked', status);
       });
     }
   };

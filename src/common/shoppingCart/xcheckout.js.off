@@ -1,7 +1,10 @@
-angular.module('shoppingCart',[])
+angular.module('shoppingCart')
 
-.factory('CheckoutService', function(ShoppingCart) {
+.provider('Checkout', function(ShoppingCart) {
   
+  var costs;
+  var gateway;
+  var gatewayProvider;
   var checkout = {
       total:0,
       subTotal:0,
@@ -61,15 +64,18 @@ angular.module('shoppingCart',[])
     }
   }
 
-  return function(options) {
-    checkout = angular.extend (checkout,options);
-    if (checkout.readOnly) {
-      ShoppingCart.clear();
-    }
-    else {
-      update();
-    }
+  this.setGateway = function(gatewayName) {
+    gatewayProvider = gatewayName;
+    return this;
+  };
 
+  this.setCosts = function(_costs) {
+    costs = _costs;
+    return this;
+  };
+
+  this.$get = function($injector,$log) {
+    gateway = $injector.get(gatewayProvider);
     return checkout;
   };
 });

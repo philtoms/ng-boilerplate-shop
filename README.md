@@ -1,6 +1,11 @@
 # [ngBoilerplateShop](http://philtoms.github.com/ng-boilerplate-shop) [![Build Status](https://travis-ci.org/philtoms/ng-boilerplate-shop.png?branch=master)](https://travis-ci.org/philtoms/ng-boilerplate-shop)
 
-An opinionated kickstarter for [AngularJS](http://angularjs.org) E-Commerce projects. ngBoilerPlateShop ships with the following features and components:
+An opinionated kickstarter for [AngularJS](http://angularjs.org) E-Commerce projects. 
+
+`ngBoilerplateShop` is built on top of [ngBoilerplate](http://philtoms.github.com/ng-boilerplate-shop), a basic framework for kick starting AngularJS projects. 
+This means it supports and encourages AngularJS best-practices from the ground up.
+
+ngBoilerPlateShop ships with the following features and components:
 
 - A shopping cart - of course
 - pluggable gateways (Worldpay and Paypal are supplied)
@@ -27,9 +32,6 @@ $ grunt watch
 To see the initial website out of the box, open `file:///path/to/ng-boilerplate-shop/build/index.html` in your browser.
 
 Now start hacking into the code to turn it into your own E-Commerce shopping website. 
-
-`ngBoilerplateShop` is built on top of [ngBoilerplate](http://philtoms.github.com/ng-boilerplate-shop), a basic framework for kick starting AngularJS projects. 
-This means it supports and encourages AngularJS best-practices from the ground up.
 
 ## Development Scenario 1
 
