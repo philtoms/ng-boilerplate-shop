@@ -1,4 +1,4 @@
-angular.module('ngBoilerplateShop.admin', [])
+angular.module('ngbps.admin', [])
 
 
 .filter('admin', function() {

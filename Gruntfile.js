@@ -366,9 +366,12 @@ module.exports = function ( grunt ) {
      */
     karma: {
       options: {
-        configFile: '<%= build_dir %>/karma-unit.js'
+        configFile: '<%= build_dir %>/karma-unitci.js'
       },
       unit: {
+        options: {
+          configFile: '<%= build_dir %>/karma-unit.js'
+        },
         runnerPort: 9101,
         background: true,
         port: 9877  // https://github.com/ngbp/ng-boilerplate/issues/37#issuecomment-22918484
@@ -431,6 +434,16 @@ module.exports = function ( grunt ) {
      */
     karmaconfig: {
       unit: {
+        dir: '<%= build_dir %>',
+        src: [ 
+          '<%= vendor_files.js %>',
+          '<%= html2js.app.dest %>',
+          '<%= html2js.common.dest %>',
+          'vendor/angular-mocks/angular-mocks.js'
+        ]
+      },
+
+      unitci: {
         dir: '<%= build_dir %>',
         src: [ 
           '<%= vendor_files.js %>',
@@ -619,7 +632,7 @@ module.exports = function ( grunt ) {
    * before watching for changes.
    */
   grunt.renameTask( 'watch', 'delta' );
-  grunt.registerTask( 'watch', [ 'build', 'karma:unit', 'delta' ] );
+  grunt.registerTask( 'watch', [ 'e2ebuild', 'karma:unit', 'delta' ] );
 
   /**
    * The default task is to build and compile.
@@ -630,6 +643,12 @@ module.exports = function ( grunt ) {
    * The `build` task gets your app ready to run for development and testing.
    */
   grunt.registerTask( 'build', [
+    'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'recess:build',
+    'copy:build_assets', 'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_fixturejs',
+    'index:build', 'karmaconfig', 'karma:continuous'
+  ]);
+
+  grunt.registerTask( 'e2ebuild', [
     'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'recess:build',
     'copy:build_assets', 'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_fixturejs',
     'index:build', 'karmaconfig', 'karma:continuous', 'karma:e2e'

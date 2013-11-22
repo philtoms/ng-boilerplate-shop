@@ -1,6 +1,6 @@
 describe( 'Admin', function() {
 
-  beforeEach( module( 'ngBoilerplateShop.admin' ) );
+  beforeEach( module( 'ngbps.admin' ) );
 
   describe( 'filter', function() {
 

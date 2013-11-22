@@ -1,8 +1,10 @@
 angular.module( 'ngBoilerplateShop', [
   'templates-app',
   'templates-common',
-  'ngBoilerplate.home',
-  'ngBoilerplateShop.admin',
+  'ngbps.home',
+  'ngbps.admin',
+  'ngbps.shoppingGateway',
+  'shoppingCart',
   'ui.router'
 ])
 
