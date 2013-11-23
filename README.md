@@ -2,15 +2,15 @@
 
 An opinionated kickstarter for [AngularJS](http://angularjs.org) E-Commerce projects. 
 
-`ngBoilerplateShop` is built on top of [ngBoilerplate](http://philtoms.github.com/ng-boilerplate-shop), a basic framework for kick starting AngularJS projects. 
+`ngBoilerplateShop` is built on top of [ngBoilerplate](http://joshdmiller.github.com/ng-boilerplate), a basic framework for kick starting AngularJS projects. 
 This means it supports and encourages AngularJS best-practices from the ground up.
 
 ngBoilerPlateShop ships with the following features and components:
 
 - A shopping cart - of course
-- pluggable gateways (Worldpay and Paypal are supplied)
+- Pluggable gateways (Worldpay and Paypal are supplied)
 - Comprehensive and instantaneous product search results
-- Disqus commemtary and discussoin forum built in
+- Disqus commentary and discussion forum built in
 - Social media 'like' buttons
 - Google analytics
 
