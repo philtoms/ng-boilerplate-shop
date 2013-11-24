@@ -19,7 +19,7 @@ describe( 'Filters', function() {
     });
   });
 
-  describe( 'leadingZeros', function() {  describe( 'titlize', function() {
+  describe( 'titlize', function() {
 
     var titlize;
     beforeEach( inject( function( titlizeFilter ) {
@@ -37,8 +37,8 @@ describe( 'Filters', function() {
   describe( 'leadingZeros', function() {
 
     var leadingZeros;
-    beforeEach( inject( function( leadingZerosilter ) {
-      leadingZeros = leadingZerosilter;
+    beforeEach( inject( function( leadingZerosFilter ) {
+      leadingZeros = leadingZerosFilter;
     }));
 
     it( 'should add expected leading zeros', function() {

@@ -4,15 +4,17 @@ angular.module('ngbps.filters', [])
   return function(input) {
     return input ? '\u2713' : '\u2718';
   };
-});
+})
 
-.filter('titleize', function() {
+.filter('titlize', function() {
   return function(input) {
-    if (!input) return '';
+    if (!input) {
+      return '';
+    }
     input = input.replace(/\S+\//g,'');
     return input.charAt(0).toUpperCase() + input.slice(1).replace(/-/g,' ').replace(/\.html/,'').replace(/_/g,'-');
   };
-});
+})
 
 .filter('leadingZeros', function() {
   return function(input, size) {

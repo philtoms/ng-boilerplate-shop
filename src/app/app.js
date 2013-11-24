@@ -5,7 +5,8 @@ angular.module( 'ngBoilerplateShop', [
   'ngbps.home',
   'ngbps.admin',
   'ngbps.shoppingGateway',
-  'ngbps.filters'
+  'ngbps.filters',
+  'ngbps.jsonRepository',
   'shoppingCart',
   'checkout',
   'placeholders',

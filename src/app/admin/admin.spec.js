@@ -1,16 +1,20 @@
 describe( 'Admin', function() {
 
-  beforeEach( module( 'ngbps.admin' ) );
+  var admin = {telNo:"0800 123 456"};
 
-  describe( 'filter', function() {
-
-    var filter;
-    beforeEach( inject( function( adminFilter ) {
-      filter = adminFilter;
-    }));
-
-    it( 'should parse admin keys', inject( function() {
-      expect( filter('salesphone') ).toEqual('0800 169 1106');
-    }));
+  beforeEach( function(){
+    module( 'ngbps.admin', function($provide){
+      $provide.factory('Repository', function(){
+        return function(){
+          return admin;
+        };
+      });
+    });
   });
+
+
+  it('should provide admin values as an object', inject (function(AdminDB){
+    expect(AdminDB.telNo).toBe(admin.telNo);
+  }));
+
 });
