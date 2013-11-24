@@ -14,13 +14,20 @@ angular.module('ngbps.jsonRepository',[])
       }));
     };
 
-    this.where = function(key, value){
+    this.where = function(key, value, skip, take){
       return new Query(promise.then(function(data){
         var matched = [];
+        take=take || 1;
+        skip=skip || 0;
         if (angular.isArray(data)){
           angular.forEach(data,function(prop){
-            if(prop[key] && prop[key]===value){
-              matched.push(prop);
+            if (take>0) {
+              if(prop[key] && prop[key]===value){
+                if (--skip < 0) {
+                  matched.push(prop);
+                  take--;
+                }
+              }
             }
           });
         }
@@ -40,6 +47,12 @@ angular.module('ngbps.jsonRepository',[])
           projected.push(select(data[x]));
         }
         return projected;
+      }));
+    };
+
+    this.any = function(key,value) {
+      return new Query(this.where(key,value,0,1).then(function(data){
+        return data? data[0]:null;
       }));
     };
 

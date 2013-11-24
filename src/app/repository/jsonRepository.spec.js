@@ -3,8 +3,10 @@ describe( 'jsonRepository', function() {
   var $httpBackend,repository;
   var testData = {
     products:[
-      {id:1},
-      {id:2}
+      {id:1,type:1},
+      {id:2,type:1},
+      {id:3,type:1},
+      {id:4,type:1}
     ],
     categories:[
       {id:1},
@@ -63,6 +65,26 @@ describe( 'jsonRepository', function() {
     expect(data[0]).toBe(testData.products[1]);
   });
 
+  it('filters promise through where clause with skip and take', function(){
+    var data;
+    repository('test').get('products').where('type',1,1,2).then(function(_data_){
+      data=_data_;
+    });
+    $httpBackend.flush();
+    expect(data.length).toBe(2);
+    expect(data[0].id).toBe(2);
+    expect(data[1].id).toBe(3);
+  });
+
+  it('filters promise through any clause', function(){
+    var data;
+    repository('test').get('products').any('id',2).then(function(_data_){
+      data=_data_;
+    });
+    $httpBackend.flush();
+    expect(data).toBe(testData.products[1]);
+  });
+
   it('projects promise through select clause', function(){
     var data;
     repository('test').get('products')
@@ -73,7 +95,7 @@ describe( 'jsonRepository', function() {
         data=_data_;
     });
     $httpBackend.flush();
-    expect(data.length).toBe(2);
+    expect(data.length).toBe(4);
     expect(data[0].extra).toBe(10);
   });
 });
