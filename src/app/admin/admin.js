@@ -1,14 +1,12 @@
 angular.module('ngbps.admin', [])
 
 
-.filter('admin', function() {
+.service('AdminDB', ['Repository', function(Repository) {
+  var dbPromise = Repository('admin').then(function(data){
+    // make promise synchronous
+    dbPromise = {then:function(cb){return cb(data)}};
+    return data;
+  });
+  return dbPromise;
+}]);
 
-  var adminText = {
-    enquiries:'enquiries@dampexpert.com',
-    salesphone:'0800 169 1106'
-  };
-
-  return function(input) {
-    return adminText[input];
-  };
-});
