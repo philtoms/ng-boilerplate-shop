@@ -5,7 +5,8 @@
 angular.module('ngbps.jsonRepository',[])
 
 .factory('Repository', function($http, $q) {
-
+  var MAX_INT = 9007199254740992;
+  var db={};
   var Query = function (promise) {
 
     this.get = function(prop){
@@ -16,12 +17,12 @@ angular.module('ngbps.jsonRepository',[])
 
     this.where = function(key, value, skip, take){
 
-      take=take || 1;
+      take=take || MAX_INT;
       skip=skip || 0;
 
       function testClause(data, dkey){
         if (take>0) {
-          if ((key==='id' && dkey===value &!data[key]) || (data[key] && data[key]===value)) {
+          if (data[key] && data[key]===value) {
             if (--skip < 0) {
               take--;
               return true;
@@ -43,6 +44,9 @@ angular.module('ngbps.jsonRepository',[])
         }
         else {
           matched = {};
+          if (!value && data[key]){
+            return matched[key]=data[key];
+          }
           angular.forEach(data,function(prop,pkey){
             if (testClause(prop,pkey)) {
               matched[pkey] = prop;
@@ -55,9 +59,17 @@ angular.module('ngbps.jsonRepository',[])
 
     this.select = function(select){
       return new Query(promise.then(function(data){
-        var projected=[];
+        var isArray=angular.isArray(data),
+          projected = isArray? []:{};
+        
         for(var key in data){
-          projected.push(select(data[key], key));
+          var projection = select(data[key], key);
+          if (isArray){
+            projected.push(projection);
+          }
+          else {
+            projected[key]=projection;
+          }
         }
         return projected;
       }));
@@ -65,7 +77,18 @@ angular.module('ngbps.jsonRepository',[])
 
     this.any = function(key,value) {
       return new Query(this.where(key,value,0,1).then(function(data){
-        return data? angular.isArray(data)? data[0]:data:null;
+        var value = null;
+        if (data){
+          if (angular.isObject(data)){
+            for(var key in data){
+              value=data[key];
+            }
+          }
+          else {
+            value = data[0];
+          }
+        }
+        return value;
       }));
     };
 
@@ -75,16 +98,23 @@ angular.module('ngbps.jsonRepository',[])
   return function(dataName) {
     
     var deferred = $q.defer();
-    //map database onto response when promise fulfilled
-    var url = 'assets/data/'+dataName+'.json';
-    $http.get(url).then(
-      function(response) {
-        db = angular.fromJson(response.data);
-        deferred.resolve(db);
-      },
-      function(error) {
-        deferred.reject('');
+    if (db[dataName]){
+      setTimeout(function(){
+        deferred.resolve(db[dataName]);
       });
+    }
+    else {
+      //map database onto response when promise fulfilled
+      var url = 'assets/data/'+dataName+'.json';
+      $http.get(url).then(
+        function(response) {
+          db[dataName] = angular.fromJson(response.data);
+          deferred.resolve(db[dataName]);
+        },
+        function(error) {
+          deferred.reject('');
+        });
+    }
 
     return new Query(deferred.promise);
 

@@ -1,1 +1,14 @@
-RRRRRR
+<div class='links'>
+  <img class='cards' ng-src='img/cards.png'>
+  <div class='search'>
+    <input on-blur='search.reset(false)' ng-model='search.selected' typeahead='item for item in search.filter($viewValue)' placeholder='Product search'>
+    <button on-blur='search.reset(true)' ng-show='search.query.length>3' ng-click='search.more()'>Advanced</button>
+  </div>
+</div>
+<nav class='links' ng-controller='ProductCategoriesCtrl'>
+  <a ng-repeat='category in categories' href='#/products/{{category.url}}'>{{category.title | titleize}}</a>
+</nav>
+<a class='survey links' ng-href='#/services/independent-surveys.html'>
+  <h3>Independent Surveys</h3>
+  <img src="{{imgBaseUrl}}/surveys/reports.jpg"/>
+</a>
