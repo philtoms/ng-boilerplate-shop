@@ -2,17 +2,24 @@ describe( 'jsonRepository', function() {
 
   var $httpBackend,repository;
   var testData = {
-    products:[
-      {id:1,type:1},
-      {id:2,type:1},
-      {id:3,type:1},
-      {id:4,type:1}
-    ],
+    products:{
+      'a':{code:1,type:1},
+      'b':{code:2,type:2},
+      'c':{code:3,type:2},
+      'd':{code:4,type:2}
+    },
     categories:[
       {id:1},
       {id:2}
-    ]
+    ],
+    admin:{tel:'0800 123 456'}
   };
+
+  function count(obj) {
+    var c=0;
+    for (var v in obj) {c++;}
+    return c;
+  }
 
   beforeEach( module( 'ngbps.jsonRepository'));
 
@@ -55,41 +62,62 @@ describe( 'jsonRepository', function() {
     expect(data).toBe(testData.products);
   });
 
-  it('filters promise through where clause', function(){
+  it('returns filtered object through where clause', function(){
     var data;
-    repository('test').get('products').where('id',2).then(function(_data_){
+    repository('test').get('products').where('id','b').then(function(_data_){
+      data=_data_;
+    });
+    $httpBackend.flush();
+    expect(data.b).toBe(testData.products.b);
+  });
+
+  it('returns filtered array through where clause', function(){
+    var data;
+    repository('test').get('categories').where('id',2).then(function(_data_){
       data=_data_;
     });
     $httpBackend.flush();
     expect(data.length).toBe(1);
-    expect(data[0]).toBe(testData.products[1]);
+    expect(data[0]).toBe(testData.categories[1]);
   });
 
   it('filters promise through where clause with skip and take', function(){
     var data;
-    repository('test').get('products').where('type',1,1,2).then(function(_data_){
+    // skip 1, take 2
+    repository('test').get('products').where('type',2,1,2).then(function(_data_){
       data=_data_;
     });
     $httpBackend.flush();
-    expect(data.length).toBe(2);
-    expect(data[0].id).toBe(2);
-    expect(data[1].id).toBe(3);
+    expect(count(data)).toBe(2);
+    expect(data.c).toBeDefined();
+    expect(data.d).toBeDefined();
+  });
+
+  it('takes available data', function(){
+    var data;
+    // skip 0, take 2
+    repository('test').get('products').where('type',1,0,2).then(function(_data_){
+      data=_data_;
+    });
+    $httpBackend.flush();
+    expect(count(data)).toBe(1);
+    expect(data.a).toBeDefined();
   });
 
   it('filters promise through any clause', function(){
     var data;
-    repository('test').get('products').any('id',2).then(function(_data_){
+    repository('test').get('products').any('type',2).then(function(_data_){
       data=_data_;
     });
     $httpBackend.flush();
-    expect(data).toBe(testData.products[1]);
+    expect(data.b).toBe(testData.products.b);
   });
 
   it('projects promise through select clause', function(){
     var data;
     repository('test').get('products')
-      .select(function(x){
-        return {extra:10};
+      .select(function(x,key){
+        return {extra:10,code:key};
       })
     .then(function(_data_){
         data=_data_;
@@ -97,5 +125,6 @@ describe( 'jsonRepository', function() {
     $httpBackend.flush();
     expect(data.length).toBe(4);
     expect(data[0].extra).toBe(10);
+    expect(data[0].code).toBe('a');
   });
 });

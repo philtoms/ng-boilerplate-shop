@@ -15,26 +15,39 @@ angular.module('ngbps.jsonRepository',[])
     };
 
     this.where = function(key, value, skip, take){
+
+      take=take || 1;
+      skip=skip || 0;
+
+      function testClause(data, dkey){
+        if (take>0) {
+          if ((key==='id' && dkey===value &!data[key]) || (data[key] && data[key]===value)) {
+            if (--skip < 0) {
+              take--;
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+
       return new Query(promise.then(function(data){
-        var matched = [];
-        take=take || 1;
-        skip=skip || 0;
+        var matched;
         if (angular.isArray(data)){
+          matched = [];
           angular.forEach(data,function(prop){
-            if (take>0) {
-              if(prop[key] && prop[key]===value){
-                if (--skip < 0) {
-                  matched.push(prop);
-                  take--;
-                }
-              }
+            if (testClause(prop)) {
+              matched.push(prop);
             }
           });
         }
-        else if (angular.isObject(data)){
-        }
         else {
-          matched.push(data);
+          matched = {};
+          angular.forEach(data,function(prop,pkey){
+            if (testClause(prop,pkey)) {
+              matched[pkey] = prop;
+            }
+          });
         }
         return matched;
       }));
@@ -43,8 +56,8 @@ angular.module('ngbps.jsonRepository',[])
     this.select = function(select){
       return new Query(promise.then(function(data){
         var projected=[];
-        for(var x in data){
-          projected.push(select(data[x]));
+        for(var key in data){
+          projected.push(select(data[key], key));
         }
         return projected;
       }));
@@ -52,7 +65,7 @@ angular.module('ngbps.jsonRepository',[])
 
     this.any = function(key,value) {
       return new Query(this.where(key,value,0,1).then(function(data){
-        return data? data[0]:null;
+        return data? angular.isArray(data)? data[0]:data:null;
       }));
     };
 
