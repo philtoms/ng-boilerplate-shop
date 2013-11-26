@@ -45,7 +45,7 @@ describe( 'Products', function() {
     }
   });
 
-  it('should code all products', function(){
+  it('should codify all products', function(){
     var all;
     products.then(function(data){
       all=data;
@@ -57,7 +57,7 @@ describe( 'Products', function() {
     }
   });
 
-  it('should expose the products queryable object', function(){
+  it('should expose the products queryable interface', function(){
     expect(products.getProduct).toBeDefined();
     expect(products.queryProducts).toBeDefined();
   });
