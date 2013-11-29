@@ -3,9 +3,6 @@
 
 An opinionated kickstarter for [AngularJS](http://angularjs.org) E-Commerce projects. 
 
-`ngBoilerplateShop` is built on top of [ngBoilerplate](http://joshdmiller.github.com/ng-boilerplate), a basic framework for kick starting AngularJS projects. 
-This means it supports and encourages AngularJS best-practices from the ground up.
-
 ngBoilerPlateShop ships with the following features and components:
 
 - A shopping cart - of course
@@ -15,6 +12,8 @@ ngBoilerPlateShop ships with the following features and components:
 - Social media 'like' buttons
 - Google analytics
 
+`ngBoilerplateShop` is built on top of [ngBoilerplate](http://joshdmiller.github.com/ng-boilerplate), a basic framework for kick starting AngularJS projects. This means it supports and encourages AngularJS best-practices from the ground up. What *that* means is that the project is modular, and you can drop out or add in modules to meet your own requirements and the build will complain if you do it wrong, and purr when you get it right. 
+
 ***
 
 ## Quick Start
@@ -22,28 +21,28 @@ ngBoilerPlateShop ships with the following features and components:
 Install Node.js and then:
 
 ```
-$ git clone git://github.com/philtoms/ng-boilerplate-shop
-$ cd ng-boilerplate-shop
+$ git clone git://github.com/philtoms/ng-boilerplate-shop your-shop
+$ cd your-shop
 $ sudo npm -g install grunt-cli karma bower
 $ npm install
 $ bower install
 $ grunt watch
 ```
 
-To see the initial website out of the box, open `file:///path/to/ng-boilerplate-shop/build/index.html` in your browser.
+To see the initial website out of the box, open `file:///path/to/your-shop/build/index.html` in your browser.
 
 ***
 ## Overview
 
 By default ngBoilerPlateShop operates completely client side. This has some interesting consequences:
 
-- There are no server transactions that can be exploited - the website is secure up to the point of actual purchase transactions. XSS and XSRF type vulnerabilities are, or should be, handled by the payment gateway service. For example, the [Worldpay™](http://www.worldpay.com/products/index.php?page=ecom&c=) payment gateway accepts but does not require any customer information to be transmitted across the wire. 
+- There are no server transactions that can be exploited - the website is secure up to the point of actual purchase transactions. XSS and XSRF type vulnerabilities are (really should be) handled by the payment gateway service. For example, the [Worldpay™](http://www.worldpay.com/products/index.php?page=ecom&c=) payment gateway accepts but does not require any customer information to be transmitted across the wire. 
 
 - The website operates in session scope only. No cookies or client-side storage technologies are used. Customer interaction is completely anonymous outside of the hosted payment gateway. 
 
 - The website is a stand-alone application. Once loaded it will continue to operate offline. The shop will be available for browsing (like early opening Sundays). The customer can complete their purchase when they come back online.
 
-ngBoilerPlateShop kicks off with a fully initialized ngBoilerplate build environment so read these [docs](http://joshdmiller.github.com/ng-boilerplate) first.Then read about the major components of the application and the example scenarios that maybe match your requirements. 
+ngBoilerPlateShop kicks off with a fully initialized ngBoilerplate build environment so read these [docs](http://joshdmiller.github.com/ng-boilerplate) first. Then read about the major components of the application and the example scenarios that maybe match your needs. 
 
 Lets get started! 
 
@@ -129,7 +128,7 @@ angular.module('app', [])
 ```
 <section class='checkout' ng-controller='checkoutCtrl'>
   ...
-  <custom-gateway ng-show='!cart.gatewayClosed'></custompay-gateway>
+  <custom-gateway ng-show='!cart.gatewayClosed'></custom-gateway>
 </section>
 ```
 ##Scenario 4
@@ -153,7 +152,7 @@ Develop your feature component independenly of ngBoilerplateShop and drop it in 
 
 #Architecture
 
-Architectural needs vary. ngBoilerPlateShop is feature oriented, meaning that new feature level components can be added to the project or can replace existing ones simply by dropping them into the source tree. 
+Architectural needs vary. ngBoilerPlateShop is feature oriented, meaning that new feature level components can be added to the project or can replace existing ones simply by dropping them into the source tree and referencing them in app.js. 
 
 ngBoilerPlateShop uses tried and tested patterns to keep features isolated. Override the following components to productionise your application:
 
@@ -162,9 +161,3 @@ ngBoilerPlateShop uses tried and tested patterns to keep features isolated. Over
 - ProductDB (Adaptor): projects repository data onto ngBoilerplateShop products and product categories. Override to map your existing contracts onto these objects.
 
 - Gateway (Bridge): allows your app and third-party payment gateways to vary independently. The default gateways provide client-side hosting for the WorldPay and Paypal gateway services. 
-
-- Index (HTML): 
-- Home (Angular MVC): the front page
-- Category (Angular MVC): 
-- Product (Angular MVC): 
- 
