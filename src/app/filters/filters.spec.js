@@ -32,6 +32,21 @@ describe( 'Filters', function() {
       expect( titlize('A b c') ).toBe('A b c');
       expect( titlize('a BC') ).toBe('A BC');
     });
+
+    it( 'should replace underscors and dashes with spaces', function() {
+      expect( titlize('a_b_c') ).toBe('A b c');
+      expect( titlize('a-b-c') ).toBe('A b c');
+      expect( titlize('a-b_c') ).toBe('A b c');
+    });
+
+    it( 'should drop filetype suffixes', function() {
+      expect( titlize('a.html') ).toBe('A');
+      expect( titlize('a-b-c.html') ).toBe('A b c');
+    });
+
+    it( 'should drop leading protocol', function() {
+      expect( titlize('http://a') ).toBe('A');
+    });
   });
 
   describe( 'leadingZeros', function() {

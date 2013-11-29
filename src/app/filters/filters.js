@@ -11,8 +11,8 @@ angular.module('ngbps.filters', [])
     if (!input) {
       return '';
     }
-    input = input.replace(/\S+\//g,'');
-    return input.charAt(0).toUpperCase() + input.slice(1).replace(/-/g,' ').replace(/\.html/,'').replace(/_/g,'-');
+    input = input.replace(/\S+:\/\//g,'');
+    return input.charAt(0).toUpperCase() + input.slice(1).replace(/-/g,' ').replace(/\.html/,'').replace(/_/g,' ');
   };
 })
 
