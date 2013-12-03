@@ -1,10 +1,10 @@
-angular.module('ngbps.productDB')
+angular.module('ngbps.shopDB')
 
-.factory('Categories', function(ProductDB) {
+.factory('Categories', function(ShopDB) {
   
-  // project raw products and categories onto productDB contract
-  var products = ProductDB.products;
-  var categories = ProductDB.categories.select(function(c,key){
+  // project raw categories onto shopDB contract
+  var products = ShopDB.products;
+  var categories = ShopDB.categories.select(function(c,key){
     c.url = key;
     c.title = c.title || key;
     return c;

@@ -43,20 +43,24 @@ describe( 'jsonRepository', function() {
     expect(data).toBe(testData);
   });
 
-  it('caches datasets', function(){
-    var data;
-    repository('test').then(function(_data_){
-    });
-    $httpBackend.flush();
+  it('caches dataset requests locally', function(){
+    var data, cachedData;
     repository('test').then(function(_data_){
       data = _data_;
     });
+    $httpBackend.flush();
+    expect(data).toBe(testData);
+
+    // now request from cache
+    repository('test').then(function(_data_){
+      cachedData = _data_;
+    });
     waitsFor(function(){
       $rootScope.$apply();
-      return data!=null; 
+      return cachedData!=null; 
     });
     runs(function(){
-      expect(data).toBe(testData);
+      expect(cachedData).toBe(testData);
     });
   });
 
@@ -85,29 +89,28 @@ describe( 'jsonRepository', function() {
       data=_data_;
     });
     $httpBackend.flush();
-    expect(data).toBe(testData.products.b);
+    expect(data[0]).toBe(testData.products.b);
   });
 
-  it('returns filtered objects through where clause', function(){
+  it('returns filtered array through where clause', function(){
     var data;
     repository('test').get('products').where('type',2).then(function(_data_){
       data=_data_;
     });
     $httpBackend.flush();
-    expect(count(data)).toBe(3);
-    expect(data.b).toBe(testData.products.b);
-    expect(data.c).toBe(testData.products.c);
-    expect(data.d).toBe(testData.products.d);
+    expect(data.length).toBe(3);
+    expect(data[0]).toBe(testData.products.b);
+    expect(data[1]).toBe(testData.products.c);
+    expect(data[2]).toBe(testData.products.d);
   });
 
-  it('returns filtered array through where clause', function(){
+  it('returns empty array through unmatched where clause', function(){
     var data;
-    repository('test').get('categories').where('id',2).then(function(_data_){
+    repository('test').get('products').where('type',99).then(function(_data_){
       data=_data_;
     });
     $httpBackend.flush();
-    expect(data.length).toBe(1);
-    expect(data[0]).toBe(testData.categories[1]);
+    expect(data.length).toBe(0);
   });
 
   it('skips and takes filtered data subsets', function(){
@@ -117,9 +120,9 @@ describe( 'jsonRepository', function() {
       data=_data_;
     });
     $httpBackend.flush();
-    expect(count(data)).toBe(2);
-    expect(data.c).toBeDefined();
-    expect(data.d).toBeDefined();
+    expect(data.length).toBe(2);
+    expect(data[0]).toBe(testData.products.c);
+    expect(data[1]).toBe(testData.products.d);
   });
 
   it('takes all available data', function(){
@@ -129,8 +132,8 @@ describe( 'jsonRepository', function() {
       data=_data_;
     });
     $httpBackend.flush();
-    expect(count(data)).toBe(1);
-    expect(data.a).toBeDefined();
+    expect(data.length).toBe(1);
+    expect(data[0]).toBe(testData.products.a);
   });
 
   it('returns single object through any clause', function(){
@@ -161,8 +164,8 @@ describe( 'jsonRepository', function() {
         data=_data_;
     });
     $httpBackend.flush();
-    expect(count(data)).toBe(4);
-    expect(data.a.extra).toBe(10);
-    expect(data.a.code).toBe('a');
+    expect(data.length).toBe(4);
+    expect(data[0].extra).toBe(10);
+    expect(data[0].code).toBe('a');
   });
 });

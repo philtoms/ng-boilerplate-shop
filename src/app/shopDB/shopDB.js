@@ -1,8 +1,8 @@
-angular.module('ngbps.productDB', [])
+angular.module('ngbps.shopDB', [])
 
-.factory('ProductDB', function(Repository) {
+.factory('ShopDB', function(Repository) {
     
-  var repository = new Repository('products');
+  var repository = new Repository('shop');
 
 
   function spliceRoute(key,value){
@@ -15,10 +15,11 @@ angular.module('ngbps.productDB', [])
     return key? key+'/'+value:value;
   }
 
-  var productDB = {
+  var shopDB = {
+    admin: repository.get('admin'),
     products: repository.get('products'),
     categories: repository.get('categories')
   };
 
-  return productDB;
+  return shopDB;
 });

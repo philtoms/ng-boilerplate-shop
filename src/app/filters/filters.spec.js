@@ -9,13 +9,14 @@ describe( 'Filters', function() {
       checkmark = checkmarkFilter;
     }));
 
-    var tick = '\u2713';
-    var cross = '\u2718';
-    it( 'should return checkmark', function() {
-      expect( checkmark(true) ).toBe(tick);
-      expect( checkmark('X') ).toBe(tick);
-      expect( checkmark(false) ).toBe(cross);
-      expect( checkmark('') ).toBe(cross);
+    var tick1 = '\u27131';
+    
+    it( 'should return checkmark when unit count is > 0', function() {
+      expect( checkmark(1) ).toBe(tick1);
+    });
+
+    it( 'should return empty string when unit count is < 1', function() {
+      expect( checkmark(0) ).toBe('');
     });
   });
 
@@ -26,14 +27,14 @@ describe( 'Filters', function() {
       titlize = titlizeFilter;
     }));
 
-    it( 'should titlize strings', function() {
+    it( 'should capitalize the leading character', function() {
       expect( titlize('abc') ).toBe('Abc');
       expect( titlize('a b c') ).toBe('A b c');
       expect( titlize('A b c') ).toBe('A b c');
       expect( titlize('a BC') ).toBe('A BC');
     });
 
-    it( 'should replace underscors and dashes with spaces', function() {
+    it( 'should replace underscores and dashes with spaces', function() {
       expect( titlize('a_b_c') ).toBe('A b c');
       expect( titlize('a-b-c') ).toBe('A b c');
       expect( titlize('a-b_c') ).toBe('A b c');

@@ -37,11 +37,10 @@ angular.module( 'ngBoilerplateShop', [
   'templates-app',
   'templates-common',
   'ngbps.home',
-  'ngbps.admin',
-  'ngbps.shoppingGateway',
+  'ngbps.shopDB',
+  'ngbps.shopGateway',
   'ngbps.filters',
   'ngbps.jsonRepository',
-  'ngbps.productDB',
   'shoppingCart',
   'checkout',
   'placeholders',
@@ -61,8 +60,8 @@ angular.module( 'ngBoilerplateShop', [
   titleService.setSuffix( ' | ngBoilerplateShop' );
 })
 
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location, AdminDB ) {
-  $scope.admin = AdminDB;
+.controller( 'AppCtrl', function AppCtrl ( $scope, $location, Admin ) {
+  $scope.admin = Admin;
 })
 
 ;

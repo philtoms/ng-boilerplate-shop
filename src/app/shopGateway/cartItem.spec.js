@@ -5,7 +5,7 @@ describe( 'cartItem', function() {
   var cart = {};
 
   beforeEach( function(){
-    module( 'ngbps.shoppingGateway', function($provide){
+    module( 'ngbps.shopGateway', function($provide){
       $provide.factory('ShoppingCart', function(){return cart;});
     });
   });
@@ -13,7 +13,7 @@ describe( 'cartItem', function() {
   beforeEach( inject( function(_$httpBackend_,  $compile, $rootScope ) {
     $scope = $rootScope.$new();
     $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('shoppingGateway/cartItem.tpl.html').respond(directiveTpl);
+    $httpBackend.expectGET('shopGateway/cartItem.tpl.html').respond(directiveTpl);
     $element = $compile(markup)($scope);
   }));
 
