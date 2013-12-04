@@ -31,7 +31,7 @@ angular.module('ngbps.shopDB')
       });
       
       var links={};
-      if (linkArray.length==0){
+      if (linkArray.length===0){
         deferredResponse.resolve(links);
       }
 
@@ -72,6 +72,7 @@ angular.module('ngbps.shopDB')
               for (var vk in lvalue){
                 lvo.href = lvalue[vk];
                 lvo.title=vk;
+                lvo.target=lvo.href.indexOf('http:')<0? '':'_blank';
               }
               lvalue=lvo;
             }
@@ -97,7 +98,12 @@ angular.module('ngbps.shopDB')
         value=key;
         key='url';
       }
-      return products.any(key,value).then(expandProduct);
+      return products.any(key,value).then(function(data){
+        if (data){
+          expandProduct(data);
+        }
+        return data;
+      });
     }
   };
 

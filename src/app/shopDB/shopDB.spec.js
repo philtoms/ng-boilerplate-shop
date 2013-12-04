@@ -26,6 +26,11 @@ describe( 'shopDB', function() {
     shopDB = _ShopDB_;
   }));
 
+  it('should expose the admin queryable object', function(){
+    expect(shopDB.admin).toBeDefined();
+    expect(shopDB.admin.then).toBeDefined();
+  });
+
   it('should expose the products queryable object', function(){
     expect(shopDB.products).toBeDefined();
     expect(shopDB.products.where).toBeDefined();

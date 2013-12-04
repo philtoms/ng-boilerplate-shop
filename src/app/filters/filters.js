@@ -12,7 +12,7 @@ angular.module('ngbps.filters', [])
       return '';
     }
     input = input.replace(/\S+:\/\//g,'');
-    return input.charAt(0).toUpperCase() + input.slice(1).replace(/-/g,' ').replace(/\.html/,'').replace(/_/g,' ');
+    return input.charAt(0).toUpperCase() + input.slice(1).replace(/-/g,' ').replace(/\.html/,'').replace(/_/g,'-');
   };
 })
 

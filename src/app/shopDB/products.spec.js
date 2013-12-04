@@ -12,7 +12,7 @@ describe( 'Products', function() {
         'c':{type:2, links:[{'Group A':['a','b']},{'Group B':['d','e']}]},
         'd':{type:3, links:[{'Template':'template.html'}]},
         'e':{type:3, links:['a',{'Template':'template.html'}]},
-        'f':{type:4, links:[{'Links':[{'l1':'l1.html'},{'l2':'l2.html'}]}]}
+        'f':{type:4, links:[{'Links':[{'l1':'http://l1.html'},{'l2':'l2.html'}]}]}
       }
     };
 
@@ -47,6 +47,16 @@ describe( 'Products', function() {
     }
   });
 
+  it('should return a filtered array', function(){
+    var filteredProducts;
+    products.queryProducts('type',3).then(function(data){
+      filteredProducts=data;
+    });
+    $httpBackend.flush();
+    expect(filteredProducts.length).toBe(2);
+    expect(filteredProducts[0]).toEqual(testData.products.d);
+  });
+
   it('should return a single expanded product', function(){
     var product;
     products.getProduct('code','a').then(function(data){
@@ -54,6 +64,15 @@ describe( 'Products', function() {
     });
     $httpBackend.flush();
     expect(product).toEqual(testData.products.a);
+  });
+
+  it('should return null for invalue property value', function(){
+    var product;
+    products.getProduct('code','x').then(function(data){
+      product=data;
+    });
+    $httpBackend.flush();
+    expect(product).toBeNull();
   });
 
   it('should expand empty links to empty links array', function(){
@@ -153,7 +172,7 @@ describe( 'Products', function() {
     });
   });
 
-  it('should expand links to external urls', function(){
+  it('should expand external links to external urls with targets', function(){
     var done;
     products.getProduct('code','f').then(function(product){
       product.links.then(function(data){
@@ -161,10 +180,29 @@ describe( 'Products', function() {
         expect(data[0].type).toBe('link');
         expect(data[0].title).toBe('Links');
         expect(data[0].links.length).toBe(2);
-        expect(data[0].links[0].href).toEqual('l1.html');
+        expect(data[0].links[0].href).toEqual('http://l1.html');
         expect(data[0].links[0].title).toEqual('l1');
+        expect(data[0].links[0].target).toEqual('_blank');
+        done=true;
+      });
+    });
+    $httpBackend.flush();
+    waitsFor(function(){
+      return done;
+    });
+  });
+
+  it('should expand internal links with no targets', function(){
+    var done;
+    products.getProduct('code','f').then(function(product){
+      product.links.then(function(data){
+        expect(data.length).toBe(1);
+        expect(data[0].type).toBe('link');
+        expect(data[0].title).toBe('Links');
+        expect(data[0].links.length).toBe(2);
         expect(data[0].links[1].href).toEqual('l2.html');
         expect(data[0].links[1].title).toEqual('l2');
+        expect(data[0].links[1].target).toEqual('');
         done=true;
       });
     });

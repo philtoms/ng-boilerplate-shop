@@ -18,7 +18,8 @@ angular.module('ngbps.shopDB', [])
   var shopDB = {
     admin: repository.get('admin'),
     products: repository.get('products'),
-    categories: repository.get('categories')
+    categories: repository.get('categories'),
+    showcase: repository.get('showcase')
   };
 
   return shopDB;

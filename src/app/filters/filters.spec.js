@@ -27,6 +27,12 @@ describe( 'Filters', function() {
       titlize = titlizeFilter;
     }));
 
+    it( 'should normalise empty input', function() {
+      expect( titlize('') ).toBe('');
+      expect( titlize(null) ).toBe('');
+      expect( titlize() ).toBe('');
+    });
+
     it( 'should capitalize the leading character', function() {
       expect( titlize('abc') ).toBe('Abc');
       expect( titlize('a b c') ).toBe('A b c');
@@ -34,10 +40,14 @@ describe( 'Filters', function() {
       expect( titlize('a BC') ).toBe('A BC');
     });
 
-    it( 'should replace underscores and dashes with spaces', function() {
-      expect( titlize('a_b_c') ).toBe('A b c');
+    it( 'should replace dashes with spaces', function() {
       expect( titlize('a-b-c') ).toBe('A b c');
-      expect( titlize('a-b_c') ).toBe('A b c');
+      expect( titlize('a b-c') ).toBe('A b c');
+    });
+
+    it( 'should replace underscores with dashes', function() {
+      expect( titlize('a_b_c') ).toBe('A-b-c');
+      expect( titlize('a-b_c') ).toBe('A b-c');
     });
 
     it( 'should drop filetype suffixes', function() {
