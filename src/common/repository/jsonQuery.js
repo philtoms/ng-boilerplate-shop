@@ -1,6 +1,6 @@
 /* 
   Repository Query Service
-  chainable promise API for querying JSON data
+  chainable promise API for querying promised JSON data
     get: return a named property as a promise
     where: filter, skip and take promise data as array
     any: filter, skip and take first promise data as object
@@ -64,7 +64,9 @@ angular.module('jsonQuery',[])
       
       for(var key in data){
         var projection = select(data[key], key);
-        projected.push(projection);
+        if (projection){
+          projected.push(projection);
+        }
       }
       return projected;
     }));
