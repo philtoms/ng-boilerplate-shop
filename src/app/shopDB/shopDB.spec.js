@@ -18,7 +18,7 @@ describe( 'shopDB', function() {
     return c;
   }
 
-  beforeEach( module( 'ngbps.jsonRepository', 'ngbps.shopDB'));
+  beforeEach( module( 'jsonRepository', 'ngbps.shopDB'));
 
   beforeEach( inject(function(_$httpBackend_, _ShopDB_){
     $httpBackend = _$httpBackend_;

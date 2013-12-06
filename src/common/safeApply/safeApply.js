@@ -3,7 +3,7 @@ angular.module('safeApply',[])
 .factory('safeApply', ['$rootScope', function($rootScope) {
   return function($scope, fn) {
     var root = $scope && $scope.$root || $rootScope;
-    var scope = $scope || $rootScope
+    var scope = $scope || $rootScope;
     var phase = root.$$phase;
     if(phase == '$apply' || phase == '$digest') {
       if (fn) {
@@ -16,5 +16,5 @@ angular.module('safeApply',[])
         scope.$apply();
       }
     }
-  }
+  };
 }]);

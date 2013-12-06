@@ -8,7 +8,7 @@ describe( 'Admin', function() {
   };
 
 
-  beforeEach( module( 'ngbps.jsonRepository', 'ngbps.shopDB'));
+  beforeEach( module( 'jsonRepository', 'ngbps.shopDB'));
 
   beforeEach( inject(function(_$httpBackend_, _Admin_){
     $httpBackend = _$httpBackend_;

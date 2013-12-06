@@ -1,34 +1,97 @@
 describe( 'Showcase', function() {
 
-  var $httpBackend,showcase;
+  var $httpBackend,$timeout,showcase;
   var testData = {
+    admin:{
+      showcase:{
+        interval:5,
+        initialInterval:1
+      }
+    },
+    products:{
+      p1:{url:'p1.html'},
+      p2:{url:'p2.html'}
+    },
     showcase:[
-    {"title":"Enjoy all the benefits of living in a well insulated cosy home","text":"","link":"#/products/ultrotherm","imageUrl":"img/featured/ultrotherm-a1.jpg","class":"ultrotherm-a1","logo":"img/logos/ultrotherm.png"},
-    {"title":"","text":"Dampexpert offer a competative installation service on all our ventilation systems","link":"DX-80HRV","imageUrl":"img/featured/hrv-a1.jpg","class":"hrv-a1"},
-    {"title":"Passive Ventilation","text":"Let the fresh air into your home","link":"SD-UAB","imageUrl":"img/featured/ultrovent-a1.jpg","class":"ultrovent-a1","logo":"img/logos/ultrovent.png"},
-    {"title":"","text":"Save £££s on your annual fuel bills by insulating your home with NEW Ultrotherm slimline insulation","link":"#/products/ultrotherm","imageUrl":"img/featured/ultrotherm-a2.jpg","class":"ultrotherm-a2","btn":"See more"},
-    {"title":"Independent surveys","text":"","link":"#/services/independent-surveys.html","imageUrl":"img/featured/survey-a1.jpg","class":"survey-a1"},
-    {"title":"For that perfect finish every time","text":"See our range of decorating sundries","link":"#/products/everbuild","imageUrl":"img/featured/everbuild-a1.jpg","class":"everbuild-a1","logo":"img/logos/everbuild.png"}
+      {"title":"T1","text":"t1","link":"p1","imageUrl":"i1.jpg","logo":"h1.png"},
+      {"title":"T2","text":"t1","link":"#/another/page.html","btn":"More...","class":"showcase"}
     ]  
   };
 
+  beforeEach( module( 'jsonRepository', 'ngbps.shopDB'));
 
-  beforeEach( module( 'ngbps.jsonRepository', 'ngbps.shopDB'));
-
-  beforeEach( inject(function(_$httpBackend_, _Showcase_){
+  beforeEach( inject(function(_$httpBackend_,_$timeout_, _Showcase_){
     $httpBackend = _$httpBackend_;
     $httpBackend.whenGET('assets/data/shop.json').respond(testData);
+    $timeout = _$timeout_;
     showcase = _Showcase_;
   }));
 
-
-  it('should provide showCase values as an object', function(){
+  it('should return the showcase interface', function(){
     var result;
     showcase.then(function(data){
       result=data;
     });
     $httpBackend.flush();
-    expect(result.length).toBe(6);
+    expect(result.highlights).toBeDefined();
+    expect(result.interval).toBeDefined();
+  });
+
+  it('should initialize the showcase timer', function(){
+    var result;
+    showcase.then(function(data){
+      result=data;
+    });
+    $httpBackend.flush();
+    expect(result.interval).toBe(1);
+  });
+
+  it('should reset the showcase timer after initial interval has expired', function(){
+    var result;
+    showcase.then(function(data){
+      result=data;
+    });
+    $httpBackend.flush();
+    $timeout.flush();
+    expect(result.interval).toBe(5);
+  });
+
+  it('should provide highlight values as an array', function(){
+    var result;
+    showcase.then(function(data){
+      result=data.highlights;
+    });
+    $httpBackend.flush();
+    expect(result.length).toBe(2);
+  });
+
+  it('should map showcase properties onto highlights', function(){
+    var result;
+    showcase.then(function(data){
+      result=data.highlights[1];
+    });
+    $httpBackend.flush();
+    for(var p in result){
+      expect(result[p]).toEqual(testData.showcase[1][p]);
+    }
+  });
+
+  it('should expand showcase product links', function(){
+    var result;
+    showcase.then(function(data){
+      result=data.highlights;
+    });
+    $httpBackend.flush();
+    expect(result[0].link).toBe('#/products/p1.html');
+  });
+
+  it('should add showcase class to highlight item', function(){
+    var result;
+    showcase.then(function(data){
+      result=data.highlights[0];
+    });
+    $httpBackend.flush();
+    expect(result.class).toBe('showcase');
   });
 
 });

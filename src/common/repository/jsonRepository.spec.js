@@ -20,7 +20,7 @@ describe( 'jsonRepository', function() {
     return c;
   }
 
-  beforeEach( module( 'ngbps.jsonRepository'));
+  beforeEach( module( 'jsonRepository'));
 
   beforeEach( inject(function(_$rootScope_,_$httpBackend_, _Repository_){
     $rootScope = _$rootScope_;

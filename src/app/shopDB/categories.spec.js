@@ -2,13 +2,16 @@ describe( 'Categories', function() {
 
   var $httpBackend,categories,testData;
 
-  beforeEach( module( 'ngbps.jsonRepository', 'ngbps.shopDB'));
+  beforeEach( module( 'jsonRepository', 'ngbps.shopDB'));
 
   beforeEach( inject(function(_$httpBackend_, _Categories_){
     testData = {
+      products:{
+        'a1':{id:'a1'}
+      },
       categories:{
-        'a':{id:1},
-        'b':{id:2, title:"tb"}
+        'a':{subCategories:['b'],products:['a1']},
+        'b':{title:"tb"}
       }
     };
     $httpBackend = _$httpBackend_;
@@ -21,7 +24,7 @@ describe( 'Categories', function() {
     expect(categories.queryCategories).toBeDefined();
   });
 
-  it('should return all categories', function(){
+  it('should return all categories through direct promise', function(){
     var all;
     categories.then(function(data){
       all=data;
@@ -30,7 +33,7 @@ describe( 'Categories', function() {
     expect(all.length).toBe(2);
   });
   
-  it('should auto titlize all categories', function(){
+  it('should default title to category id', function(){
     var all;
     categories.then(function(data){
       all=data;
@@ -40,14 +43,14 @@ describe( 'Categories', function() {
     expect(all[1].title).toBe('tb');
   });
   
-  it('should add url to all categories', function(){
+  it('should add id to all categories', function(){
     var all;
     categories.then(function(data){
       all=data;
     });
     $httpBackend.flush();
-    expect(all[0].url).toBe('a');
-    expect(all[1].url).toBe('b');
+    expect(all[0].id).toBe('a');
+    expect(all[1].id).toBe('b');
   });
 
   it('should return a filtered array', function(){
@@ -77,6 +80,34 @@ describe( 'Categories', function() {
     categories.getCategory('x').then(function(category){
       expect(category).toBeNull();
       done=true;
+    });
+    $httpBackend.flush();
+    waitsFor(function(){
+      return done;
+    });
+  });
+
+  it('should expand subcategories', function(){
+    var done;
+    categories.getCategory('a').then(function(category){
+      category.subCategories.then(function(data){
+        expect(data[0]).toEqual(testData.categories.b);
+        done=true;
+      });
+    });
+    $httpBackend.flush();
+    waitsFor(function(){
+      return done;
+    });
+  });
+
+  it('should expand products', function(){
+    var done;
+    categories.getCategory('a').then(function(category){
+      category.products.then(function(data){
+        expect(data[0]).toEqual(testData.products.a1);
+        done=true;
+      });
     });
     $httpBackend.flush();
     waitsFor(function(){

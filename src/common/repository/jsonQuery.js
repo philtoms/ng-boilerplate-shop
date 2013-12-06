@@ -6,7 +6,7 @@
     any: filter, skip and take first promise data as object
     select: return promise data as projection
 */
-angular.module('ngbps.jsonQuery',[])
+angular.module('jsonQuery',[])
 
 .factory('Query', function($http, $q) {
   var MAX_INT = 9007199254740992;
@@ -33,6 +33,10 @@ angular.module('ngbps.jsonQuery',[])
         matched.push(data[key]);
       }
       else {
+        if (!value){
+          value=key;
+          key='id';
+        }
         angular.forEach(data,function(prop){
           if (take>0) {
             if (prop[key] && prop[key]===value) {

@@ -2,7 +2,7 @@
   Repository Service
   Create snapshot of request db
 */
-angular.module('ngbps.jsonRepository',['ngbps.jsonQuery'])
+angular.module('jsonRepository',['jsonQuery'])
 
 .factory('Repository', function($http, $q, Query) {
   var db={};

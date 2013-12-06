@@ -42,31 +42,6 @@ angular.module( 'ngbps.home', [
   titleService.setTitle( 'Home' );
 })
 
-.factory('Showcase', function(Products,Showcase,$timeout,appSettings) {
-  Showcase.then(function(data){
-    var showcase = {highlights:[]};
-    angular.forEach(data,function(item){
-      var highlight = angular.extend({btn:'More information'},item);
-      if (highlight.link){
-        ProductDB.queryProducts('code',highlight.link, function(product){
-            highlight.link='#/products/'+product.url;
-        });
-      }
-      highlight.class +=' showcase';
-      showcase.highlights.push(highlight);
-    });
-    showcase.interval = appSettings.heroInitialTimeout;
-    var tid = $timeout(function(){
-      showcase.interval=appSettings.heroTimeout;
-      $timeout.cancel(tid);
-    }, showcase.interval);
-    return showcase;
-  });
-
-  return function(){
-    return dbShowcase;
-  };
-})
 
 ;
 

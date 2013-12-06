@@ -5,13 +5,13 @@ angular.module('ngbps.shopDB')
   // project raw categories onto shopDB contract
   var products = ShopDB.products;
   var categories = ShopDB.categories.select(function(c,key){
-    c.url = key;
+    c.id = key;
     c.title = c.title || key;
     return c;
   });
   
   function expandCategory(category){
-    if (angular.isUndefined(category.products)){
+    if (!category.expanded){
       var subs = [];
       var psubs = [];
 
@@ -19,13 +19,17 @@ angular.module('ngbps.shopDB')
       var deferredSubCategories = $q.defer();
 
       var subCategories = category.subCategories;
+      var subProducts = category.products;
 
-      category.subCategories = deferredSubCategories;
-      category.products = deferredProducts;
+      category.subCategories = deferredSubCategories.promise;
+      category.products = deferredProducts.promise;
 
-      var expectedLinks=0;
-      var deferredResponse = function (expected){
-        if (!subCategories || expected===subCategories.length){
+      var processedLinks = 0;
+      var expectedLinks=(subCategories && subCategories.length) +
+                        (subProducts && subProducts.length);
+
+      var deferredResponse = function (linkCount){
+        if (linkCount === expectedLinks){
           deferredProducts.resolve(psubs);
           deferredSubCategories.resolve(subs);
         }
@@ -33,34 +37,32 @@ angular.module('ngbps.shopDB')
       deferredResponse(0);
       
       angular.forEach(subCategories, function(sub){
-        var sUrl = spliceRoute(key,sub);
-        if (sub.indexOf('.html')>=0){
-          products.any('url',sUrl).then( function pushP(val){
-            psubs.push(val);
-            deferredResponse(++expectedLinks);
-          });
-        }
-        else {
-          categories.any(sUrl).then( function pushC(val){
+        categories.any(sub).then( function (val){
+          if (val){
             subs.push(val);
-            deferredResponse(++expectedLinks);
-          });
-        }
+          }
+          deferredResponse(++processedLinks);
+        });
+      });
+      
+      angular.forEach(subProducts, function(sub){
+        products.any(sub).then( function (val){
+          if (val){
+            psubs.push(val);
+          }
+          deferredResponse(++processedLinks);
+        });
       });
     }
+    category.expanded=true;
     return category;
   }
 
   var query = {
     queryCategories: categories.where,
     getCategory: function(key, value) {
-      if (!value) {
-        value=key;
-        key='url';
-      }
       return categories.any(key, value).then(function(category){
         if (category){
-          category.url=key;
           expandCategory(category);
         }
         return category;

@@ -40,7 +40,7 @@ angular.module( 'ngBoilerplateShop', [
   'ngbps.shopDB',
   'ngbps.shopGateway',
   'ngbps.filters',
-  'ngbps.jsonRepository',
+  'jsonRepository',
   'shoppingCart',
   'checkout',
   'placeholders',

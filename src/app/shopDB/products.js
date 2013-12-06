@@ -4,13 +4,13 @@ angular.module('ngbps.shopDB')
   
   // project raw products onto shopDB contract
   var products = ShopDB.products.select(function(p,key){
-    p.code=key;
+    p.id=key;
     return p;
   });
   
   function expandProduct(product){
-    // only convert once
-    if (angular.isUndefined(product.links.then)){
+    // only expand once
+    if (!product.expanded){
 
       var deferredLinks = $q.defer();
       var deferredResponse = $q.defer();
@@ -31,7 +31,7 @@ angular.module('ngbps.shopDB')
       });
       
       var links={};
-      if (linkArray.length===0){
+      if (!linkArray || linkArray.length===0){
         deferredResponse.resolve(links);
       }
 
@@ -64,7 +64,7 @@ angular.module('ngbps.shopDB')
 
         var expectedLinks=0;
         angular.forEach(lvalues, function (lvalue){
-          products.any('code',lvalue).then(function(plink){
+          products.any(lvalue).then(function(plink){
             expectedLinks++;
             var ltype = plink? "product" : angular.isObject(lvalue) ? "link":"template";
             if (ltype==='link'){
@@ -88,16 +88,13 @@ angular.module('ngbps.shopDB')
         });
       });
     }
+    product.expanded=true;
     return product;
   }
 
   var query = {
     queryProducts: products.where,
     getProduct: function(key,value) {
-      if (!value){
-        value=key;
-        key='url';
-      }
       return products.any(key,value).then(function(data){
         if (data){
           expandProduct(data);

@@ -2,7 +2,7 @@ describe( 'Products', function() {
 
   var $httpBackend,products,testData;
 
-  beforeEach( module( 'ngbps.jsonRepository', 'ngbps.shopDB'));
+  beforeEach( module( 'jsonRepository', 'ngbps.shopDB'));
 
   beforeEach( inject(function(_$httpBackend_, Products){
     testData = {
@@ -43,7 +43,7 @@ describe( 'Products', function() {
     $httpBackend.flush();
     var i=0;
     for(var p in all){
-      expect(all[p].code).toBe('abcdef'.charAt(i++));
+      expect(all[p].id).toBe('abcdef'.charAt(i++));
     }
   });
 
@@ -59,7 +59,7 @@ describe( 'Products', function() {
 
   it('should return a single expanded product', function(){
     var product;
-    products.getProduct('code','a').then(function(data){
+    products.getProduct('a').then(function(data){
       product=data;
     });
     $httpBackend.flush();
@@ -68,7 +68,7 @@ describe( 'Products', function() {
 
   it('should return null for invalue property value', function(){
     var product;
-    products.getProduct('code','x').then(function(data){
+    products.getProduct('x').then(function(data){
       product=data;
     });
     $httpBackend.flush();
@@ -77,7 +77,7 @@ describe( 'Products', function() {
 
   it('should expand empty links to empty links array', function(){
     var done;
-    products.getProduct('code','a').then(function(product){
+    products.getProduct('a').then(function(product){
       product.links.then(function(data){
         expect(data.length).toBe(0);
         done=true;
@@ -91,7 +91,7 @@ describe( 'Products', function() {
 
   it('should expand product links to full products', function(){
     var done;
-    products.getProduct('code','b').then(function(product){
+    products.getProduct('b').then(function(product){
       product.links.then(function(data){
         expect(data.length).toBe(1);
         expect(data[0].type).toBe('product');
@@ -110,7 +110,7 @@ describe( 'Products', function() {
 
   it('should group named links under name', function(){
     var done;
-    products.getProduct('code','c').then(function(product){
+    products.getProduct('c').then(function(product){
       product.links.then(function(data){
         expect(data.length).toBe(2);
         expect(data[0].type).toBe('product');
@@ -134,7 +134,7 @@ describe( 'Products', function() {
 
   it('should expand links to templates', function(){
     var done;
-    products.getProduct('code','d').then(function(product){
+    products.getProduct('d').then(function(product){
       product.links.then(function(data){
         expect(data.length).toBe(1);
         expect(data[0].type).toBe('template');
@@ -152,7 +152,7 @@ describe( 'Products', function() {
 
   it('should group links by type', function(){
     var done;
-    products.getProduct('code','e').then(function(product){
+    products.getProduct('e').then(function(product){
       product.links.then(function(data){
         expect(data.length).toBe(2);
         expect(data[0].type).toBe('product');
@@ -174,7 +174,7 @@ describe( 'Products', function() {
 
   it('should expand external links to external urls with targets', function(){
     var done;
-    products.getProduct('code','f').then(function(product){
+    products.getProduct('f').then(function(product){
       product.links.then(function(data){
         expect(data.length).toBe(1);
         expect(data[0].type).toBe('link');
@@ -194,7 +194,7 @@ describe( 'Products', function() {
 
   it('should expand internal links with no targets', function(){
     var done;
-    products.getProduct('code','f').then(function(product){
+    products.getProduct('f').then(function(product){
       product.links.then(function(data){
         expect(data.length).toBe(1);
         expect(data[0].type).toBe('link');
