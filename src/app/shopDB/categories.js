@@ -10,50 +10,23 @@ angular.module('ngbps.shopDB')
     return c;
   });
   
-  function expandCategory(category){
-    if (!category.expanded){
-      var subs = [];
-      var psubs = [];
+  function expandCategory(category,subs,psubs,promises){
 
-      var deferredProducts = $q.defer();
-      var deferredSubCategories = $q.defer();
-
-      var subCategories = category.subCategories;
-      var subProducts = category.products;
-
-      category.subCategories = deferredSubCategories.promise;
-      category.products = deferredProducts.promise;
-
-      var processedLinks = 0;
-      var expectedLinks=(subCategories && subCategories.length) +
-                        (subProducts && subProducts.length);
-
-      var deferredResponse = function (linkCount){
-        if (linkCount === expectedLinks){
-          deferredProducts.resolve(psubs);
-          deferredSubCategories.resolve(subs);
+    angular.forEach(category.subCategories, function(sub){
+      promises.push(categories.any(sub).then( function (val){
+        if (val){
+          subs.push(val);
         }
-      };
-      deferredResponse(0);
-      
-      angular.forEach(subCategories, function(sub){
-        categories.any(sub).then( function (val){
-          if (val){
-            subs.push(val);
-          }
-          deferredResponse(++processedLinks);
-        });
-      });
-      
-      angular.forEach(subProducts, function(sub){
-        products.any(sub).then( function (val){
-          if (val){
-            psubs.push(val);
-          }
-          deferredResponse(++processedLinks);
-        });
-      });
-    }
+      }));
+    });
+    
+    angular.forEach(category.products, function(sub){
+      promises.push(products.any(sub).then( function (val){
+        if (val){
+          psubs.push(val);
+        }
+      }));
+    });
     category.expanded=true;
     return category;
   }
@@ -62,8 +35,17 @@ angular.module('ngbps.shopDB')
     queryCategories: categories.where,
     getCategory: function(key, value) {
       return categories.any(key, value).then(function(category){
-        if (category){
-          expandCategory(category);
+        if (category && !category.expanded){
+          var subs = [];
+          var psubs = [];
+          var promises = [];
+          expandCategory(category,subs,psubs,promises);
+
+          return $q.all(promises).then(function(){
+            category.subCategories=subs;
+            category.products=psubs;
+            return category;
+          });          
         }
         return category;
       });

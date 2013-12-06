@@ -64,55 +64,40 @@ describe( 'Categories', function() {
   });
 
   it('should return a single category', function(){
-    var done;
-    categories.getCategory('a').then(function(category){
-      expect(category).toEqual(testData.categories.a);
-      done=true;
+    var category;
+    categories.getCategory('a').then(function(data){
+      category=data;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(category).toEqual(testData.categories.a);
   });
 
   it('should return null for invalid property value', function(){
-    var done;
-    categories.getCategory('x').then(function(category){
-      expect(category).toBeNull();
-      done=true;
+    var category;
+    categories.getCategory('x').then(function(data){
+      category=data;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(category).toBeNull();
   });
 
   it('should expand subcategories', function(){
-    var done;
-    categories.getCategory('a').then(function(category){
-      category.subCategories.then(function(data){
-        expect(data[0]).toEqual(testData.categories.b);
-        done=true;
-      });
+    var subCategories;
+    categories.getCategory('a').then(function(data){
+      subCategories = data.subCategories;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(subCategories[0]).toEqual(testData.categories.b);
   });
 
   it('should expand products', function(){
-    var done;
+    var products;
     categories.getCategory('a').then(function(category){
-      category.products.then(function(data){
-        expect(data[0]).toEqual(testData.products.a1);
-        done=true;
-      });
+      products = category.products;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(products[0]).toEqual(testData.products.a1);
+      
   });
 
 });

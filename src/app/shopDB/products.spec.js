@@ -7,12 +7,12 @@ describe( 'Products', function() {
   beforeEach( inject(function(_$httpBackend_, Products){
     testData = {
       products:{
-        'a':{type:1, links:[]},
-        'b':{type:2, links:['a','c']},
-        'c':{type:2, links:[{'Group A':['a','b']},{'Group B':['d','e']}]},
-        'd':{type:3, links:[{'Template':'template.html'}]},
-        'e':{type:3, links:['a',{'Template':'template.html'}]},
-        'f':{type:4, links:[{'Links':[{'l1':'http://l1.html'},{'l2':'l2.html'}]}]}
+        'a':{someFeature:1, links:[]},
+        'b':{someFeature:2, links:['a','c']},
+        'c':{someFeature:2, links:[{'Group A':['a','b']},{'Group B':['d','e']}]},
+        'd':{someFeature:3, links:[{'Template':'template.html'}]},
+        'e':{someFeature:3, links:['a',{'Template':'template.html'}]},
+        'f':{someFeature:4, links:[{'Links':[{'l1':'http://l1.html'},{'l2':'l2.html'}]}]}
       }
     };
 
@@ -49,7 +49,7 @@ describe( 'Products', function() {
 
   it('should return a filtered array', function(){
     var filteredProducts;
-    products.queryProducts('type',3).then(function(data){
+    products.queryProducts('someFeature',3).then(function(data){
       filteredProducts=data;
     });
     $httpBackend.flush();
@@ -76,140 +76,106 @@ describe( 'Products', function() {
   });
 
   it('should expand empty links to empty links array', function(){
-    var done;
-    products.getProduct('a').then(function(product){
-      product.links.then(function(data){
-        expect(data.length).toBe(0);
-        done=true;
-      });
+    var product;
+    products.getProduct('a').then(function(data){
+      product=data;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(product.links.length).toBe(0);
   });
 
   it('should expand product links to full products', function(){
-    var done;
-    products.getProduct('b').then(function(product){
-      product.links.then(function(data){
-        expect(data.length).toBe(1);
-        expect(data[0].type).toBe('product');
-        expect(data[0].title).toBe('Accessories');
-        expect(data[0].links.length).toBe(2);
-        expect(data[0].links[0]).toEqual(testData.products.a);
-        expect(data[0].links[1]).toEqual(testData.products.c);
-        done=true;
-      });
+    var links;
+    products.getProduct('b').then(function(data){
+      links=data.links;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+
+    expect(links.length).toBe(1);
+    expect(links[0].type).toBe('product');
+    expect(links[0].title).toBe('Accessories');
+    expect(links[0].links.length).toBe(2);
+    expect(links[0].links[0]).toEqual(testData.products.a);
+    expect(links[0].links[1]).toEqual(testData.products.c);
   });
 
   it('should group named links under name', function(){
-    var done;
+    var links;
     products.getProduct('c').then(function(product){
-      product.links.then(function(data){
-        expect(data.length).toBe(2);
-        expect(data[0].type).toBe('product');
-        expect(data[0].title).toBe('Group A');
-        expect(data[0].links.length).toBe(2);
-        expect(data[0].links[0]).toEqual(testData.products.a);
-        expect(data[0].links[1]).toEqual(testData.products.b);
-        expect(data[1].type).toBe('product');
-        expect(data[1].title).toBe('Group B');
-        expect(data[1].links.length).toBe(2);
-        expect(data[1].links[0]).toEqual(testData.products.d);
-        expect(data[1].links[1]).toEqual(testData.products.e);
-        done=true;
-      });
+      links = product.links;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(links.length).toBe(2);
+    expect(links[0].type).toBe('product');
+    expect(links[0].title).toBe('Group A');
+    expect(links[0].links.length).toBe(2);
+    expect(links[0].links[0]).toEqual(testData.products.a);
+    expect(links[0].links[1]).toEqual(testData.products.b);
+    expect(links[1].type).toBe('product');
+    expect(links[1].title).toBe('Group B');
+    expect(links[1].links.length).toBe(2);
+    expect(links[1].links[0]).toEqual(testData.products.d);
+    expect(links[1].links[1]).toEqual(testData.products.e);
   });
 
   it('should expand links to templates', function(){
-    var done;
+    var links;
     products.getProduct('d').then(function(product){
-      product.links.then(function(data){
-        expect(data.length).toBe(1);
-        expect(data[0].type).toBe('template');
-        expect(data[0].title).toBe('Template');
-        expect(data[0].links.length).toBe(1);
-        expect(data[0].links[0]).toEqual("template.html");
-        done=true;
-      });
+      links = product.links; 
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(links.length).toBe(1);
+    expect(links[0].type).toBe('template');
+    expect(links[0].title).toBe('Template');
+    expect(links[0].links.length).toBe(1);
+    expect(links[0].links[0]).toEqual("template.html");
   });
 
   it('should group links by type', function(){
-    var done;
+    var links;
     products.getProduct('e').then(function(product){
-      product.links.then(function(data){
-        expect(data.length).toBe(2);
-        expect(data[0].type).toBe('product');
-        expect(data[0].title).toBe('Accessories');
-        expect(data[0].links.length).toBe(1);
-        expect(data[0].links[0]).toEqual(testData.products.a);
-        expect(data[1].type).toBe('template');
-        expect(data[1].title).toBe('Template');
-        expect(data[1].links.length).toBe(1);
-        expect(data[1].links[0]).toEqual('template.html');
-        done=true;
-      });
+      links = product.links;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(links.length).toBe(2);
+    expect(links[0].type).toBe('product');
+    expect(links[0].title).toBe('Accessories');
+    expect(links[0].links.length).toBe(1);
+    expect(links[0].links[0]).toEqual(testData.products.a);
+    expect(links[1].type).toBe('template');
+    expect(links[1].title).toBe('Template');
+    expect(links[1].links.length).toBe(1);
+    expect(links[1].links[0]).toEqual('template.html');
   });
 
   it('should expand external links to external urls with targets', function(){
-    var done;
+    var links;
     products.getProduct('f').then(function(product){
-      product.links.then(function(data){
-        expect(data.length).toBe(1);
-        expect(data[0].type).toBe('link');
-        expect(data[0].title).toBe('Links');
-        expect(data[0].links.length).toBe(2);
-        expect(data[0].links[0].href).toEqual('http://l1.html');
-        expect(data[0].links[0].title).toEqual('l1');
-        expect(data[0].links[0].target).toEqual('_blank');
-        done=true;
-      });
+      links = product.links;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(links.length).toBe(1);
+    expect(links[0].type).toBe('link');
+    expect(links[0].title).toBe('Links');
+    expect(links[0].links.length).toBe(2);
+    expect(links[0].links[0].href).toEqual('http://l1.html');
+    expect(links[0].links[0].title).toEqual('l1');
+    expect(links[0].links[0].target).toEqual('_blank');
   });
 
   it('should expand internal links with no targets', function(){
-    var done;
+    var links;
     products.getProduct('f').then(function(product){
-      product.links.then(function(data){
-        expect(data.length).toBe(1);
-        expect(data[0].type).toBe('link');
-        expect(data[0].title).toBe('Links');
-        expect(data[0].links.length).toBe(2);
-        expect(data[0].links[1].href).toEqual('l2.html');
-        expect(data[0].links[1].title).toEqual('l2');
-        expect(data[0].links[1].target).toEqual('');
-        done=true;
-      });
+      links = product.links;
     });
     $httpBackend.flush();
-    waitsFor(function(){
-      return done;
-    });
+    expect(links.length).toBe(1);
+    expect(links[0].type).toBe('link');
+    expect(links[0].title).toBe('Links');
+    expect(links[0].links.length).toBe(2);
+    expect(links[0].links[1].href).toEqual('l2.html');
+    expect(links[0].links[1].title).toEqual('l2');
+    expect(links[0].links[1].target).toEqual('');
   });
 
 
