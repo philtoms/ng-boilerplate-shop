@@ -81,6 +81,6 @@ angular.module( 'ngBoilerplateShop', [
     var s = "000000000" + input;
     return s.substr(s.length-(size||3));
   };
-});
+})
  
 ;
