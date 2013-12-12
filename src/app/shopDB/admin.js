@@ -1,4 +1,4 @@
-angular.module('ngbps.shopDB', [])
+angular.module('ngbps.shopDB')
 
 .service('Admin', function(ShopDB) {
   return ShopDB.admin;

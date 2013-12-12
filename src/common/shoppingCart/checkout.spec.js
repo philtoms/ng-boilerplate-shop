@@ -19,7 +19,7 @@ describe('checkout', function() {
       pay:function(units){}
     };
 
-    module( 'checkout', 'shoppingCart', function($provide){
+    module( 'shoppingCart', function($provide){
       $provide.factory('$scope', function(){return scope;});
       $provide.factory('testGateway', function(){return testGateway;});
     });

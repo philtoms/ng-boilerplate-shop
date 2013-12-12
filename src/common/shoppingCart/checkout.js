@@ -1,4 +1,4 @@
-angular.module('checkout',[])
+angular.module('shoppingCart')
 
 .provider('Checkout', function() {
   
