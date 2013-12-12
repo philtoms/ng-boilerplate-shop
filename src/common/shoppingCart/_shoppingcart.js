@@ -3,7 +3,9 @@ angular.module('shoppingCart', [])
 
 .factory('ShoppingCart', function() {
 
-  var items={};
+  var items={},
+    taxRate=0,
+    taxSuffix=['exc. tax','inc. tax'];
 
   var cart = {
     getItemCount:  function(item) {
@@ -40,11 +42,27 @@ angular.module('shoppingCart', [])
       }
     },
 
+    taxPrice: function(price){
+      return taxRate ? 
+        price + (price * taxRate)
+        : price;
+    },
+
+    taxSuffix: function(ind){
+      return taxSuffix[ind];
+    },
+
     forEach: function(cb){
       for (var i in items){
         cb({id:i,qty:items[i]});
       }
+    },
+
+    setTax:function(costs){
+      taxRate=costs.taxRate||taxRate;
+      taxSuffix=costs.taxSuffix||taxSuffix;
     }
+
   };
 
   return cart;

@@ -13,6 +13,14 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
 
   $httpBackend.when( 'GET', 'assets/data/shop.json' ).respond( function () {
     return [200, {
+      "admin":{
+        "costs":{
+          "freeShipping":200,
+          "shipping":9.99,
+          "taxRate":0.20,
+          "taxSuffix":['exc. vat','inc. vat']
+        }
+      },
       "products":{
         "p1":{
           "title":"Product 1",
@@ -22,7 +30,7 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
           "title":"Product 2",
           "imageUrl":"/img/p2.png",
           "text":"The 2nd product to be tested",
-          "price":10.25,
+          "price":10,
           "features":[{"link":"popover","placement":"right","popover":"msg","text":"{{text}}"},"f2"]
         },
         "p3":{

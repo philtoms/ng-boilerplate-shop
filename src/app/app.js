@@ -48,16 +48,15 @@ angular.module( 'ngBoilerplateShop', [
   'placeholders'
 ])
 
-.config( function checkoutConfig ( CheckoutProvider ) {
-  CheckoutProvider.gateway('');
-  CheckoutProvider.costs({});
+.config( function myAppConfig ( $urlRouterProvider ) {
+  $urlRouterProvider.otherwise( '/home' );
 })
 
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
-///  $urlRouterProvider.otherwise( '/home' );
-})
-
-.run( function run (  ) {
+.run( function run ( Admin, ShoppingCart, Checkout) {
+  Admin.get('costs').then(function(data){
+    ShoppingCart.setTax(data);
+    Checkout.setCosts(data);
+  });
 })
 
 .controller( 'AppCtrl', function AppCtrl ( $scope, $location, Admin ) {
