@@ -29,7 +29,6 @@ describe('checkout', function() {
   
     // http://stackoverflow.com/questions/14771810/how-to-test-angularjs-custom-provider
     var CheckoutProvider;
-    var costs = { freeShipping : 0, shipping : 0, tax : 20 };
 
     beforeEach(function () {
         // Initialize the service provider 
@@ -49,7 +48,6 @@ describe('checkout', function() {
     describe('configuration', function () {
 
         it('overrides default costs', function () {
-            expect (CheckoutProvider.costs()).toEqualData(costs);
             CheckoutProvider.costs({tax:25});
             expect (CheckoutProvider.costs().shipping).toBe(0);
             expect (CheckoutProvider.costs().tax).toBe(25);
@@ -74,7 +72,9 @@ describe('checkout', function() {
         cart = $injector.get('ShoppingCart');
         cart.addItem("X",2);
 
-        service = $injector.get('Checkout')(function(id){
+        service = $injector.get('Checkout');
+
+        service.map(function(id){
           return{
             price:10.01
           };

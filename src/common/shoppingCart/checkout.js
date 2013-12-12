@@ -6,13 +6,13 @@ angular.module('shoppingCart')
     gateway,
     gatewayProvider,
     cart,
-    scope,
+    $emit,
     mapFn=function(){return {price:0};};
 
   var costs = {
     freeShipping:0,
     shipping:0,
-    tax:20
+    tax:0 // ha
   };
 
   var checkout = {
@@ -37,7 +37,12 @@ angular.module('shoppingCart')
       removeItem:function(code) {
         cart.removeItem(code);
         update();
+      },
+      map: function(cb){
+        mapFn = cb;
+        update();
       }
+
     };
 
   function update() {
@@ -69,13 +74,13 @@ angular.module('shoppingCart')
       checkout.subTotal=subTotal.toFixed(2);
     }
     else if (!checkout.readOnly) {
-      scope.$emit('checkout.empty');
+      $emit('checkout.empty');
     }
   }
 
   var defaultGateway = {
     pay:function(items){
-      scope.$emit('checkout.payNow',items);
+      $emit('checkout.payNow',items);
     }
   };
 
@@ -98,11 +103,7 @@ angular.module('shoppingCart')
   this.$get = function($scope,$injector,$log,ShoppingCart) {
     gateway = gatewayProvider? $injector.get(gatewayProvider) : defaultGateway; 
     cart = ShoppingCart;
-    scope = $scope;
-    return function(_mapFn){
-      mapFn = _mapFn;
-      update();
-      return checkout;
-    };
+    $emit = $scope.$emit;
+    return checkout;
   };
 });
