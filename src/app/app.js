@@ -34,17 +34,20 @@
 })(angular);
 
 angular.module( 'ngBoilerplateShop', [
+  'ui.bootstrap',
+  'ui.router',
+  'ngSanitize',
   'templates-app',
   'templates-common',
   'ngbps.home',
+  'ngbps.product',
   'ngbps.shopDB',
   'ngbps.shopGateway',
   'ngbps.filters',
   'jsonRepository',
   'shoppingCart',
   'checkout',
-  'placeholders',
-  'ui.router'
+  'placeholders'
 ])
 
 .config( function checkoutConfig ( CheckoutProvider ) {
@@ -53,15 +56,15 @@ angular.module( 'ngBoilerplateShop', [
 })
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
-  $urlRouterProvider.otherwise( '/home' );
+///  $urlRouterProvider.otherwise( '/home' );
 })
 
-.run( function run ( titleService ) {
-  titleService.setSuffix( ' | ngBoilerplateShop' );
+.run( function run (  ) {
 })
 
 .controller( 'AppCtrl', function AppCtrl ( $scope, $location, Admin ) {
   $scope.admin = Admin;
+  $scope.app={title:'ngBoilerplateShop'};
 })
 
 ;

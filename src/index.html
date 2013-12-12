@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="ngBoilerplateShop<% if (dev) {%>.dev<%}%>" ng-controller="AppCtrl">
   <head>
-    <title>ng-boilerplate-shop</title>
+    <title ng-bind='app.title'>ngBoilerPlateShop</title>
 
     <!-- social media tags -->
     <meta name="twitter:card" content="summary">
@@ -43,19 +43,13 @@
           <div>CALL US ON</div>
           <div class='tel'>{{admin.salesphone}}</div>
         </div>
-        <div class='basket pull-right clearfix'>
-          <a shopping-cart ng-href=''>My Basket:</a>
+        <div class='cart pull-right clearfix'>
+          <shopping-cart href='#/shopGateway/checkout'></shopping-cart>
         </div>
       </header>
       <main class="container-fluid">
         <aside class="xspan left-bar" ng-include="'app.leftbar.tpl.html'"></aside>
-        <div ng-switch on="search.selected" class="xspan main-content">
-          <div ng-switch-when="" ng-view></div>
-          <div ng-switch-default class='search'>
-            <h1>Search Results: {{search.results.length}}</h1>
-            <ul products='search.results'></ul>
-          </div>
-        </div>
+        <div ui-view='main'>
         <aside class="xspan right-bar" ng-include="'app.rightbar.tpl.html'"></aside>
       </main>
       <div id="main-wrap-push"></div>

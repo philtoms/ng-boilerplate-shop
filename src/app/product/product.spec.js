@@ -1,7 +1,6 @@
 describe( 'product section', function() {
   beforeEach( module( 'ngbps.product' ) );
 
-
   describe('feature-link directive', function(){
 
     var markup = "<ul><li class='feature-link' ng-repeat='feature in features'></li></ul>";

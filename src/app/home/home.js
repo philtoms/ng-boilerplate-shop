@@ -13,9 +13,7 @@
  * specified, as shown below.
  */
 angular.module( 'ngbps.home', [
-  'ui.router',
-  'titleService',
-  'plusOne'
+  'ui.router'
 ])
 
 /**
@@ -38,8 +36,7 @@ angular.module( 'ngbps.home', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope, titleService ) {
-  titleService.setTitle( 'Home' );
+.controller( 'HomeCtrl', function HomeController( $scope) {
 })
 
 

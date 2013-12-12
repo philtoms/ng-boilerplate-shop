@@ -1,7 +1,14 @@
-<div class='cartitem'>
-  <span ng-if='product.price'>Code: {{product.code}}</span>  
-  <div class='price' ng-if='product.price'><span class='currency'></span>{{product.price}}<small> exc. vat</small></div>
-  <a class='view btn' ng-if='product.price' ng-href='#/products/{{product.url}}'>View</a>
-  <a class='range view btn' ng-if='!product.price' ng-href='#/products/{{product.url}}'>See Product Range</a>
-  <a class='buy btn btn-primary' ng-if='product.price' ng-click='cart.addItem(product.code)'>Buy</a>
+<div class='cartItem'>
+  <div ng-if='product.price'>
+    <span >Code: {{product.id}}</span>  
+    <div class='price' >
+      <span class='currency'></span>{{product.price}}<small> exc. vat</small>
+      <shopping-cart class='qty' item='{{product.id}}'>{{count | itemCheckmark}}</shopping-cart>
+    </div>
+    <a class='view btn' ng-href='#/products/{{product.url}}'>View</a>
+    <a class='buy btn btn-primary' ng-click='cart.addItem(product.id)'>Buy</a>
+  </div>
+  <div ng-if='!product.price'>
+    <a class='range view btn' ng-href='#/products/{{product.url}}'>See Product Range</a>
+  </div>
 </div>

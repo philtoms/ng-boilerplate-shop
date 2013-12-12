@@ -5,6 +5,9 @@ angular.module('ngbps.shopDB')
   // project raw products onto shopDB contract
   var products = ShopDB.products.select(function(p,key){
     p.id=key;
+    if (!p.title){
+      p.title=key;
+    }
     return p;
   });
   

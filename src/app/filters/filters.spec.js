@@ -2,24 +2,6 @@ describe( 'Filters', function() {
 
   beforeEach( module( 'ngbps.filters' ) );
 
-  describe( 'checkmark', function() {
-
-    var checkmark;
-    beforeEach( inject( function( checkmarkFilter ) {
-      checkmark = checkmarkFilter;
-    }));
-
-    var tick1 = '\u27131';
-    
-    it( 'should return checkmark when unit count is > 0', function() {
-      expect( checkmark(1) ).toBe(tick1);
-    });
-
-    it( 'should return empty string when unit count is < 1', function() {
-      expect( checkmark(0) ).toBe('');
-    });
-  });
-
   describe( 'titlize', function() {
 
     var titlize;

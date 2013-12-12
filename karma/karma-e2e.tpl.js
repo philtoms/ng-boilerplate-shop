@@ -14,6 +14,7 @@ module.exports = function ( karma ) {
       // https://github.com/karma-runner/grunt-karma/issues/13
       'vendor/angular-scenario/angular-scenario.js',
       'node_modules/karma-ng-scenario/lib/adapter.js',
+      'vendor/jquery/jquery.js',
 
       // Include all scenario tests
       'src/**/*.scenario.*',

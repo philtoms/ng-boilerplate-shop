@@ -8,9 +8,42 @@ angular.module( 'ngBoilerplateShop.dev', [ 'ngBoilerplateShop', 'ngMockE2E' ]);
  * to go with your app's `$http` calls.
  */
 angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
-  $httpBackend.when( 'POST', '/login' ).respond( function () {
-    return [204, '', {}];
+
+  $httpBackend.when( 'GET', 'template.html' ).respond( '<div class="template">template</div>');
+
+  $httpBackend.when( 'GET', 'assets/data/shop.json' ).respond( function () {
+    return [200, {
+      "products":{
+        "p1":{
+          "title":"Product 1",
+          "description":"<strong>The first product</strong>"
+        },
+        "p2":{
+          "title":"Product 2",
+          "imageUrl":"/img/p2.png",
+          "text":"The 2nd product to be tested",
+          "price":10.25,
+          "features":[{"link":"popover","placement":"right","popover":"msg","text":"{{text}}"},"f2"]
+        },
+        "p3":{
+          "title":"Product 3",
+          "links":[
+            "p2", // product links
+            {"Template":"template.html"},
+            {"Range":["p1","p2"]},
+            {"HREFs":[{"link1":"link1.html"},{"link2":"link2.pdf"}]}
+          ]
+        }
+      },
+      "categories":{
+        "c1":{
+          "title":"Category 1",
+          "products":["p1","p2","p3"]
+        }
+      }
+    }];
   });
+
 })
 
 ;

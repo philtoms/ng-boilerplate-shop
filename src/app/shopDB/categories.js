@@ -1,16 +1,24 @@
 angular.module('ngbps.shopDB')
 
-.factory('Categories', function(ShopDB, $q) {
+.factory('Categories', function(ShopDB, Products, $q) {
   
-  // project raw categories onto shopDB contract
-  var products = ShopDB.products;
-  var categories = ShopDB.categories.select(function(c,key){
-    c.id = key;
-    c.title = c.title || key;
-    return c;
+  var products = Products;
+  var categories = ShopDB.categories.select(function(val,key){
+    val.id = key;
+    if (!val.title){
+      val.title = key;
+    }
+    if (!val.url){
+      val.url=val.title.replace(/ /g,'-').toLowerCase();
+    }
+    return val;
   });
   
-  function expandCategory(category,subs,psubs,promises){
+  function expandCategory(category){
+
+    var subs = [];
+    var psubs = [];
+    var promises = [];
 
     angular.forEach(category.subCategories, function(sub){
       promises.push(categories.any(sub).then( function (val){
@@ -23,12 +31,20 @@ angular.module('ngbps.shopDB')
     angular.forEach(category.products, function(sub){
       promises.push(products.any(sub).then( function (val){
         if (val){
+          if (!val.url){
+            val.url=val.title.replace(/ /g,'-').toLowerCase();
+          }
           psubs.push(val);
         }
       }));
     });
     category.expanded=true;
-    return category;
+
+    return $q.all(promises).then(function(){
+      category.subCategories=subs;
+      category.products=psubs;
+      return category;
+    });          
   }
 
   var query = {
@@ -36,18 +52,26 @@ angular.module('ngbps.shopDB')
     getCategory: function(key, value) {
       return categories.any(key, value).then(function(category){
         if (category && !category.expanded){
-          var subs = [];
-          var psubs = [];
-          var promises = [];
-          expandCategory(category,subs,psubs,promises);
-
-          return $q.all(promises).then(function(){
-            category.subCategories=subs;
-            category.products=psubs;
-            return category;
-          });          
+          return expandCategory(category);
         }
         return category;
+      });
+    },
+    getProductByCategory: function(categoryUrl, productUrl) {
+      
+      productUrl = productUrl.toLowerCase();
+      categoryUrl = categoryUrl.toLowerCase();
+
+      return this.getCategory('url',categoryUrl).then(function(category){
+        if (category){
+          for (var p in category.products) {
+            var product = category.products[p];
+            if (product.url===productUrl){
+              return Products.getProduct('url',productUrl);
+            }
+          }
+        }
+        return null;
       });
     }
   };

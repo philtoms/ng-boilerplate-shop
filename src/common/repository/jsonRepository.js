@@ -19,7 +19,7 @@ angular.module('jsonRepository',['jsonQuery'])
       var url = 'assets/data/'+dataName+'.json';
       $http.get(url).then(
         function(response) {
-          db[dataName] = angular.fromJson(response.data);
+          db[dataName] = response.data;
           deferred.resolve(db[dataName]);
         },
         function(error) {

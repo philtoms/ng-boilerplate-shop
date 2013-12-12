@@ -5,7 +5,7 @@ angular.module( 'ngbps.product', [
 
 .config(function config( $stateProvider ) {
   $stateProvider.state( 'product', {
-    url: '/product',
+    url: '/:category/:product',
     views: {
       "main": {
         controller: 'ProductCtrl',
@@ -16,8 +16,24 @@ angular.module( 'ngbps.product', [
 })
 
 
-.controller( 'ProductCtrl', function ProductController( $scope, Products ) {
-  $scope.product = Products.any();
+.controller( 'ProductCtrl', function ProductController( $stateParams, $scope, $sce, Categories ) {
+  Categories.getProductByCategory($stateParams.category,$stateParams.product).then(function(product){
+    $scope.product = product;
+    $scope.app.title = product.title;
+  });
+})
+
+.directive('productList', function() {
+  return {
+    restrict:'E',
+    replace:true,
+    scope:{products:'='},
+    templateUrl:'product/productList.tpl.html',
+    link:function(scope,element,attrs){
+      scope.classname=attrs['classname'] || 'products';
+      scope.productClassname=attrs['productClassname'];
+    }
+  };
 })
 
 
@@ -30,8 +46,8 @@ angular.module( 'ngbps.product', [
           feature = scope[match[1]];
 
       // text feature:"string"
-      // link feature:{link:"popover",placement:"right",popover:"msg",text:"text"}
-      // link feature:{link:"tooltip",placement:"above",tooltip:"msg",text:"text"}
+      // link feature:{link:"popover",placement:"right",popover:"msg",text:"text {{anchor text}}"}
+      // link feature:{link:"tooltip",placement:"above",tooltip:"msg",text:"text {{anchor text}}"}
       if (angular.isObject(feature)) {
         var featureLink, linkText = feature.text.match(/{{(.+)}}/)[1]; 
         var placement = feature.placement || 'top';

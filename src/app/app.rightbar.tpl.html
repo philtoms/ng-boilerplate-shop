@@ -5,8 +5,8 @@
     <button on-blur='search.reset(true)' ng-show='search.query.length>3' ng-click='search.more()'>Advanced</button>
   </div>
 </div>
-<nav class='links' ng-controller='ProductCategoriesCtrl'>
-  <a ng-repeat='category in categories' href='#/products/{{category.url}}'>{{category.title | titleize}}</a>
+<nav class='links' z-ng-controller='ProductCategoriesCtrl'>
+  <a ng-repeat='category in categories' href='#/products/{{category.url}}'>{{category.title | titlize}}</a>
 </nav>
 <a class='survey links' ng-href='#/services/independent-surveys.html'>
   <h3>Independent Surveys</h3>

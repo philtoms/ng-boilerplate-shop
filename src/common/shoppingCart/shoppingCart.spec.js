@@ -1,13 +1,5 @@
 describe('shoppingCart', function() {
 
-  beforeEach(function(){
-    this.addMatchers({
-      toEqualData: function(expected) {
-        return angular.equals(this.actual, expected);
-      }
-    });
-  });
-
   describe('service',function(){
 
     var service;
@@ -55,6 +47,15 @@ describe('shoppingCart', function() {
 
     });
 
+    it('should calculate a single item line count', function(){
+
+      service.addItem("X",10);
+      service.addItem("Y",5);
+
+      expect(service.getItemCount('X')).toBe(10);
+
+    });
+
     it('should remove an item', function(){
 
       service.addItem("X");
@@ -86,76 +87,161 @@ describe('shoppingCart', function() {
   });
 
   describe( 'directive', function() {
-    var $scope, $element;
-    var markup = '<shopping-cart>My Basket</shopping-cart>';
+    var $scope, $location, $element, $compile;
 
-    beforeEach(module('shoppingCart'));
+    beforeEach(module('shoppingCart', function($filterProvider){
+      // need to supply this service for testing directive filter support  
+      $filterProvider.register('itemCheckmark',function(){
+        return function(input) {
+          return input==1 ? '1 item' : input + ' items';
+        };
+      });
+    }));
 
-    beforeEach( inject( function($compile, $rootScope ) {
+    beforeEach( inject( function(_$compile_, $rootScope, _$location_ ) {
       $scope = $rootScope.$new();
-      $element = $compile(markup)($scope);
-      $scope.$digest();
+      $location = _$location_;
+      $compile = _$compile_;
     }));
 
-    it( 'should inject html template', function() {
-      // its a replacement
-      var result = angular.element($element[0].outerHTML);
-      expect( result.hasClass("shoppingcart") ).toBeTruthy();
-      expect( result.text() ).toContain('My Basket');
-      expect( result.text() ).toContain(' 0 items');
+    describe ('without filter', function(){
+
+      beforeEach(function(){
+        var markup = '<shopping-cart href="#/checkout"></shopping-cart>';
+        $element = $compile(markup)($scope);
+        $scope.$digest();
+      });
+
+      it( 'should replace shopping cart markup', function() {
+        expect($element.text()).toBe('0');
+        expect($element.attr('href')).toBe('#/checkout');
+        expect($element.hasClass('cart-empty')).toBeTruthy();
+        expect($element[0].nodeName).toBe('A');
+      });
+
+      it( 'should prevent default action if cart is empty', function() {
+
+        runs(function() {
+          $element[0].click();
+        }); 
+         
+        var result=false;
+        $element.bind('click', function(event, status){
+          result=true;
+        });
+        
+        waitsFor(function() {
+          return result;
+        }); 
+
+        runs(function() {
+          expect($location.url()).toBe('');
+        }); 
+
+      });
+
+      it( 'should allow default action if cart is not empty', inject( function(ShoppingCart) {
+
+        ShoppingCart.addItem("X");
+        runs(function() {
+          $element[0].click();
+        }); 
+         
+        var result=false;
+        $element.bind('click', function(event, status){
+          result=true;
+        });
+        
+        waitsFor(function() {
+          return result;
+        }); 
+
+        runs(function() {
+          expect($location.url()).toBe('#%2Fcheckout');
+        }); 
+
+      }));
+
+
+      it( 'should emit checkout message when selected', inject( function(ShoppingCart) {
+
+        ShoppingCart.addItem("X");
+        runs(function() {
+          $element[0].click();
+        }); 
+         
+        var result=false;
+        $scope.$on('shoppingCart.checkout', function(event){
+          result=true;
+        });
+        waitsFor(function() {
+          return result;
+        }); 
+
+        runs(function() {
+          expect(result).toBeTruthy();
+        }); 
+      }));
+
+      it( 'should watch for shopping cart item changes', inject( function(ShoppingCart) {
+        expect( $element.text() ).toBe('0');
+        ShoppingCart.addItem("X");
+        $scope.$digest();
+        expect( $element.text() ).toBe('1');
+      }));
+
+      it( 'should update cart-empty class when items added and removed', inject( function(ShoppingCart) {
+        expect($element.hasClass('cart-empty')).toBeTruthy();
+        
+        ShoppingCart.addItem("X");
+        $scope.$digest();
+        expect($element.hasClass('cart-empty')).toBeFalsy();
+        
+        ShoppingCart.removeItem("X");
+        $scope.$digest();
+        expect($element.hasClass('cart-empty')).toBeTruthy();
+      }));
+
     });
 
-    it( 'should prevent default action if cart is empty', function() {
+    describe ('with filter', function(){
 
-      runs(function() {
-        $element[0].click();
-      }); 
-       
-      var result, flag=false;
-      $scope.$on('shoppingCart.clicked', function(event, status){
-        flag=true;
-        result=status;
+      beforeEach(function(){
+        var markup = '<shopping-cart href="#/checkout">count | itemCheckmark</shopping-cart>';
+        $element = $compile(markup)($scope);
+        $scope.$digest();
       });
-      waitsFor(function() {
-        return flag;
-      }); 
-
-      runs(function() {
-        expect(result).toBeFalsy();
-      }); 
+      
+      it( 'should filter input text', inject( function(ShoppingCart) {
+        expect($element.text()).toBe('0 items');
+        ShoppingCart.addItem("X");
+        $scope.$digest();
+        expect($element.text()).toBe('1 item');
+      }));
 
     });
 
-    it( 'should allow default action if cart is not empty', inject( function(ShoppingCart) {
 
-      ShoppingCart.addItem("X");
-      runs(function() {
-        $element[0].click();
-      }); 
-       
-      var result, flag=false;
-      $scope.$on('shoppingCart.clicked', function(event, status){
-        flag=true;
-        result=status;
+    describe ('for single item line', function(){
+
+      beforeEach(function(){
+        var markup = '<shopping-cart item="{{item}}"></shopping-cart>';
+        $scope.item='X';
+        $element = $compile(markup)($scope);
+        $scope.$digest();
       });
-      waitsFor(function() {
-        return flag;
-      }); 
+      
+      it( 'should output single item count', inject( function(ShoppingCart) {
+        expect($element.text()).toBe('0');
+        ShoppingCart.addItem("X");
+        ShoppingCart.addItem("Y");
+        $scope.$digest();
+        expect($element.text()).toBe('1');
+      }));
 
-      runs(function() {
-        expect(result).toBeTruthy();
-      }); 
+    });
 
-    }));
-
-    it( 'should watch for shopping cart item changes', inject( function(ShoppingCart) {
-      ShoppingCart.addItem("X");
-      $scope.$digest();
-      // its a replacement
-      var result = angular.element($element[0].outerHTML);
-      expect( result.text() ).toContain(' 1 item');
-    }));
-
+ 
   });
 
 });

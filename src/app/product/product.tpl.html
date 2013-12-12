@@ -1,0 +1,43 @@
+<article class='product'>
+  <h1 ng-bind-html='product.title'></h1>
+  <p class='intro' ng-bind-html='product.description'></p>
+  <table class='details'>
+    <tr>
+      <td class='mainImage' ng-if='product.imageUrl' ><img ng-src='{{imgBaseUrl}}/products/{{product.imageUrl}}'></td>
+      <td class='cart'>
+        <cart-item></cart-item>
+      </td>
+    </tr>
+    <tr><td colspan=2>
+      <aside ng-social-buttons
+         data-url='product.url'
+         data-title='product.title'
+         data-description='product.title'
+         data-image='product.imageUrl'>
+        <span class="ng-social-facebook">Like</span>
+        <span class="ng-social-twitter">Tweet</span>
+        <span class="ng-social-pinterest">Pin</span>
+      </aside>
+    </td></tr>
+  </table>
+
+  <tabset>
+    <tab heading="Details" ng-if='product.text' >
+      <p ng-bind-html='product.text'></p>
+    </tab>
+    <tab heading="Features" ng-if='product.features' >
+      <ul class='features'>
+        <li class='feature-link' ng-repeat='feature in product.features'></li>
+      </ul>
+    </tab>
+    <tab ng-repeat='link in product.links' heading='{{link.title}}'>
+      <div ng-switch on='link.type'>
+        <div ng-switch-when='template'><div ng-include='link.links[0]'></div></div>
+        <div ng-switch-when='link'>
+          <ul><li ng-repeat='lo in link.links'><a ng-href='{{lo.href}}' target>{{lo.title}}</a></li></ul>
+        </div>
+        <product-list ng-switch-default products='link.links'></product-list>
+      </div>
+    </tab>
+  </tabset>
+</article>

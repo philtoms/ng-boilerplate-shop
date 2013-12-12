@@ -439,7 +439,8 @@ module.exports = function ( grunt ) {
           '<%= vendor_files.js %>',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>',
-          'vendor/angular-mocks/angular-mocks.js'
+          'vendor/angular-mocks/angular-mocks.js',
+          'node_modules/ng-midway-tester/src/ngMidwayTester.js'
         ]
       },
 
@@ -449,7 +450,8 @@ module.exports = function ( grunt ) {
           '<%= vendor_files.js %>',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>',
-          'vendor/angular-mocks/angular-mocks.js'
+          'vendor/angular-mocks/angular-mocks.js',
+          'node_modules/ng-midway-tester/src/ngMidwayTester.js'
         ]
       },
 
@@ -607,7 +609,7 @@ module.exports = function ( grunt ) {
         files: [
           '<%= app_files.jsscenario %>'
         ],
-        tasks: [ 'jshint:scenario' ]
+        tasks: [ 'jshint:scenario', 'karma:e2e' ]
       },
 
       /**

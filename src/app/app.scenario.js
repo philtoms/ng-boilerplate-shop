@@ -10,7 +10,7 @@ describe( 'ng-boilerplate-shop', function() {
       browser().navigateTo(url);
 
       // Check Title, rendered HTML and templates have all loaded
-      expect(element('title').text()).toContain('ng-boilerplate-shop');
+      expect(element('title').text()).toContain('ngBoilerplateShop');
       expect(element('aside.left-bar').text()).not().toEqual('');
       expect(element('aside.right-bar').text()).not().toEqual('');
       expect(element('footer').text()).not().toEqual('');

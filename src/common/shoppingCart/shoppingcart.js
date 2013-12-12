@@ -6,16 +6,18 @@ angular.module('shoppingCart', [])
   var items={};
 
   var cart = {
-    getItemCount:  function() {
+    getItemCount:  function(item) {
       var count=0;
-      angular.forEach(items,function(value){
-        count+=value;
+      angular.forEach(items,function(value,key){
+        if (!item || key===item){
+          count+=value;
+        }
       });
       return count;
     },
 
-    hasItems: function() {
-      return cart.getItemCount()>0;
+    hasItems: function(item) {
+      return cart.getItemCount(item)>0;
     },
 
     clear: function() {
@@ -47,28 +49,33 @@ angular.module('shoppingCart', [])
 
   return cart;
 
-});
+})
 
-angular.module('shoppingCart').directive('shoppingCart', function(ShoppingCart) {
+.directive('shoppingCart', function($location, ShoppingCart) {
+  var href='';
   return {
+    restrict:'E',
     replace:true,
-    restrict:'AE',
     scope:{},
-    template: function(element, attrs) {
-      var cartTitle = element.text();
-      return "<a class='shoppingcart'>"+cartTitle+"<span class='itemcount'>{{itemCount}}</span></a>";
+    template: function(tElement, tAttrs){
+      // allow expression placeholder for user defined filters
+      var expr = tElement.text().replace(/{{(.*)}}/,'$1');
+      var parts = ['getItemCount(item)'].concat(expr.split('|').slice(1));
+      expr = parts.join('|');
+      return '<a ng-class="{\'cart-items\':!item,\'item-line\':item,\'cart-empty\':!getItemCount(item)}">{{'+expr+'}}</a>';
     },
     link: function(scope, element, attrs) {
-      scope.$watch(ShoppingCart.getItemCount,function(nv){
-        scope.itemCount = nv==1? ' 1 item':" "+nv+" items";
-      });
+      href = attrs.href || href;
+      scope.item = attrs.item;
+      scope.getItemCount=ShoppingCart.getItemCount;
       element.bind('click', function(event) {
-        var status=true;
-        if (!ShoppingCart.hasItems()){
-          event.preventDefault();
-          status=false;
+        event.preventDefault();
+        if (ShoppingCart.hasItems(scope.item)){
+          if (href){
+            $location.url(href);
+          }
+          scope.$emit('shoppingCart.checkout', status);
         }
-        scope.$emit('shoppingCart.clicked', status);
       });
     }
   };

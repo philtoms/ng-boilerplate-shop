@@ -21,13 +21,13 @@ module.exports = {
    * contains our app's e2e tests.
    */
   app_files: {
-    js: [ 'src/**/*.js', '!src/**/*.spec.js', '!src/**/*.fixture.js', '!src/**/*.scenario.js' ],
-    jsunit: [ 'src/**/*.spec.js' ],
+    js: [ 'src/**/*.js', '!src/**/*.spec.js', '!src/**/*.midway.js', '!src/**/*.fixture.js', '!src/**/*.scenario.js' ],
+    jsunit: [ 'src/**/*.spec.js', 'src/**/*.midway.js' ],
     jsfixture: [ 'src/**/*.fixture.js' ],
     jsscenario: [ 'src/**/*.scenario.js' ],
     
-    coffee: [ 'src/**/*.coffee', '!src/**/*.spec.coffee', '!src/**/*.fixture.coffee', '!src/**/*.scenario.coffee' ],
-    coffeeunit: [ 'src/**/*.spec.coffee' ],
+    coffee: [ 'src/**/*.coffee', '!src/**/*.spec.coffee', '!src/**/*.midway.coffee', '!src/**/*.fixture.coffee', '!src/**/*.scenario.coffee' ],
+    coffeeunit: [ 'src/**/*.spec.coffee', 'src/**/*.midway.coffee' ],
     coffeefixture: [ 'src/**/*.fixture.coffee' ],
     coffeescenario: [ 'src/**/*.scenario.coffee' ],
 
@@ -58,7 +58,9 @@ module.exports = {
   vendor_files: {
     js: [
       'vendor/angular/angular.js',
-      'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
+      'vendor/angular-sanitize/angular-sanitize.js',
+      'vendor/angular-animate/angular-animate.min.js',
+      'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
       'vendor/placeholders/angular-placeholders.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/angular-ui-utils/modules/route/route.js'
@@ -66,7 +68,8 @@ module.exports = {
     css: [
     ],
     dev: [
-      'vendor/angular-mocks/angular-mocks.js'
+      'vendor/angular-mocks/angular-mocks.js',
+      'node_modules/ng-midway-tester/src/ngMidwayTester.js'
     ]
   }
 };
