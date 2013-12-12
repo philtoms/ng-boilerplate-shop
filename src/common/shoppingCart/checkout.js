@@ -47,13 +47,11 @@ angular.module('shoppingCart')
     checkout.items=[];
     cart.forEach(function(i){
       var item = mapFn(i.id);
-      var totalPrice = item.price * i.qty;
-      item.price = item.price.toFixed(2);
+      item.totalPrice = item.price * i.qty;
       item.quantity = i.qty;
-      item.totalPrice = totalPrice.toFixed(2);
       checkout.items.push(item);
-      total+=totalPrice;
-      subTotal+=totalPrice;
+      total+=item.totalPrice;
+      subTotal+=item.totalPrice;
     });
 
     if (total) {

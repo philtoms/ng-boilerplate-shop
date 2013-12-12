@@ -72,11 +72,11 @@ describe('checkout', function() {
     beforeEach(function(){
       inject(function($injector){
         cart = $injector.get('ShoppingCart');
-        cart.addItem("X");
+        cart.addItem("X",2);
 
         service = $injector.get('Checkout')(function(id){
           return{
-            price:10
+            price:10.01
           };
         });
       });
@@ -84,11 +84,11 @@ describe('checkout', function() {
 
     it('should emit a pay event', function(){
       service.payNow();
-      expect(scope.$emit.mostRecentCall.args).toEqualData(['checkout.payNow', [ { price : '10.00', quantity : 1, totalPrice : '10.00' } ] ]);
+      expect(scope.$emit.mostRecentCall.args).toEqualData(['checkout.payNow', [ { price : 10.01, quantity : 2, totalPrice : 20.02 } ] ]);
     });
 
     it('should clear down cart', function(){
-      expect(service.items).toEqualData([ { price : '10.00', quantity : 1, totalPrice : '10.00' } ]);
+      expect(service.items).toEqualData([ { price : 10.01, quantity : 2, totalPrice : 20.02 } ]);
       service.clear();
       expect(service.items).toEqualData([]);
     });
