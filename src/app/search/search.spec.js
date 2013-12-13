@@ -61,69 +61,46 @@ describe ('search', function(){
 
   describe('displaced result set', function(){
     it('should map all products with title abcd onto search results array', function(){
-      var results;
       search.filter('abcd');
-      search.results.then(function(data){
-        results = data;
-      });
       $httpBackend.flush();
-      expect(results.length).toBe(2);
+      expect(search.results.length).toBe(2);
     });
   });
 
   describe('typeahead result set', function(){
 
     it('should return all products with title abcd as results array', function(){
-      var results;
       SearchProvider.displaced=false;
-      search.filter('abcd').then(function(data){
-        results = data;
-      });
+      search.filter('abcd');
       $httpBackend.flush();
-      expect(results.length).toBe(2);
+      expect(search.results.length).toBe(2);
     });
   });
 
   describe('filter', function(){
     it('should filter products with title "abcd efg"', function(){
-      var results;
       search.filter('abcd efg');
-      search.results.then(function(data){
-        results = data;
-      });
       $httpBackend.flush();
-      expect(results.length).toBe(1);
+      expect(search.results.length).toBe(1);
     });
 
     it('should be case insensitive', function(){
-      var results;
       search.filter('ABCD');
-      search.results.then(function(data){
-        results = data;
-      });
       $httpBackend.flush();
-      expect(results.length).toBe(2);
+      expect(search.results.length).toBe(2);
     });
 
     it('should suppress results for inputs < minimum query length"', function(){
-      var results;
       SearchProvider.minimumQueryLength=5;
       search.filter('abcd');
-      search.results.then(function(data){
-        results = data;
-      });
       $httpBackend.flush();
-      expect(results.length).toBe(0);
+      expect(search.results.length).toBe(0);
     });
 
     it('should reset search context', function(){
-      var results;
       search.filter('ABCD');
-      search.results.then(function(data){
-        results = data;
-      });
       $httpBackend.flush();
-      expect(results.length).toBe(2);
+      expect(search.results.length).toBe(2);
 
       search.reset();
       $timeout.flush();

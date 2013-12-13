@@ -63,13 +63,6 @@ angular.module( 'ngBoilerplateShop', [
 .controller( 'AppCtrl', function AppCtrl ( $scope, $location, Admin, Search ) {
   $scope.admin = Admin;
   $scope.search = Search;
-  $scope.$watch(Search.selected, function(){
-    if (!angular.isArray(Search.results)){
-      Search.results.then(function(results){
-        $scope.searchResults = results;
-      });
-    }
-  });
   $scope.app={title:'ngBoilerplateShop'};
 })
 

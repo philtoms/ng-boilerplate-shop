@@ -93,10 +93,8 @@ angular.module('ngbps.search',[
                 text:item.htmlSnippet
               });
             }
-            service.results.then(function(data){
-              service.results = gseResults.concat(data);
-              safeApply();
-            });
+            service.results = gseResults.concat(service.results);
+            safeApply();
           }
         });
       });
