@@ -1,0 +1,9 @@
+<article class='category'>
+  <article ng-if='category.infoLink' ng-include='category.infoLink'></article>
+  <hgroup ng-if='!category.infoLink' >
+    <h1 ng-if='!category.infoLink'>{{category.title | titlize}}</h1> 
+    <p ng-bind-html-unsafe='category.text'></p>
+  </hgroup>
+  <product-list products='category.products'></product-list>
+  <product-list products='category.subCategories'></product-list>
+</article>

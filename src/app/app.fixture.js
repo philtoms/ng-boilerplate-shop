@@ -45,7 +45,18 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
       },
       "categories":{
         "c1":{
+          "level":1,
           "title":"Category 1",
+          "products":["p1","p2","p3"]
+        },
+        "c2":{
+          "level":1,
+          "title":"Category 2",
+          "products":["p1","p2","p3"]
+        },
+        "c2.1":{
+          "level":2,
+          "title":"Category 2.1",
           "products":["p1","p2","p3"]
         }
       }
