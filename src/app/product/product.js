@@ -5,7 +5,7 @@ angular.module( 'ngbps.product', [
 
 .config(function config( $stateProvider ) {
   $stateProvider.state( 'product', {
-    url: '/:category/:product',
+    url: '/products/:product',
     views: {
       "main": {
         controller: 'ProductCtrl',
@@ -16,8 +16,8 @@ angular.module( 'ngbps.product', [
 })
 
 
-.controller( 'ProductCtrl', function ProductController( $stateParams, $scope, $sce, Categories ) {
-  Categories.getProductByCategory($stateParams.category,$stateParams.product).then(function(product){
+.controller( 'ProductCtrl', function ProductController( $stateParams, $scope, Products ) {
+  Products.getProduct('url',$stateParams.product.toLowerCase()).then(function(product){
     $scope.product = product;
     $scope.app.title = product.title;
   });

@@ -1,90 +1,75 @@
 angular.module('shoppingCart')
 
-.factory('Checkout', function($rootScope, $injector,$log, ShoppingCart) {
-  
-  var 
-    items=[],
-    $emit=$rootScope.$emit,
-    mapFn=function(){return {price:0};};
+.factory('Checkout', function($injector, $q, $log, ShoppingCart) {
 
   var 
-    freeShipping=0,
-    shipping=0,
-    taxRate=0;
+    freeShipping = 0,
+    shipping = 0,
+    taxRate = 0;
 
   var checkout = {
-      total:0,
-      subTotal:0,
-      gatewayClosed:true,
 
-      payNow: function(){
-        checkout.gatewayClosed=false;
-        $emit('checkout.payNow',items);
-        ShoppingCart.clear();
-      },
+    getItemCount: function(){
+      return ShoppingCart.getItemCount();
+    },
 
-      clear:function(){
-        ShoppingCart.clear();
-        checkout.readOnly=false;
-        update();
-      },
+    runItems: function(mapFn){
+      return update(mapFn);
+    },
 
-      addItem:function(code,qty){
-        ShoppingCart.addItem(code,qty);
-        update();
-      },
+    setRates:function(costs){
+      taxRate=costs.taxRate||taxRate;
+      shipping=costs.shipping||shipping;
+      freeShipping=costs.freeShipping||freeShipping;
+    }
 
-      removeItem:function(code) {
-        ShoppingCart.removeItem(code);
-        update();
-      },
+  };
 
-      map: function(cb){
-        mapFn = cb;
-        update();
-      },
+  function update(mapFn) {
 
-      setCosts:function(costs){
-        taxRate=costs.taxRate||taxrate;
-        shipping=costs.shipping||shipping;
-        freeShipping=costs.freeShipping||freeShipping;
-      }
+    var promises = [];
 
-    };
-
-  function update() {
-    var total = 0;
-    var subTotal = 0;
-    var count = 0;
-    items=[];
-    ShoppingCart.forEach(function(i){
-      var item = mapFn(i.id);
-      item.totalPrice = item.price * i.qty;
-      item.quantity = i.qty;
-      items.push(item);
-      total+=item.totalPrice;
-      subTotal+=item.totalPrice;
+    ShoppingCart.forEach(function(item){
+      promises.push(mapFn(item.id));
     });
 
-    if (total) {
-      if (total<freeShipping){
-        total+=shipping;
-        checkout.shippingCost=shipping;
-      }
-      else {
-        checkout.shippingCost='free'; 
+    return $q.all(promises).then(function(data) {
+      var total = 0;
+      var subTotal = 0;
+      var tax = 0;
+      var shippingCost = 0;
+      var items = [];
+
+      angular.forEach(data,function(item){
+
+        item.quantity = ShoppingCart.getItemCount(item.id);
+        item.totalPrice = item.price * item.quantity;
+        total+=item.totalPrice;
+        subTotal+=item.totalPrice;
+
+        items.push(item);
+      });
+
+      if (total) {
+        if (total<freeShipping){
+          total+=shipping;
+          shippingCost=shipping;
+        }
+        tax = total * taxRate;
       }
 
-      var tax = total * taxRate;
-      checkout.tax = tax;
-      checkout.total =total + tax;
-      checkout.subTotal=subTotal;
-    }
-    else if (!checkout.readOnly) {
-      $emit('checkout.empty');
-    }
+      return {
+        items: items,
+        total: total + tax,
+        subTotal: subTotal,
+        tax: tax,
+        shippingCost:shippingCost
+      };
+    });
   }
 
   return checkout;
 
-});
+})
+
+;

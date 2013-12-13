@@ -4,44 +4,48 @@ describe('shoppingCart', function() {
 
     var service;
 
+    function addItem(id,qty){
+      var items=[];
+      service.addItem(id,qty);
+      service.forEach(function(_item){
+        items.push(_item);
+      });
+      return items[0];
+    }
+
     beforeEach(module('shoppingCart'));
 
     beforeEach(inject(function($injector){
       service =  $injector.get('ShoppingCart');
     }));
 
-    it('should add an item', function(){
-
-      service.addItem("X");
-
-      var item;
-      service.forEach(function(_item){
-        item=_item;
+    it ( 'should be configurable for tax rates', function(){
+      service.setTax({
+          taxRate:0.20
       });
+      expect(service.taxPrice(10)).toBe(12);
+    });
 
+    it('should register an item addition', function(){
+
+      var item = addItem("X",1);
       expect(item.id).toEqual("X");
-      expect(item.qty).toEqual(1);
+      expect(item.quantity).toEqual(1);
 
     });
 
     it('should add a quantity of items', function(){
 
-      service.addItem("X",10);
-
-      var item;
-      service.forEach(function(_item){
-        item=_item;
-      });
-
+      var item = addItem("X",10);
       expect(item.id).toEqual("X");
-      expect(item.qty).toEqual(10);
+      expect(item.quantity).toEqual(10);
 
     });
 
     it('should calculate the total item count', function(){
 
-      service.addItem("X",10);
-      service.addItem("Y",5);
+      addItem("X",10);
+      addItem("Y",5);
 
       expect(service.getItemCount()).toBe(15);
 
@@ -49,8 +53,8 @@ describe('shoppingCart', function() {
 
     it('should calculate a single item line count', function(){
 
-      service.addItem("X",10);
-      service.addItem("Y",5);
+      addItem("X",10);
+      addItem("Y",5);
 
       expect(service.getItemCount('X')).toBe(10);
 
@@ -58,7 +62,7 @@ describe('shoppingCart', function() {
 
     it('should remove an item', function(){
 
-      service.addItem("X");
+      addItem("X");
       service.removeItem("X");
 
       expect(service.hasItems()).toBeFalsy();
@@ -67,7 +71,7 @@ describe('shoppingCart', function() {
 
     it('should remove a quantity of items from a larger quantity of items', function(){
 
-      service.addItem("X",10);
+      addItem("X",10);
       service.removeItem("X",5);
 
       expect(service.getItemCount()).toBe(5);
@@ -76,8 +80,8 @@ describe('shoppingCart', function() {
 
     it('should clear all items', function(){
 
-      service.addItem("X");
-      service.addItem("Y");
+      addItem("X");
+      addItem("Y");
       service.clear();
 
       expect(service.hasItems()).toBeFalsy();

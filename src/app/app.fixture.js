@@ -14,7 +14,7 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
   $httpBackend.when( 'GET', 'assets/data/shop.json' ).respond( function () {
     return [200, {
       "admin":{
-        "costs":{
+        "rates":{
           "freeShipping":200,
           "shipping":9.99,
           "taxRate":0.20,

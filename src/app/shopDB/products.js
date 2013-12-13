@@ -3,12 +3,15 @@ angular.module('ngbps.shopDB')
 .factory('Products', function(ShopDB, $q) {
   
   // project raw products onto shopDB contract
-  var products = ShopDB.products.select(function(p,key){
-    p.id=key;
-    if (!p.title){
-      p.title=key;
+  var products = ShopDB.products.select(function(val,key){
+   val.id = key;
+    if (!val.title){
+      val.title = key;
     }
-    return p;
+    if (!val.url){
+      val.url=val.title.replace(/ /g,'-').toLowerCase();
+    }
+    return val;
   });
   
   function expandProduct(product, links, promises){

@@ -4,18 +4,16 @@ angular.module('shoppingCart', [])
 .factory('ShoppingCart', function() {
 
   var items={},
+    itemsCount=0,
     taxRate=0,
     taxSuffix=['exc. tax','inc. tax'];
 
   var cart = {
     getItemCount:  function(item) {
-      var count=0;
-      angular.forEach(items,function(value,key){
-        if (!item || key===item){
-          count+=value;
-        }
-      });
-      return count;
+      if (!item) {
+        return itemsCount;
+      }
+      return items[item] || 0;
     },
 
     hasItems: function(item) {
@@ -24,20 +22,23 @@ angular.module('shoppingCart', [])
 
     clear: function() {
       items={};
+      itemsCount=0;
     },
 
-    addItem: function(code,qty) {
-      if (!items[code]){
-        items[code]=0;
+    addItem: function(id,qty) {
+      if (!items[id]){
+        items[id]=0;
       }
-      items[code]+=qty||1;
+      items[id]+=qty||1;
+      itemsCount+=qty||1;
     },
 
-    removeItem: function(code,qty) {
-      if (items[code]){
-        items[code]-=qty||1;
-        if (items[code]<=0) {
-          delete items[code];
+    removeItem: function(id,qty) {
+      if (items[id]){
+        items[id]-=qty||1;
+        itemsCount-=qty||1;
+        if (items[id]<=0) {
+          delete items[id];
         }
       }
     },
@@ -54,7 +55,7 @@ angular.module('shoppingCart', [])
 
     forEach: function(cb){
       for (var i in items){
-        cb({id:i,qty:items[i]});
+        cb({id:i,quantity:items[i]});
       }
     },
 
@@ -91,6 +92,7 @@ angular.module('shoppingCart', [])
         if (ShoppingCart.hasItems(scope.item)){
           if (href){
             $location.url(href);
+            scope.$apply();
           }
           scope.$emit('shoppingCart.checkout', status);
         }

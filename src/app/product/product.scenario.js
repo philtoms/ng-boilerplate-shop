@@ -1,6 +1,6 @@
 describe( 'product page', function() {
 
-  var url = '/base/build/index.html#/category-1/';
+  var url = '/base/build/index.html#/products/';
 
   describe( 'smoke test', function() {
 
@@ -128,7 +128,7 @@ describe( 'product page', function() {
       });
 
       it( 'should append shopping cart to product', function(){
-        expect(element('.tab-pane .products .cartItem .price').count()).toBe(2); // p2 * 2
+        expect(element('.tab-pane .products .cartItem .price').count()).toBe(4); // (p2.inc+p2.exc) * 2 
         expect(element('.tab-pane .products .cartItem .range').count()).toBe(1); // p1
       });
     });
@@ -154,6 +154,10 @@ describe( 'product page', function() {
 
     it ( 'should go to checkout when shopping cart with items clicked', function(){
 
+      element('.buy').click();
+      element('.cart-items').click();
+
+      expect(browser().location().url()).toEqual('checkout');
     });
 
     it ( 'should ignore checkout request when empty shopping cart clicked', function(){

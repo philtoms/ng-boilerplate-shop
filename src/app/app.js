@@ -41,21 +41,21 @@ angular.module( 'ngBoilerplateShop', [
   'templates-common',
   'ngbps.home',
   'ngbps.product',
-  'ngbps.shopDB',
   'ngbps.shopGateway',
+  'ngbps.shopDB',
   'jsonRepository',
   'shoppingCart',
   'placeholders'
 ])
 
 .config( function myAppConfig ( $urlRouterProvider ) {
-  $urlRouterProvider.otherwise( '/home' );
+//  $urlRouterProvider.otherwise( '/home' );
 })
 
 .run( function run ( Admin, ShoppingCart, Checkout) {
-  Admin.get('costs').then(function(data){
+  Admin.get('rates').then(function(data){
     ShoppingCart.setTax(data);
-    Checkout.setCosts(data);
+    Checkout.setRates(data);
   });
 })
 
