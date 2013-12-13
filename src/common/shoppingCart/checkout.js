@@ -1,4 +1,6 @@
-angular.module('shoppingCart')
+angular.module('shoppingCart.checkout', [
+  'shoppingCart.cart'
+  ])
 
 .factory('Checkout', function($injector, $q, $log, ShoppingCart) {
 

@@ -39,7 +39,7 @@ describe ('search', function(){
     });
 
     // Initialize test.app injector
-    module( 'jsonRepository', 'ngbps.shopDB', 'ngbps.search', 'safeApply','test.app');
+    module( 'jsonRepository', 'ngbps.shopDB', 'ngbps.search', 'utilities','test.app');
 
     // Kickstart the injectors previously registered 
     // with calls to angular.mock.module

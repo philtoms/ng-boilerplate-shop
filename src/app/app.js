@@ -34,25 +34,45 @@
 // })(angular);
 
 angular.module( 'ngBoilerplateShop', [
-  'ui.bootstrap',
-  'ui.router',
-  'ngSanitize',
-  'templates-app',
-  'templates-common',
+  /*
+   * Main application features. Create new feature module folders
+   * under /app and heference them here. (see the original home/README.md)
+   */
   'ngbps.home',
   'ngbps.product',
   'ngbps.categories',
   'ngbps.shopGateway',
   'ngbps.shopDB',
   'ngbps.search',
+  
+  /*
+   * Drop-in components. Create new shared components in
+   * the /common folder(see common/README.md)
+   */
   'jsonRepository',
   'shoppingCart',
+  'placeholders',
+  'utilities', // aka 'odds and sods'
+  
+  /*
+   * Gateway proxy(ies) live in the /common/gateways folder.
+   * Reference each of the gateways that the webste supports here.
+   */
   'WorldPay',
-  'placeholders'
+
+  /* Infrastructure delivered through the tool chain. 
+   * Add extra vendor components here and reference them in 
+   * build.config.js to have them pulled into the deployment.
+   */ 
+  'ui.bootstrap',
+  'ui.router',
+  'ngSanitize',
+  'templates-app',
+  'templates-common'
 ])
 
 .config( function myAppConfig ( $urlRouterProvider ) {
-//  $urlRouterProvider.otherwise( '/home' );
+  $urlRouterProvider.otherwise( '/home' );
 })
 
 .run( function run ( Admin, ShoppingCart, Checkout) {
@@ -66,28 +86,6 @@ angular.module( 'ngBoilerplateShop', [
   $scope.admin = Admin;
   $scope.search = Search;
   $scope.app={title:'ngBoilerplateShop'};
-})
-
-
-.directive('onBlur', ['$parse', function($parse) {
-  return function(scope, element, attr) {
-    var fn = $parse(attr['onBlur']);
-    element.bind('blur', function(event) {
-      scope.$apply(function() {
-        fn(scope, {$event:event});
-      });
-    });
-  };
-}])
-
-.filter('titlize', function() {
-  return function(input) {
-    if (!input) {
-      return '';
-    }
-    input = input.replace(/\S+:\/\//g,'');
-    return input.charAt(0).toUpperCase() + input.slice(1).replace(/-/g,' ').replace(/\.html/,'').replace(/_/g,'-');
-  };
 })
 
  

@@ -1,5 +1,5 @@
 angular.module('ngbps.search',[
-  'safeApply',
+  'utilities',
   'ui.router'
 ])
 

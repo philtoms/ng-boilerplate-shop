@@ -1,4 +1,4 @@
-angular.module('safeApply',[])
+angular.module('utilities.services',[])
 
 .factory('safeApply', ['$rootScope', function($rootScope) {
   return function($scope, fn) {

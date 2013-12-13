@@ -128,13 +128,6 @@ module
   };
 })
 
-// .filter('leadingZeros', function() {
-//   return function(input, size) {
-//     var s = "000000000" + input;
-//     return s.substr(s.length-(size||3));
-//   };
-// })
-
 .directive('worldpayGateway', function(){
   var template = embedGateway?
        '<iframe class="frame" height="800px" width="100%" frameborder="0" border="0" marginwidth="0" marginheight="0""></iframe>'
