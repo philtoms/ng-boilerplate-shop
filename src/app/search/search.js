@@ -1,8 +1,28 @@
-angular.module('ngbps.search',[])
+angular.module('ngbps.search',[
+  'safeApply',
+  'ui.router'
+])
+
+
+.config(function config( $stateProvider ) {
+  $stateProvider.state( 'search', {
+    url: '/search/results',
+    views: {
+      "search": {
+        controller: 'SearchCtrl',
+        templateUrl: 'search/search.tpl.html'
+      }
+    }
+  });
+})
+
+.controller( 'SearchCtrl', function SearchController( $scope, Search ) {
+  $scope.search=Search;
+})
 
 .provider('Search', function(){
 
-  this.displaced=true; // default displaced results do not appear in typeahead dropdown
+  this.displaced=true; // default - displaced results do not appear in typeahead dropdown
   this.minimumQueryLength = 3; 
 
   config = this;
@@ -42,13 +62,14 @@ angular.module('ngbps.search',[])
       var test = input.toLowerCase();
       var props=['title','text'];
       service.query = input;
-      service.results = Products.select(function(item){
+      service.results=[];
+      Products.select(function(item){
         for (var p=0; p<props.length; p++){
           if (contains(item,props[p], test)){
-            return item;
+            service.results.push(item);
+            break;
           }
         }
-        return null;
       });
       return config.displaced? []:service.results;
     }

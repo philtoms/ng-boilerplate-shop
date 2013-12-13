@@ -5,7 +5,7 @@ angular.module( 'ngbps.shopGateway', [
 
 .config(function config( $stateProvider ) {
   $stateProvider.state( 'checkout', {
-    url: '/shopGateway/checkout',
+    url: '/checkout',
     views: {
       "main": {
         controller: 'CheckoutCtrl',

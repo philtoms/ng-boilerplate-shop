@@ -61,13 +61,12 @@ angular.module('jsonQuery',[])
   Query.prototype.select = function(select){
     return new Query(this.then(function(data){
       var projected = [];
-      
-      for(var key in data){
-        var projection = select(data[key], key);
+      angular.forEach(data, function(val,key){
+        var projection = select(val, key);
         if (projection){
           projected.push(projection);
         }
-      }
+      });
       return projected;
     }));
   };

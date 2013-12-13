@@ -43,6 +43,7 @@ angular.module( 'ngBoilerplateShop', [
   'ngbps.product',
   'ngbps.shopGateway',
   'ngbps.shopDB',
+  'ngbps.search',
   'jsonRepository',
   'shoppingCart',
   'placeholders'
@@ -59,10 +60,30 @@ angular.module( 'ngBoilerplateShop', [
   });
 })
 
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location, Admin ) {
+.controller( 'AppCtrl', function AppCtrl ( $scope, $location, Admin, Search ) {
   $scope.admin = Admin;
+  $scope.search = Search;
+  $scope.$watch(Search.selected, function(){
+    if (!angular.isArray(Search.results)){
+      Search.results.then(function(results){
+        $scope.searchResults = results;
+      });
+    }
+  });
   $scope.app={title:'ngBoilerplateShop'};
 })
+
+
+.directive('onBlur', ['$parse', function($parse) {
+  return function(scope, element, attr) {
+    var fn = $parse(attr['onBlur']);
+    element.bind('blur', function(event) {
+      scope.$apply(function() {
+        fn(scope, {$event:event});
+      });
+    });
+  };
+}])
 
 .filter('titlize', function() {
   return function(input) {

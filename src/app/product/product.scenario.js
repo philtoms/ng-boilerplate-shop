@@ -157,7 +157,7 @@ describe( 'product page', function() {
       element('.buy').click();
       element('.cart-items').click();
 
-      expect(browser().location().url()).toEqual('checkout');
+      expect(browser().location().url()).toEqual('/checkout');
     });
 
     it ( 'should ignore checkout request when empty shopping cart clicked', function(){
