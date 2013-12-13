@@ -16,13 +16,13 @@ angular.module( 'ngbps.shopGateway', [
 })
 
 
-.controller( 'CheckoutCtrl', function CheckoutController( $scope, $window, Checkout, ShoppingCart, Products) {
+.controller( 'CheckoutCtrl', function CheckoutController( $scope, $window, Checkout, ShoppingCart, Products, worldPayGateway) {
   
   $scope.cart = ShoppingCart;
 
   $scope.$watch(Checkout.getItemCount, function(count, lastCount){
 
-    if (count!=lastCount && !count){
+    if (!count){
       $scope.continueShopping();
       return;
     }
@@ -47,7 +47,8 @@ angular.module( 'ngbps.shopGateway', [
   };
 
   $scope.payNow = function(){
-    // WorldPay.pay($scope.checkout);
+    $scope.gatewayOpen=true;
+    worldPayGateway.pay($scope.checkout);
   };
 })
 

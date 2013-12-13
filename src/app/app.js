@@ -46,6 +46,7 @@ angular.module( 'ngBoilerplateShop', [
   'ngbps.search',
   'jsonRepository',
   'shoppingCart',
+  'WorldPay',
   'placeholders'
 ])
 
@@ -88,11 +89,5 @@ angular.module( 'ngBoilerplateShop', [
   };
 })
 
-.filter('leadingZeros', function() {
-  return function(input, size) {
-    var s = "000000000" + input;
-    return s.substr(s.length-(size||3));
-  };
-})
  
 ;

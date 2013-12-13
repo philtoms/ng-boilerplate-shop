@@ -3,7 +3,7 @@
   <h1 ng-if='checkout.readOnly'>Customer purchase details</h1>
   <div>
     <p ng-if='!checkout.readOnly'>Please review your purchase details and click on the continue button to complete your order.</p>
-    <table class='subproducts'>
+    <table>
       <thead>
         <tr>
           <th class='item'>Item</th>
@@ -18,9 +18,9 @@
           <td class='price'>{{item.price | currency}}</td>
           <td class='price'>{{item.quantity}}</td>
           <td class='price'>{{item.totalPrice | currency}}</td>
-          <td ng-if='!checkout.readOnly'><button ng-click='cart.removeItem(item.id)'>Remove</button></td>
+          <td ng-if='!checkout.readOnly'><button class='btn remove' ng-click='cart.removeItem(item.id)'>Remove</button></td>
         </tr>
-        <tr class='total'>
+        <tr>
           <td colspan='2' />
           <td class='total'>Sub Total:</td>
           <td class='price'>{{checkout.subTotal | currency}}</td>
@@ -30,22 +30,24 @@
           <td class='total'>Postage &amp; packing:</td>
           <td class='price'>{{checkout.shippingCost | currency}}</td>
         </tr>
-        <tr class='total'>
+        <tr>
           <td colspan='2' />
           <td class='total'>VAT:</td>
           <td class='price'>{{checkout.tax | currency}}</td>
         </tr>
-        <tr class='total'>
+        <tr>
           <td colspan='2' />
           <td class='total'>Total:</td>
           <td class='price'>{{checkout.total | currency}}</td>
         </tr>
       </tbody>
     </table>
-    <button class='btn' ng-click='cart.clear()'>Clear Basket</button>
-    <button ng-if='!checkout.readOnly'class='btn' ng-click='continueShopping()'>Continue Shopping</button>
-    <button ng-if='!checkout.readOnly'class='btn btn-primary' ng-click='payNow()'>Pay now</button>
-    <shipping ng-if='!checkout.readOnly'></shipping>
+    <div ng-if='!checkout.readOnly'>
+      <button class='btn clear' ng-click='cart.clear()'>Clear Basket</button>
+      <button class='btn continue' ng-click='continueShopping()'>Continue Shopping</button>
+      <button class='btn pay btn-primary' ng-click='payNow()'>Pay now</button>
+      <shipping></shipping>
+    </div>
   </div>
-  <worldpay-gateway ng-show='!checkout.gatewayClosed'></worldpay-gateway>
+  <worldpay-gateway ng-show='gatewayOpen'></worldpay-gateway>
 </section>
