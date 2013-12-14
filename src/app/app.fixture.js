@@ -24,6 +24,7 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
       "products":{
         "p1":{
           "title":"Product 1",
+          "offer":true,
           "description":"<strong>The first product</strong>"
         },
         "p2":{

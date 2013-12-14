@@ -36,7 +36,10 @@ angular.module( 'ngbps.home', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope) {
+.controller( 'HomeCtrl', function HomeController( $scope, Products) {
+  Products.where('offer',true).then(function(products){
+    $scope.offers = products;
+  });
 })
 
 

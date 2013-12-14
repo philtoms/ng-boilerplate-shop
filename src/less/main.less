@@ -75,6 +75,37 @@ h2 {
 }
 
 /**
+ * Layout
+ */
+
+html,body {
+  height: 100%;
+}
+
+#main-wrap {
+  min-height: 100%;
+  height: auto !important;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -180px;
+}
+
+#main-wrap-push,
+footer {
+  height: 180px;
+}
+footer {
+  background-color:#595A5E;
+  a {
+    display:block;
+    color: #E7E7E7;
+  }
+  section {
+    padding:20px 8px 0 4%;
+  }
+}
+
+
+/**
  * Left Bar
  */
 

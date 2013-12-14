@@ -83,7 +83,9 @@ angular.module( 'ngBoilerplateShop', [
 })
 
 .controller( 'AppCtrl', function AppCtrl ( $scope, $location, Admin, Search ) {
-  $scope.admin = Admin;
+  Admin.then(function(admin){
+    $scope.admin = admin;
+  });
   $scope.search = Search;
   $scope.app={title:'ngBoilerplateShop'};
 })
