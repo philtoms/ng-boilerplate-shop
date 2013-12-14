@@ -41,6 +41,7 @@ angular.module( 'ngBoilerplateShop', [
   'ngbps.home',
   'ngbps.product',
   'ngbps.categories',
+  'ngbps.information',
   'ngbps.shopGateway',
   'ngbps.shopDB',
   'ngbps.search',

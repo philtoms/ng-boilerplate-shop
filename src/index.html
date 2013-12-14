@@ -40,8 +40,8 @@
       <header class="row-fluid" ng-include="'layout/header.tpl.html'"></header>
       <main class="container-fluid">
         <aside class="xspan left-bar" ng-include="'layout/leftbar.tpl.html'"></aside>
-        <div class="xspan" ng-if="search.selected" ng-include="'search/results.tpl.html'"></div>
-        <div class="xspan" ui-view='main'></div>
+        <div class="xspan middle" ng-if="search.selected" ng-include="'search/results.tpl.html'"></div>
+        <div class="xspan middle" ui-view='main'></div>
         <aside class="xspan right-bar" ng-include="'layout/rightbar.tpl.html'"></aside>
       </main>
       <div id="main-wrap-push"></div>

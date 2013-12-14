@@ -2,7 +2,6 @@ angular.module( 'ngbps.product', [
   'ui.router'
 ])
 
-
 .config(function config( $stateProvider ) {
   $stateProvider.state( 'product', {
     url: '/products/:product',
