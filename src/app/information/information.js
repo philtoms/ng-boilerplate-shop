@@ -4,7 +4,7 @@ angular.module( 'ngbps.information', [
 
 .config(function config( $stateProvider ) {
   $stateProvider.state( 'information', {
-    url: '/information/:page',
+    url: '/information/*page',
     views: {
       "main": {
         controller: 'InformationCtrl',

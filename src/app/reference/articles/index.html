@@ -1,0 +1,57 @@
+<article ng-init=
+ 'base="views/reference/articles/";
+  articles=[
+    "the-green-deal",
+    "single-room-ventilation-solutions",
+    "moisture-management",
+    "debating-damp",
+    "sick-building-syndrome",
+    "turning-our-victorian-terrace-into-an-ecohome",
+    "protecting-properties-against-flooding"
+  ];
+  selected={url:base+articles[0]+".html"}'>
+  <h1>Articles</h1>
+  <tabset>
+    <tab heading='Article'>
+      <div class='dropdown'>
+        <a class="dropdown-toggle">Full Article List</a>
+        <ul class='dropdown-menu'>
+          <li ng-repeat='article in articles'><a ng-init='href=base+article+".html"' href='{{href}}' eat-click ng-click='selected.url=href'>{{article | titleize}}</a></li>
+        </ul>
+      </div>
+      <div ng-include='selected.url'></div>  
+    </tab>
+    <tab heading='How to contribute'>
+      <p>Simply send your article to <a href='mailto://{{admin.enquiries}}'>{{admin.enquiries}}</a> for consideration.</p>
+      <p>The article must be in word format and be between 300 and 500 words in length. You can include one or two jpeg images to support the article.</p>
+      <p>You should include some information about the author to add credibility to the article. This text should be no more than 50 words in length and should indicate any bias or commercial interests in writing the article.</p>
+      <p>Should Damp Expert Ltd consider the article is suitable for publication without changes you will be advised of the approximate date of publication. 
+      If changes are required we will advise you accordingly and you may choose to re-submit an amended version.</p>
+      <accordion close-others='oneAtATime'>
+        <accordion-group heading='What makes a good article?'>
+           <h4>A good article</h4>
+           <ul>
+             <li>should be authoritative</li>
+             <li>provide a suitable background to the main text</li>
+             <li>not be an advertisement for a product or service</li>
+             <li>should not be inflammatory or libellous</li>
+             <li>include an image to support the text</li>
+             <li>should include details of the author</li>
+           </ul>
+           <p><em>author</em> – providing details of the author gives the article credibility and provides the author the 
+           opportunity to be acknowledged for their work. The author can state his experience or qualifications and the 
+           company they work for or represent. Any bias or commercial interests must be included. A jpeg image of the 
+           author may also be included.</p>
+        </accordion-group>
+        <accordion-group heading='Editorial policy'>
+          <p>Damp Expert Ltd reserves the right to withdraw or refuse to publish an article at its discretion without providing explanation.</p>
+          <p>Damp Expert Ltd will not ask for or accept payment for publishing an article.</p>
+          <p>Should the author of an article wish to withdraw their article, written notification must be provided to Damp Expert Ltd. Articles will typically be withdrawn within 14 days of request.</p> 
+          <p>Should a third party object to the contents of an article then Damp Expert Ltd will remove the article until the matter has been resolved between the author and third party.</p>
+          <p>The author of an article is responsible for the accuracy of information included in the article.</p>
+        </accordion-group>
+      </accordian>
+    </tab>
+    <tab heading=''></tab>
+  </tabset>
+</article>
