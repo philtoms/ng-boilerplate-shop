@@ -53,6 +53,7 @@ angular.module( 'ngBoilerplateShop', [
    */
   'jsonRepository',
   'shoppingCart',
+  'DISQUS',
   'placeholders',
   'utilities', // aka 'odds and sods'
   
