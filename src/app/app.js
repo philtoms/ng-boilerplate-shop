@@ -54,6 +54,7 @@ angular.module( 'ngBoilerplateShop', [
   'jsonRepository',
   'shoppingCart',
   'DISQUS',
+  'Mailchimp',
   'placeholders',
   'utilities', // aka 'odds and sods'
   
