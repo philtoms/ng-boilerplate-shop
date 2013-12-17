@@ -68,6 +68,7 @@ angular.module( 'ngBoilerplateShop', [
    */ 
   'ui.bootstrap',
   'ui.router',
+  'ngAnimate',
   'ngSanitize',
   'templates-app',
   'templates-common'
@@ -92,5 +93,21 @@ angular.module( 'ngBoilerplateShop', [
   $scope.app={title:'ngBoilerplateShop'};
 })
 
- 
+.factory ('$animator', function AnimatorBackFill ($animate){
+  return function(scope, attrs){
+
+    return {
+      enter:function(element,parent,after){
+        $animate.enter(element,parent,after);
+      },
+      leave:function(element,parent,after){
+        if (element.children().length){
+          $animate.leave(element,after);
+        }
+      }
+    };
+  };
+
+})
+
 ;

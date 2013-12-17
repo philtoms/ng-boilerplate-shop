@@ -200,6 +200,22 @@ footer {
 }
 
 
+/* 
+ * page animation 
+ */
+
+.view-animate {
+  .ng-leave.ng-leave-active {
+    height:0px;
+    opacity:0;
+  }
+  .ng-leave {
+    height:300px;
+    opacity:1;
+    transition: opacity 0.25s, height 0.3s;
+  }
+}
+
 /**
  * Now that all app-wide styles have been applied, we can load the styles for
  * all the submodules and components we are using. 

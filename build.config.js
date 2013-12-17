@@ -59,7 +59,7 @@ module.exports = {
     js: [
       'vendor/angular/angular.js',
       'vendor/angular-sanitize/angular-sanitize.js',
-      'vendor/angular-animate/angular-animate.min.js',
+      'vendor/angular-animate/angular-animate.js',
       'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
       'vendor/placeholders/angular-placeholders.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
