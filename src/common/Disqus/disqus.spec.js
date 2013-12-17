@@ -1,7 +1,7 @@
 describe('DISQUS', function() {
 
   var $window, $rootScope, $compile;
-  var markup = '<div><disqus identifier="TESTTHREAD" short-name="TEST"></disqus></div>';
+  var markup = '<disqus identifier="TESTTHREAD" short-name="TEST"></disqus>';
 
   beforeEach(function() {
     module('DISQUS', function($provide) {
@@ -34,9 +34,9 @@ describe('DISQUS', function() {
 
 
   it('should place a div with id disqus_thread in DOM', function() {
-
     var element = $compile(markup)($rootScope);
-    expect(element.html()).toBe('<div id="disqus_thread" identifier="TESTTHREAD" short-name="TEST" class="ng-isolate-scope"></div>');
+    expect(element[0].tagName).toBe('DIV');
+    expect(element[0].id).toBe('disqus_thread');
   });
 
   it('should do a call to DISQUS.reset on reload', function() {
@@ -52,7 +52,7 @@ describe('DISQUS', function() {
     var element = $compile('<disqus identifier="TESTTHREAD" short-name="TEST" title="TESTTITLE"></disqus>')($rootScope);
 
     expect($window.disqus_identifier).toBe("TESTTHREAD");
-    expect($window.disqus_title).toBe("TESTTHREAD");
+    expect($window.disqus_title).toBe("TESTTITLE");
   });
 
 });
