@@ -5,13 +5,13 @@
     "angular": "1.2.4",
     "angular-animate": "1.2.4",
     "angular-mocks": "1.2.4",
-    "bootstrap": "~2.3.2",
-    "angular-bootstrap": "~0.6.0",
+    "angular-sanitize": "1.2.4",
+    "angular-scenario": "1.2.4",
     "angular-ui-router": "0.2.5",
     "angular-ui-utils": "~0.0.4",
-    "angular-scenario": "~1.2.1",
-    "placeholders": "git+https://github.com/Iristyle/bower-angular-placeholders.git#0.0.1",
-    "angular-sanitize": "~1.2.4"
+    "bootstrap": "~3.0.3",
+    "angular-bootstrap": "~0.6.0",
+    "placeholders": "git+https://github.com/Iristyle/bower-angular-placeholders.git#0.0.1"
   },
   "dependencies": {}
 }
