@@ -80,17 +80,35 @@ footer {
 /**
  * responsive design
  */
-
+ 
+@media (min-width: @screen-sm) {
+  .right-bar nav {
+    .dropdown-menu {
+      display:block;
+    }
+    .dropdown-toggle {
+      display:none;
+    }
+  } 
+}
 @media (max-width: @screen-xs-max) {
   header,
-  .right-bar {
+  .right-bar nav {
     position: fixed;
   }
-  .right-bar{
+  .right-bar nav {
     top:60px;
   }
   .middle {
     padding-top:100px;
+  }
+  .dropdown {
+    top: -30px;
+    left: 160px;
+  }
+  .dropdown-menu{
+    width:100%;
+    left:-160px;
   }
 }
 
