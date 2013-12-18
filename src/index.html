@@ -36,18 +36,17 @@
   </head>
 
   <body>
-    <div id="main-wrap">
-      <header class="row-fluid" ng-include="'layout/header.tpl.html'"></header>
-      <main class="container-fluid">
-        <aside class="xspan left-bar" ng-include="'layout/leftbar.tpl.html'"></aside>
-        <div class="xspan middle" ng-if="search.selected" ng-include="'search/results.tpl.html'"></div>
-        <div ng-hide="search.selected" >
-          <div class="xspan middle view-animate" ui-view='main'></div>
+    <div id="wrap">
+      <header class="row" ng-include="'layout/header.tpl.html'"></header>
+      <main class="container">
+        <aside class="hidden-xs col-sm-3 left-bar" ng-include="'layout/leftbar.tpl.html'"></aside>
+        <div class="col-sm-6 middle" ng-if="search.selected" ng-include="'search/results.tpl.html'"></div>
+        <div class="col-sm-6 middle" ng-hide="search.selected" >
+          <div class="view-animate" ui-view='main'></div>
         </div>
-        <aside class="xspan right-bar" ng-include="'layout/rightbar.tpl.html'"></aside>
+        <aside class="col-sm-3 right-bar" ng-include="'layout/rightbar.tpl.html'"></aside>
       </main>
-      <div id="main-wrap-push"></div>
     </div>
-    <footer class="row-fluid" ng-include src="'layout/footer.tpl.html'"></footer>
+    <footer class="row" ng-include src="'layout/footer.tpl.html'"></footer>
   </body>
 </html>

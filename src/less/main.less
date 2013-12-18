@@ -11,17 +11,18 @@
  */
 
 @import '../../vendor/bootstrap/less/mixins.less';
-@import '../../vendor/bootstrap/less/reset.less';
+@import '../../vendor/bootstrap/less/normalize.less';
 @import '../../vendor/bootstrap/less/utilities.less';
 @import '../../vendor/bootstrap/less/scaffolding.less';
 @import '../../vendor/bootstrap/less/type.less';
 @import '../../vendor/bootstrap/less/grid.less';
-@import '../../vendor/bootstrap/less/layouts.less';
+@import '../../vendor/bootstrap/less/forms.less';
 @import '../../vendor/bootstrap/less/navs.less';
 @import '../../vendor/bootstrap/less/navbar.less';
 @import '../../vendor/bootstrap/less/buttons.less';
 @import '../../vendor/bootstrap/less/button-groups.less';
 @import '../../vendor/bootstrap/less/dropdowns.less';
+@import '../../vendor/bootstrap/less/responsive-utilities.less';
 
 
 /**
@@ -44,161 +45,72 @@
   src: local('Roboto Regular'), local('Roboto-Regular'), url(fonts/Roboto-Regular.woff) format('woff');
 }
 
-code, pre, .pre {
-  padding: 5px;
-  margin: 10px 0;
-  background-color: #EFEFEF;
-  border: 1px solid #DADADA;
-  .border-radius(3px);
-}
-
-code {
-  padding: 0 3px;
-}
-
-pre {
-  margin: 10px 0;
-  padding: 5px;
-}
-
-.page-header {
-  margin-top: 60px;
-
-  &:first-child {
-    margin-top: 20px;
-  }
-}
-
-h2 {
-  margin: 20px 0;
-  color: #666;
-}
-
 /**
  * Layout
- */
+ **/
 
-html,body {
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html,
+body {
   height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
 }
 
-#main-wrap {
+header.row,footer.row {
+  width:100%;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
   min-height: 100%;
-  height: auto !important;
-  /* Negative indent footer by it's height */
-  margin: 0 auto -180px;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
 }
 
-#main-wrap-push,
+/* Set the fixed height of the footer here */
 footer {
-  height: 180px;
-}
-footer {
-  background-color:#595A5E;
-  a {
-    display:block;
-    color: #E7E7E7;
-  }
-  section {
-    padding:20px 8px 0 4%;
-  }
-}
-
-.xspan.middle {width:55%;}
-.xspan.left {width:20%;}
-.xspan.right {width:20%;margin:0 0 0 25px;}
-
-/**
- * Left Bar
- */
-
-.leftbar {
-  
+  height: 60px;
 }
 
 /**
- * Right Bar
+ * responsive design
  */
 
-.rightbar {
-  
-}
-
-/**
- * Navigation
- */
-
-.navbar {
-  .navbar-inner {
-    padding: 0;
-  }
-
-  .nav {
-    margin: 0;
-    display: table;
-    width: 100%;
-
-    li {
-      display: table-cell;
-      width: 1%;
-      float: none;
-
-      a {
-        font-weight: bold;
-        text-align: center;
-        //border-left: 1px solid rgba(255, 255, 255, 0.75);
-        border-right: 1px solid rgba(0, 0, 0, .1);
-      }
-      
-      &:first-child a {
-        border-left: 0;
-        border-radius: 3px 0 0 3px;
-      }
-      
-      &:last-child a {
-        border-right: 0;
-        border-radius: 3px 0 0 3px;
-      }
+@media (min-width: @screen-sm) {
+  .right-bar nav {
+    .dropdown-menu {
+      display:block;
     }
-  }
-}
-
-
-/**
- * Footer
- */
-
-.footer {
-  margin-top: 80px;
-
-  .footer-inner {
-    padding: 40px 0;
-    border-top: 1px solid #DDD;
-  }
-
-  .social {
-    float: right;
-    margin: 0;
-    list-style: none;
-
-    li {
-      float: left;
-      margin-left: 20px;
-
-      a, a:visited {
-        color: @grayLight;
-        text-decoration: none;
-        font-size: 40px;
-        .transition( 250ms ease-in-out );
-
-        &:hover {
-          color: @gray;
-        }
-      }
+    .dropdown-toggle {
+      display:none;
     }
+  } 
+}
+@media (max-width: @screen-xs-max) {
+  header.row,
+  .right-bar nav {
+    position: fixed;
+  }
+  .right-bar nav {
+    top:60px;
+  }
+  .middle {
+    padding-top:100px;
+  }
+  .dropdown {
+    top: -30px;
+    left: 160px;
+  }
+  .dropdown-menu{
+    width:100%;
+    left:-160px;
   }
 }
-
 
 /**
  * page animation - Add ngAnimate to the module dependency list 
@@ -216,6 +128,7 @@ footer {
     transition: opacity 0.25s, height 0.3s;
   }
 }
+
 
 /**
  * Now that all app-wide styles have been applied, we can load the styles for

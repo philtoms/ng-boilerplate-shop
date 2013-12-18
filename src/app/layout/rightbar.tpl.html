@@ -1,13 +1,19 @@
+<nav class='search'>
+  <input on-blur='search.reset(false)' ng-model='search.selected' typeahead='item for item in search.filter($viewValue)' placeholder='Product search'>
+  <button on-blur='search.reset(true)' ng-show='search.query.length>3' ng-click='search.more()'>Advanced</button>
+  <div class='dropdown'>
+    <button class="btn dropdown-toggle" type="button">
+      Categories
+      <span class="caret"></span>
+    </button>
+    <div class='dropdown-menu' ng-controller='CategoriesCtrl'>
+      <a ng-repeat='category in categories' href='#/categories/{{category.url}}'>{{category.title | titlize}}</a>
+    </div>
+  </div>
+</nav>
 <div class='links'>
   <img class='cards' ng-src='img/cards.png'>
-  <div class='search'>
-    <input on-blur='search.reset(false)' ng-model='search.selected' typeahead='item for item in search.filter($viewValue)' placeholder='Product search'>
-    <button on-blur='search.reset(true)' ng-show='search.query.length>3' ng-click='search.more()'>Advanced</button>
-  </div>
 </div>
-<nav class='links' ng-controller='CategoriesCtrl'>
-  <a ng-repeat='category in categories' href='#/categories/{{category.url}}'>{{category.title | titlize}}</a>
-</nav>
 <a class='survey links' ng-href='#/services/independent-surveys.html'>
   <h3>Independent Surveys</h3>
   <img src="{{imgBaseUrl}}/surveys/reports.jpg"/>

@@ -18,7 +18,7 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
           "freeShipping":200,
           "shipping":9.99,
           "taxRate":0.20,
-          "taxSuffix":['exc. vat','inc. vat']
+          "taxSuffix":["exc. vat","inc. vat"]
         }
       },
       "products":{
@@ -37,7 +37,7 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
         "p3":{
           "title":"Product 3",
           "links":[
-            "p2", // product links
+            "p2",
             {"Template":"template.html"},
             {"Range":["p1","p2"]},
             {"HREFs":[{"link1":"link1.html"},{"link2":"link2.pdf"}]}
