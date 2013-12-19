@@ -36,12 +36,27 @@ angular.module( 'ngbps.home', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope, Products) {
+.controller( 'HomeCtrl', function HomeController( $scope, Showcase, Products) {
   Products.where('offer',true).then(function(products){
     $scope.offers = products;
   });
+  Showcase.then(function(showcase){
+    $scope.showcase = showcase;
+  });
 })
 
+//https://github.com/angular-ui/bootstrap/issues/1273
+.directive('setNgAnimate', function ($animate) {
+  var enabledSet=null;
+  return {
+      link: function ($scope, $element, $attrs) {
+        if (enabledSet===null) {
+          enabledSet=$attrs.setNgAnimate!='false';
+          $animate.enabled(enabledSet, $element.parent());
+        }
+      }
+  };
+})
 
 ;
 
