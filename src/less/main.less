@@ -22,6 +22,8 @@
 @import '../../vendor/bootstrap/less/buttons.less';
 @import '../../vendor/bootstrap/less/button-groups.less';
 @import '../../vendor/bootstrap/less/dropdowns.less';
+@import '../../vendor/bootstrap/less/carousel.less';
+@import '../../vendor/bootstrap/less/jumbotron.less';
 @import '../../vendor/bootstrap/less/responsive-utilities.less';
 
 
@@ -67,15 +69,92 @@ header.row,footer.row {
   min-height: 100%;
   height: auto;
   /* Negative indent footer by its height */
-  margin: 0 auto -60px;
+  margin: 0 auto -180px;
   /* Pad bottom by footer height */
   padding: 0 0 60px;
 }
 
 /* Set the fixed height of the footer here */
 footer {
-  height: 60px;
+  height: 180px;
 }
+
+/**
+ * app wide styling
+ */
+body {
+  background-color:@bkcolor;
+  color:@color;
+}
+
+
+.header {
+  background-color: @header-bkcolor;
+  color:@header-color;
+  padding:20px 10px 5px 10px;
+  line-height: 20px;
+
+  .home {
+    margin-top: 10px;
+    max-width: 60%;
+  }
+
+  .contact {
+    text-align: right;
+
+    div {padding:3px;}
+    .tel {
+      color:@dx-blue;
+      font-size: 2em;
+      font-weight: bold;
+    }
+  }
+
+  .trustwave {padding-left: 10px;}
+  .cart {
+    background: url(../assets/img/basket-r.png) no-repeat 100% 1px;
+    padding-right:11px;
+    margin: 27px 15px 0 0;
+    a {
+      color:white;
+      display: block;
+      height: 26px;
+      background: url(../assets/img/basket-l.png) no-repeat 0 1px;
+      padding-left:15px;
+      text-align: right;
+    }
+  }
+}
+
+footer {
+  background-color:@footer-bkcolor;
+  color: @footer-color;
+
+  a {
+    display:block;
+    color: @footer-color;
+  }
+  section {padding:10px 8px 0 4%;}
+
+  .tnt {max-width:180px;min-width:110px;font-size:10px;}
+  .tnt img {display:block;max-width: 60px;}
+
+  .newsletter{
+    form {padding-bottom: 20px;}
+    h3 {color: @footer-color;font-size: 1.3em; font-weight: normal;line-height: 20px;margin: 0;}
+    h4 {color: #969595;font-size: 1.1em; line-height: 20px;}
+    input {
+      padding: 4px 6px;
+      color: @color;
+      background-color: @header-bkcolor;
+      border: 1px solid @header-bkcolor;
+    }
+    input[type="email"] {width:60%;}
+    input[type="submit"] {}
+  }
+  .social  a {display:inline;}
+}
+
 
 /**
  * responsive design
@@ -92,7 +171,7 @@ footer {
   } 
 }
 @media (max-width: @screen-xs-max) {
-  header.row,
+  .header,
   .right-bar nav {
     position: fixed;
   }

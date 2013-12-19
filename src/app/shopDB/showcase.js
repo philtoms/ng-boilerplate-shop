@@ -8,9 +8,9 @@ angular.module('ngbps.shopDB')
   return ShopDB.showcase.then(function(data){
 
     promises.push(Admin.then(function(admin){
-      showcase.interval = admin.showcase? admin.showcase.initialInterval : 10;
+      showcase.interval = admin.showcase? admin.showcase.initialInterval : 10000;
       var tid = $timeout(function(){
-        showcase.interval=admin.showcase? admin.showcase.interval : 20;
+        showcase.interval=admin.showcase? admin.showcase.interval : 20000;
         $timeout.cancel(tid);
       }, showcase.interval);
     }));

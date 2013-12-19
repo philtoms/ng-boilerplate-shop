@@ -14,6 +14,7 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
   $httpBackend.when( 'GET', 'assets/data/shop.json' ).respond( function () {
     return [200, {
       "admin":{
+        "salesphone":"0800 1234 567",
         "rates":{
           "freeShipping":200,
           "shipping":9.99,
@@ -60,7 +61,11 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
           "title":"Category 2.1",
           "products":["p1","p2","p3"]
         }
-      }
+      },
+      "showcase":[
+        {"title":"Enjoy all the benefits of living in a well insulated cosy home","text":"","link":"#/products/ultrotherm","imageUrl":"assets/img/featured/ultrotherm-a1.jpg","class":"ultrotherm-a1","logo":"assets/img/logos/ultrotherm.png"},
+        {"title":"","text":"Dampexpert offer a competative installation service on all our ventilation systems","link":"DX-80HRV","imageUrl":"assets/img/featured/hrv-a1.jpg","class":"hrv-a1"}
+      ] 
     }];
   });
 

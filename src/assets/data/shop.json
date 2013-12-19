@@ -46,5 +46,9 @@
       "title":"Category 2.1",
       "products":["p1","p2","p3"]
     }
-  }
+  },
+  "showcase":[
+    {"title":"Enjoy all the benefits of living in a well insulated cosy home","text":"","link":"#/products/ultrotherm","imageUrl":"img/featured/ultrotherm-a1.jpg","class":"ultrotherm-a1","logo":"img/logos/ultrotherm.png"},
+    {"title":"","text":"Dampexpert offer a competative installation service on all our ventilation systems","link":"DX-80HRV","imageUrl":"img/featured/hrv-a1.jpg","class":"hrv-a1"}
+  ]
 }

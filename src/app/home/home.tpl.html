@@ -1,9 +1,9 @@
-<section class='row-fluid'>
-  <carousel interval='Showcase.interval' class='hero-unit'>
-    <slide ng-repeat='highlight in Showcase.highlights'>
+<section class='row'>
+  <carousel interval='showcase.interval'>
+    <slide ng-repeat='highlight in showcase.highlights' set-ng-animate='false'>
       <div ng-class='highlight.class' style='background-image:url({{highlight.imageUrl}});'>
         <aside class='details'>
-          <a href='{{highlight.link}}'><img ng-src='{{highlight.logo}}'></a>
+          <a ng-if='highlight.logo' href='{{highlight.link}}'><img ng-src='{{highlight.logo}}'></a>
           <h1>{{highlight.title}}</h1>
           <p>{{highlight.text}}</p>
           <a class='btn' href='{{highlight.link}}'>{{highlight.btn}}</a>
