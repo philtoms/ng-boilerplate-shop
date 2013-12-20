@@ -57,6 +57,8 @@ angular.module( 'ngBoilerplateShop', [
   'Mailchimp',
   'placeholders',
   'utilities', // aka 'odds and sods'
+
+  'angular-bootstrap-backfix',
   
   /*
    * Gateway proxy(ies) live in the /common/gateways folder.
@@ -72,6 +74,7 @@ angular.module( 'ngBoilerplateShop', [
   'ui.router',
   'ngAnimate',
   'ngSanitize',
+  'ngSocial',
   'templates-app',
   'templates-common'
 ])

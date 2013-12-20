@@ -5,7 +5,7 @@ describe( 'ng-boilerplate-shop', function() {
   var url = '/base/build/index.html';
   describe( 'smoke test', function() {
 
-    it( 'initial state', function () {
+    xit( 'initial state', function () {
       // Trigger state change: Load page
       browser().navigateTo(url);
 

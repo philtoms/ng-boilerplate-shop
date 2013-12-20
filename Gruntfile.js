@@ -123,6 +123,7 @@ module.exports = function ( grunt ) {
           {
             src: [
               '<%= vendor_files.js %>',
+              '<%= vendor_files.css %>',
               '<%= vendor_files.dev %>'
             ],
             dest: '<%= build_dir %>/',

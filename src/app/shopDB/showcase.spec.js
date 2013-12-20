@@ -2,20 +2,18 @@ describe( 'Showcase', function() {
 
   var $httpBackend,$timeout,showcase;
   var testData = {
-    admin:{
-      showcase:{
-        interval:5,
-        initialInterval:1
-      }
-    },
     products:{
       p1:{url:'p1.html'},
       p2:{url:'p2.html'}
     },
-    showcase:[
-      {"title":"T1","text":"t1","link":"p1","imageUrl":"i1.jpg","logo":"h1.png"},
-      {"title":"T2","text":"t1","link":"#/another/page.html","btn":"More...","class":"showcase"}
-    ]  
+    showcase:{
+      interval:5,
+      initialInterval:1,
+      highlights:[
+        {"title":"T1","text":"t1","link":"p1","imageUrl":"i1.jpg","logo":"h1.png"},
+        {"title":"T2","text":"t1","link":"#/another/page.html","btn":"More...","class":"showcase"}
+      ]
+    }
   };
 
   beforeEach( module( 'jsonRepository', 'ngbps.shopDB'));
@@ -72,7 +70,7 @@ describe( 'Showcase', function() {
     });
     $httpBackend.flush();
     for(var p in result){
-      expect(result[p]).toEqual(testData.showcase[1][p]);
+      expect(result[p]).toEqual(testData.showcase.highlights[1][p]);
     }
   });
 

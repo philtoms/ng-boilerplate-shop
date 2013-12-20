@@ -11,7 +11,11 @@
     "angular-ui-utils": "~0.0.4",
     "bootstrap": "~3.0.3",
     "angular-bootstrap": "~0.6.0",
-    "placeholders": "git+https://github.com/Iristyle/bower-angular-placeholders.git#0.0.1"
+    "placeholders": "git+https://github.com/Iristyle/bower-angular-placeholders.git#0.0.1",
+    "angular-social": "~0.1.1"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "resolutions": {
+    "angular": "1.2.4"
+  }
 }

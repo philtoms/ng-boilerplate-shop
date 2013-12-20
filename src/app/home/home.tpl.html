@@ -1,6 +1,6 @@
 <section class='row'>
   <carousel interval='showcase.interval'>
-    <slide ng-repeat='highlight in showcase.highlights' set-ng-animate='false'>
+    <slide ng-repeat='highlight in showcase.highlights'>
       <div ng-class='highlight.class' style='background-image:url({{highlight.imageUrl}});'>
         <aside class='details'>
           <a ng-if='highlight.logo' href='{{highlight.link}}'><img ng-src='{{highlight.logo}}'></a>

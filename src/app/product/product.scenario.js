@@ -19,9 +19,9 @@ describe( 'product page', function() {
       // social buttons
 
       // empty cart (translates to: see product range)
-      expect(element('.cartItem').count()).toBe(1);
-      expect(element('.cartItem .range').count()).toBe(1);
-      expect(element('.cartItem .price').count()).toBe(0);
+      expect(element('.cart-item').count()).toBe(1);
+      expect(element('.cart-item .range').count()).toBe(1);
+      expect(element('.cart-item .price').count()).toBe(0);
 
       // empty tabs
       expect(element('tab').count()).toBe(0);
@@ -37,8 +37,8 @@ describe( 'product page', function() {
       describe ('cart', function(){
 
         it ('should be appended to product', function(){
-          expect(element('.cartItem .range').count()).toBe(0);
-          expect(element('.cartItem .price').count()).toBe(1);
+          expect(element('.cart-item .range').count()).toBe(0);
+          expect(element('.cart-item .price').count()).toBe(1);
         });
 
         it ('should be able to add to cart', function(){
@@ -128,8 +128,8 @@ describe( 'product page', function() {
       });
 
       it( 'should append shopping cart to product', function(){
-        expect(element('.tab-pane .products .cartItem .price').count()).toBe(4); // (p2.inc+p2.exc) * 2 
-        expect(element('.tab-pane .products .cartItem .range').count()).toBe(1); // p1
+        expect(element('.tab-pane .products .cart-item .price').count()).toBe(4); // (p2.inc+p2.exc) * 2 
+        expect(element('.tab-pane .products .cart-item .range').count()).toBe(1); // p1
       });
     });
   });

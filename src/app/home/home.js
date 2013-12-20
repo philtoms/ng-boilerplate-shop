@@ -45,18 +45,5 @@ angular.module( 'ngbps.home', [
   });
 })
 
-//https://github.com/angular-ui/bootstrap/issues/1273
-.directive('setNgAnimate', function ($animate) {
-  var enabledSet=null;
-  return {
-      link: function ($scope, $element, $attrs) {
-        if (enabledSet===null) {
-          enabledSet=$attrs.setNgAnimate!='false';
-          $animate.enabled(enabledSet, $element.parent());
-        }
-      }
-  };
-})
-
 ;
 

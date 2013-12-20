@@ -1,21 +1,19 @@
 angular.module('ngbps.shopDB')
 
-.factory('Showcase', function(ShopDB,Admin,Products,$q,$timeout) {
+.factory('Showcase', function(ShopDB,Products,$q,$timeout) {
 
   var showcase = {highlights:[]};
   var promises = [];
   
   return ShopDB.showcase.then(function(data){
 
-    promises.push(Admin.then(function(admin){
-      showcase.interval = admin.showcase? admin.showcase.initialInterval : 10000;
-      var tid = $timeout(function(){
-        showcase.interval=admin.showcase? admin.showcase.interval : 20000;
-        $timeout.cancel(tid);
-      }, showcase.interval);
-    }));
+    showcase.interval = data.initialInterval || 10000;
+    var tid = $timeout(function(){
+      showcase.interval=data.interval || 20000;
+      $timeout.cancel(tid);
+    }, showcase.interval);
 
-    angular.forEach(data,function(item){
+    angular.forEach(data.highlights,function(item){
       var highlight = angular.extend({btn:'More information'},item);
       if (highlight.link){
         promises.push(Products.getProduct(highlight.link).then(function(product){

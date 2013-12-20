@@ -60,12 +60,14 @@ module.exports = {
       'vendor/angular/angular.js',
       'vendor/angular-sanitize/angular-sanitize.js',
       'vendor/angular-animate/angular-animate.js',
+      'vendor/angular-social/angular-social.js',
       'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
       'vendor/placeholders/angular-placeholders.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/angular-ui-utils/modules/route/route.js'
     ],
     css: [
+      'vendor/angular-social/angular-social.css',
     ],
     dev: [
       'vendor/angular-mocks/angular-mocks.js',
