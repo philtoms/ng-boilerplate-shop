@@ -61,7 +61,10 @@ module.exports = {
       'vendor/angular-sanitize/angular-sanitize.js',
       'vendor/angular-animate/angular-animate.js',
       'vendor/angular-social/angular-social.js',
+      /*
+       * disabled until bootstrap is compatible with angular > ~1.2 
       'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
+      */
       'vendor/placeholders/angular-placeholders.js',
       'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/angular-ui-utils/modules/route/route.js'
