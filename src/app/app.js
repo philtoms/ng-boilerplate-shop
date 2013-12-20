@@ -58,6 +58,8 @@ angular.module( 'ngBoilerplateShop', [
   'placeholders',
   'utilities', // aka 'odds and sods'
 
+  // remove this dependency when ui-bootstrap is compatible with
+  // angular ~1.2
   'angular-bootstrap-backfix',
   
   /*

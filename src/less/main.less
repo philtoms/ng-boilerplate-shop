@@ -61,10 +61,6 @@ body {
   /* The html and body elements cannot have any padding or margin. */
 }
 
-header.row,footer.row {
-  width:100%;
-}
-
 /* Wrapper for page content to push down footer */
 #wrap {
   min-height: 100%;
@@ -94,50 +90,57 @@ body {
   color:@header-color;
   padding:20px 10px 5px 10px;
   line-height: 20px;
+  overflow: hidden;
 
   .home {
     margin-top: 10px;
-    max-width: 60%;
   }
 
-  .contact {
-    text-align: right;
-
-    div {padding:3px;}
-    .tel {
-      color:@dx-blue;
-      font-size: 2em;
-      font-weight: bold;
+  div.pull-right {
+    width: 240px;
+    .contact {
+      display: inline-block;
+      text-align: right;
+      vertical-align: bottom;
+      div {padding:3px;}
+      .tel {
+        color:@dx-blue;
+        font-size: 2em;
+        font-weight: bold;
+      }
+    }
+    .cart {
+      display: inline-block;
+      background: url(../assets/img/basket-r.png) no-repeat 100% 1px;
+      padding-right:11px;
+      a {
+        color:white;
+        display: block;
+        height: 26px;
+        background: url(../assets/img/basket-l.png) no-repeat 0 1px;
+        padding-left:15px;
+        text-align: right;
+      }
     }
   }
 
   .trustwave {padding-left: 10px;}
-  .cart {
-    background: url(../assets/img/basket-r.png) no-repeat 100% 1px;
-    padding-right:11px;
-    margin: 27px 15px 0 0;
-    a {
-      color:white;
-      display: block;
-      height: 26px;
-      background: url(../assets/img/basket-l.png) no-repeat 0 1px;
-      padding-left:15px;
-      text-align: right;
-    }
-  }
 }
 
 footer {
   background-color:@footer-bkcolor;
   color: @footer-color;
+  margin: 0 auto;
 
   a {
     display:block;
     color: @footer-color;
   }
-  section {padding:10px 8px 0 4%;}
+  section[class*="col-xs"] {
+    padding:10px 5px 0 5%;
+  }
 
-  .tnt {max-width:180px;min-width:110px;font-size:10px;}
+  .tnt {max-width:140px;font-size:11px;}
   .tnt img {display:block;max-width: 60px;}
 
   .newsletter{
@@ -154,33 +157,48 @@ footer {
     input[type="submit"] {}
   }
   .social  a {display:inline;}
+  .copyright {
+    position: relative;
+    top: 0px;
+  }
 }
 
+main {
+  padding:10px;
+}
+
+article {
+  background-color: #FFF;
+  padding: 10px;
+}
 
 /**
  * responsive design
  */
-
 @media (min-width: @screen-sm) {
   .right-bar nav {
     .dropdown-menu {
       display:block;
+      width: 100%;
+      // remove bootstrap styling
+      position:inherit;
+      border:none;
+      .box-shadow(none);
     }
     .dropdown-toggle {
       display:none;
     }
   } 
 }
+
+
 @media (max-width: @screen-xs-max) {
-  .header,
+  .col-sm-6 {width:100%;}
   .right-bar nav {
     position: fixed;
   }
   .right-bar nav {
-    top:60px;
-  }
-  .middle {
-    padding-top:100px;
+    top:100px;
   }
   .dropdown {
     top: -30px;
@@ -190,11 +208,25 @@ footer {
     width:100%;
     left:-160px;
   }
+  .header {
+    .home {
+      margin-top: -10px;
+      width: 500px;
+    }
+    .trustwave, .text {display:none;}
+    .cart {margin-top: -2px;}
+  }
+  footer {
+    height: 460px;
+    section[class*="col-xs"] {
+      min-width:280px;
+    }
+  }
 }
 
 /**
  * page animation - Add ngAnimate to the module dependency list 
- * in app.js to buy into css / angular animation.  
+ * in app.js to opt into angular css animation.  
  */
 
 .view-animate {
@@ -207,12 +239,6 @@ footer {
     opacity:1;
     transition: opacity 0.25s, height 0.3s;
   }
-}
-
-
-article {
-  background-color: #FFF;
-  padding: 10px;
 }
 
 /**

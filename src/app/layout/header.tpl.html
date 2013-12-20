@@ -1,11 +1,13 @@
 <div class='header clearfix'>
-  <a class='home pull-left' href='/'><img ng-src='assets/img/dxheader1.png'/></a>
-  <trustwave class='pull-right'></trustwave>
-  <div class='contact pull-right'>
-    <div>CALL US ON</div>
-    <div class='tel'>{{admin.salesphone}}</div>
-  </div>
-  <div class='cart pull-right'>
-    <shopping-cart href='checkout'></shopping-cart>
+  <a class='home pull-left' href='#/home'><img ng-src='assets/img/dxheader1.png'/></a>
+  <img class="trustwave pull-right" id="trustwaveSealImage" ng-src="https://sealserver.trustwave.com/seal_image.php?customerId=f9fd5f0be1f444c3a2795617a6786bee&amp;size=233x120&amp;style=" border="0" style="cursor:pointer;" onclick="javascript:window.open(\'https://sealserver.trustwave.com/cert.php?customerId=f9fd5f0be1f444c3a2795617a6786bee&amp;size=105x54&amp;style=\', \'c_TW\', \'location=no, toolbar=no, resizable=yes, scrollbars=yes, directories=no, status=no, width=615, height=720\'); return false;" oncontextmenu="javascript:alert(\'Copying Prohibited by Law - Trusted Commerce is a Service Mark of TrustWave Holdings, Inc.\'); return false;" alt="This site protected by Trustwave\'s Trusted Commerce program" title="This site protected by Trustwave\'s Trusted Commerce program">
+  <div class='pull-right'>
+    <div class='cart'>
+      <shopping-cart href='checkout'></shopping-cart>
+    </div>
+    <div class='contact'>
+      <div class='text'>CALL US ON</div>
+      <div class='tel'>{{admin.salesphone}}</div>
+    </div>
   </div>
 </div>

@@ -6,9 +6,9 @@
       Categories
       <span class="caret"></span>
     </button>
-    <div class='dropdown-menu' ng-controller='CategoriesCtrl'>
-      <a ng-repeat='category in categories' href='#/categories/{{category.url}}'>{{category.title | titlize}}</a>
-    </div>
+    <ul class='dropdown-menu' ng-controller='CategoriesCtrl'>
+      <li ng-repeat='category in categories'><a href='#/categories/{{category.url}}'>{{category.title | titlize}}</a></li>
+    </ul>
   </div>
 </nav>
 <div class='links'>

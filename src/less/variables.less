@@ -21,11 +21,11 @@
 // double up screen-* and container-* to switch off breakpoint
 @screen-xs:                  480px;
 @screen-sm:                  768px;
-@screen-md:                  992px;
+@screen-md:                  1024px;
 @screen-lg:                  1200px;
 
 @container-tablet:             ((740px + @grid-gutter-width));
-@container-desktop:            ((940px + @grid-gutter-width));
+@container-desktop:            ((1010px + @grid-gutter-width));
 @container-large-desktop:      ((1140px + @grid-gutter-width));
 
 // screen and font colors
@@ -38,3 +38,11 @@
 
 @footer-color:    #E7E7E7;  
 @footer-bkcolor:  #595A5E;    
+
+.col-sm-3 {
+  width: 20%;
+}
+
+.col-sm-6 {
+  width: 60%;
+}
