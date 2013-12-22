@@ -41,7 +41,7 @@
     <div id="wrap">
       <header ng-include="'layout/header.tpl.html'"></header>
       <main class="container">
-        <aside class="hidden-xs col-sm-3 left-bar" ng-include="'layout/leftbar.tpl.html'"></aside>
+        <aside class="col-sm-3 left-bar" ng-include="'layout/leftbar.tpl.html'"></aside>
         <div class="col-sm-6 middle" ng-if="search.selected" ng-include="'search/results.tpl.html'"></div>
         <div class="col-sm-6 middle" ng-hide="search.selected" >
           <div class="view-animate" ui-view='main'></div>

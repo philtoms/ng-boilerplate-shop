@@ -137,7 +137,7 @@ footer {
     color: @footer-color;
   }
   section[class*="col-xs"] {
-    padding:10px 5px 0 5%;
+    padding:20px 5px 0 5%;
   }
 
   .tnt {max-width:140px;font-size:11px;}
@@ -172,10 +172,16 @@ article {
   padding: 10px;
 }
 
+.search {
+  input {
+    width:100%;
+  }
+}
 /**
  * responsive design
  */
-@media (min-width: @screen-sm) {
+
+@media (min-width: @screen-xs-plus1) {
   .right-bar nav {
     .dropdown-menu {
       display:block;
@@ -191,22 +197,57 @@ article {
   } 
 }
 
-
 @media (max-width: @screen-xs-max) {
-  .col-sm-6 {width:100%;}
+  .trustwave {display:none;}
+  .col-sm-3,.col-sm-6 { float: left;}
+  .col-sm-3 {width:30%;}
+  .col-sm-6 { width: 70%;}
+  .left-bar {display: none;}
+  footer {
+    height: 320px;
+    section[class*="col-xs"] {
+      min-width:260px;
+    }
+  }
+  @media (max-width: 540px){
+    footer {
+      height: 500px;
+      section[class*="col-xs"] {
+        min-width:270px;
+      }
+    }
+  }
+}
+
+@media (max-width: @screen-xs) {
+  .header {
+    position: fixed;
+    z-index: 25;
+    width:100%;
+  }
+  .col-sm-6 {
+    width:100%;
+    padding-top:120px;
+  }
   .right-bar nav {
     position: fixed;
-  }
-  .right-bar nav {
-    top:100px;
-  }
-  .dropdown {
-    top: -30px;
-    left: 160px;
-  }
-  .dropdown-menu{
-    width:100%;
-    left:-160px;
+    top: 87px;
+    background: #FFF;
+    width: 100%;
+    left: 0;
+    padding: 10px;
+    height: 45px;
+    input {
+      width:63%;
+    }
+    .dropdown {
+      top: -30px;
+      left: 65%;
+    }
+    .dropdown-menu{
+      width:100%;
+      left:-160px;
+    }
   }
   .header {
     .home {
@@ -217,10 +258,7 @@ article {
     .cart {margin-top: -2px;}
   }
   footer {
-    height: 460px;
-    section[class*="col-xs"] {
-      min-width:280px;
-    }
+    height: 500px;
   }
 }
 
