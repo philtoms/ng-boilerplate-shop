@@ -1,14 +1,15 @@
 # \*\* Under Construction \*\*
 # [ngBoilerplateShop](http://philtoms.github.com/ng-boilerplate-shop) [![Build Status](https://travis-ci.org/philtoms/ng-boilerplate-shop.png?branch=master)](https://travis-ci.org/philtoms/ng-boilerplate-shop)
 
-An opinionated kickstarter for [AngularJS](http://angularjs.org) E-Commerce projects. 
+An opinionated kickstarter for [AngularJS](http://angularjs.org) E-Commerce projects focusing on mobile-first UX experience. 
 
 ngBoilerPlateShop ships with the following features and components:
 
 - A shopping cart - of course
-- Pluggable gateways (Worldpay and Paypal are supplied)
+- Pluggable gateways (Worldpay and Paypal are supplied, stripe support in development)
 - Comprehensive and instantaneous product search results
 - Disqus commentary and discussion forum built in
+- Newsletter support (defaults to mailchimp)
 - Social media 'like' buttons
 - Google analytics
 
@@ -137,17 +138,17 @@ You want to introduce new functionality into your website shop. For example, you
 
 This ought to be off topic because it’s really all about AngularJS and complexity management. But this is the reason why ngBoilerPlateShop was created: To harness the power and awesomeness of Angular in the compelling, efficient environment of ngBoilerplate. Instructions?
 
-Develop your feature component independenly of ngBoilerplateShop and drop it in to the `src/common` folder. No need to register the source with the `index.html`, ngBoulerPlate will ensure that the component is added to the deployment. All tests associated with the feature should be included side by side with the component source and will be run as part of the continuous build system.
+Develop your feature component independenly of ngBoilerplateShop and drop it in to the `src/common` folder. No need to register the source with the `index.html`, ngBoilerPlate will ensure that the component is added to the deployment. All tests associated with the feature should be included side by side with the component source and will be run as part of the continuous build system.
 
 ```
 /src
   /app
   /common
     /tileCalculator
-       tileClaculator.js
-       tileClaculator.spec.js
-       tileClaculator.feature.js
-       tileClaculator.scenario.js
+       tileCalculator.js
+       tileCalculator.spec.js
+       tileCalculator.feature.js
+       tileCalculator.scenario.js
 ```
 
 #Architecture
@@ -160,4 +161,13 @@ ngBoilerPlateShop uses tried and tested patterns to keep features isolated. Over
 
 - ProductDB (Adaptor): projects repository data onto ngBoilerplateShop products and product categories. Override to map your existing contracts onto these objects.
 
-- Gateway (Bridge): allows your app and third-party payment gateways to vary independently. The default gateways provide client-side hosting for the WorldPay and Paypal gateway services. 
+- Gateway (Bridge): allows your app and third-party payment gateways to vary independently. The default gateways provide client-side hosting for the WorldPay and Paypal gateway services. - 
+
+#Roadmap
+- ###Showcase application
+ngBoilerplateShop generates a fully functional application but it ain't pretty. The showcase app will style the out-of-the-box features though CSS and so, at least, demonstrate the first scenario.
+
+- ###SEO-friendly page generation
+Already in prototype, static SEO page generation though the grunt build process will maintain this project's server independence by generating google hashtag compatible static pages directly into the bin folder.
+
+- ###Add Stripe support
