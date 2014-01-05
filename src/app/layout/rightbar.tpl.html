@@ -7,14 +7,14 @@
       <span class="caret"></span>
     </button>
     <ul class='dropdown-menu' ng-controller='CategoriesCtrl'>
-      <li ng-repeat='category in categories'><a href='#/categories/{{category.url}}'>{{category.title | titlize}}</a></li>
+      <li ng-repeat='category in categories'><a ngbps-href='/categories/{{category.url}}'>{{category.title | titlize}}</a></li>
     </ul>
   </div>
 </nav>
 <div class='links'>
   <img class='cards' ng-src='img/cards.png'>
 </div>
-<a class='survey links' ng-href='#/services/independent-surveys.html'>
+<a class='survey links' ngbps-href='/services/independent-surveys.html'>
   <h3>Independent Surveys</h3>
   <img src="{{imgBaseUrl}}/surveys/reports.jpg"/>
 </a>

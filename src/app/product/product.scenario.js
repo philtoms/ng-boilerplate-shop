@@ -1,6 +1,6 @@
 describe( 'product page', function() {
 
-  var url = '/base/build/index.html#/products/';
+  var url = '/base/build/index.html#!/products/';
 
   describe( 'smoke test', function() {
 

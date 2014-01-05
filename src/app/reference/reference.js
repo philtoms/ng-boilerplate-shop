@@ -15,7 +15,8 @@ angular.module( 'ngbps.reference', [
 })
 
 .controller( 'ReferenceCtrl', function ReferenceController( $stateParams, $scope) {
-  $scope.page='reference/'+$stateParams.page+'.tpl.html';
+  var suffix = $stateParams.page.indexOf('/')>=0? '.ltpl.html':'.tpl.html';
+  $scope.page='reference/'+$stateParams.page+suffix;
   $scope.app.title=$stateParams.page;
 })
 

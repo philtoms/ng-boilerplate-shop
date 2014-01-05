@@ -2,44 +2,19 @@
 .carousel {
   padding:0;
 
-  a {cursor: pointer;}
-  h1 {font-size: 1.6em;padding-bottom:10px;}
-  img {padding:0;}
-
   .carousel-control {
-    top:20px;
-    width:60px;
+    width:10%;
     opacity:0.02;
-    padding-top: 15%;
-    border: none;
-    border-radius:0; 
-
-    margin-top: -20px;
-    font-size: 60px;
-    font-weight: 100;
-    line-height: 30px;
     color: #FFF;
-    text-align: center;
     background: #222;
-
-    .left { left: 0; }
-    .right { right: -8px; }
+    span {
+      font-size: 50px;
+      width:auto;
+      position: static;
+      margin:80px 0;
+    }
   }
   .carousel-control:hover {opacity:0.7;}
-
-  .details {
-    padding:5% 10%;
-    max-width: 250px;
-
-    img {height:30px;}
-    h1 {
-      font-size: 1.4em;
-      text-align: left;
-      padding: 0;
-      margin: 10px 0;
-    }
-    p {text-align: left;}
-  }
 
   .showcase {
     width:100%;
@@ -47,6 +22,20 @@
     background-repeat: no-repeat;
     background-size:auto 100%;
     background-position: right;
+
+    .details {
+      padding:5% 10%;
+      max-width: 50%;
+
+      img {height:30px;}
+      h1 {
+        font-size: 1.4em;
+        text-align: left;
+        padding: 0;
+        margin: 10px 0;
+      }
+      p {text-align: left;}
+    }
   }
 
   .ultrotherm-a2 {
@@ -68,6 +57,23 @@
     color:#333;
     font-size: 1.2em;
     h1 {font-size:1.2em;}
+  }
+
+  @media (max-width: @screen-xs) {
+    .carousel-control {
+      span {
+        margin-top:60px;
+      }
+    }
+    .showcase {
+      background-position: -100px 0;
+      height: 200px;
+      .details {
+        h1 {
+          font-size: 1.2em;
+        }
+      }
+    }
   }
 
 }

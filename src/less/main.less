@@ -137,7 +137,7 @@ footer {
     color: @footer-color;
   }
   section[class*="col-xs"] {
-    padding:20px 5px 0 5%;
+    padding:20px 5px 0 3%;
   }
 
   .tnt {max-width:140px;font-size:11px;}
@@ -176,6 +176,10 @@ article {
   input {
     width:100%;
   }
+  li > a {
+    line-height: 30px;
+    padding:0;
+  }
 }
 /**
  * responsive design
@@ -209,7 +213,7 @@ article {
       min-width:260px;
     }
   }
-  @media (max-width: 540px){
+  @media (max-width: @screen-phablet){
     footer {
       height: 500px;
       section[class*="col-xs"] {
@@ -245,8 +249,10 @@ article {
       left: 65%;
     }
     .dropdown-menu{
-      width:100%;
-      left:-160px;
+      width:200%;
+      left:-70%;
+      border: none;
+      padding: 0 30px;
     }
   }
   .header {

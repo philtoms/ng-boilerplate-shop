@@ -18,11 +18,13 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ngmin');
   grunt.loadNpmTasks('grunt-html2js');
+  grunt.loadNpmTasks('grunt-html-snapshot');
 
   /**
    * Load in our build configuration file.
    */
   var userConfig = require( './build.config.js' );
+  var basePath = __dirname;
 
   /**
    * This is the configuration object Grunt uses to give each plugin its 
@@ -104,6 +106,16 @@ module.exports = function ( grunt ) {
             src: [ '**' ],
             dest: '<%= build_dir %>/assets/',
             cwd: 'src/assets',
+            expand: true
+          }
+       ]   
+      },
+      lazyload_templates: {
+        files: [
+          { 
+            src: [ '<%= app_files.ltpl %>' ],
+            dest: '<%= compile_dir %>/',
+            cwd: 'src/app',
             expand: true
           }
        ]   
@@ -337,6 +349,8 @@ module.exports = function ( grunt ) {
      * places them into JavaScript files as strings that are added to
      * AngularJS's template cache. This means that the templates too become
      * part of the initial payload as one JavaScript file. Neat!
+     *
+     * Shop: ..but filter out lazyload templates for release
      */
     html2js: {
       /**
@@ -346,8 +360,11 @@ module.exports = function ( grunt ) {
         options: {
           base: 'src/app'
         },
-        src: [ '<%= app_files.atpl %>' ],
-        dest: '<%= build_dir %>/templates-app.js'
+        src: [ '<%= app_files.atpl %>', '<%= app_files.ltpl %>' ],
+        dest: '<%= build_dir %>/templates-app.js',
+        filter: function(filepath){
+          return filepath.indexOf('ltpl')<0 || !grunt.option('release');
+        }
       },
 
       /**
@@ -367,12 +384,9 @@ module.exports = function ( grunt ) {
      */
     karma: {
       options: {
-        configFile: '<%= build_dir %>/karma-unitci.js'
+        configFile: '<%= build_dir %>/karma-unit.js'
       },
       unit: {
-        options: {
-          configFile: '<%= build_dir %>/karma-unit.js'
-        },
         runnerPort: 9101,
         background: true,
         port: 9877  // https://github.com/ngbp/ng-boilerplate/issues/37#issuecomment-22918484
@@ -435,17 +449,6 @@ module.exports = function ( grunt ) {
      */
     karmaconfig: {
       unit: {
-        dir: '<%= build_dir %>',
-        src: [ 
-          '<%= vendor_files.js %>',
-          '<%= html2js.app.dest %>',
-          '<%= html2js.common.dest %>',
-          'vendor/angular-mocks/angular-mocks.js',
-          'node_modules/ng-midway-tester/src/ngMidwayTester.js'
-        ]
-      },
-
-      unitci: {
         dir: '<%= build_dir %>',
         src: [ 
           '<%= vendor_files.js %>',
@@ -622,6 +625,31 @@ module.exports = function ( grunt ) {
         ],
         tasks: [ 'coffeelint:scenario' ]
       }
+    },
+
+    htmlSnapshot: {
+      all: {
+        options: {
+          snapshotPath: 'bin/?_escaped_fragment_=/',
+          sitePath: 'file:///'+basePath+'/<%= build_dir %>/index.html',
+          fileNamePrefix: '',
+          msWaitForPages: 1000,
+          sanitize: function (requestUri) {
+              if (!requestUri) {
+                return 'index';
+              } else {
+                return requestUri.replace(/#\//g, '');
+              }
+          },
+          removeScripts: true,
+          removeLinkTags: true,
+          removeMetaTags: true,
+          urls: [
+            '',
+            '#!/categories/category-1'
+          ]
+        }
+      }
     }
   };
 
@@ -635,12 +663,12 @@ module.exports = function ( grunt ) {
    * before watching for changes.
    */
   grunt.renameTask( 'watch', 'delta' );
-  grunt.registerTask( 'watch', [ 'e2ebuild', 'karma:unit', 'delta' ] );
+  grunt.registerTask( 'watch', [ 'build', 'karma:unit', 'delta' ] );
 
   /**
-   * The default task is to build and compile.
+   * The default task is to build test and compile.
    */
-  grunt.registerTask( 'default', [ 'e2ebuild', 'compile' ] );
+  grunt.registerTask( 'default', [ 'build', 'karma:e2e', 'compile' ] );
 
   /**
    * The `build` task gets your app ready to run for development and testing.
@@ -651,19 +679,17 @@ module.exports = function ( grunt ) {
     'index:build', 'karmaconfig', 'karma:continuous'
   ]);
 
-  grunt.registerTask( 'e2ebuild', [
-    'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'recess:build',
-    'copy:build_assets', 'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_fixturejs',
-    'index:build', 'karmaconfig', 'karma:continuous', 'karma:e2e'
-  ]);
-
   /**
    * The `compile` task gets your app ready for deployment by concatenating and
    * minifying your code.
    */
-  grunt.registerTask( 'compile', [
-    'recess:compile', 'copy:compile_assets', 'ngmin', 'concat', 'uglify', 'index:compile'
-  ]);
+  grunt.registerTask( 'compile', 'releae complile', function(){
+    console.log(this);
+    grunt.option('release',true);
+    grunt.task.run([
+      'html2js:app', 'recess:compile', 'copy:compile_assets', 'copy:lazyload_templates', 'ngmin', 'concat', 'uglify', 'index:compile', 'htmlSnapshot'
+    ]);
+  });
 
   /**
    * A utility function to get all app JavaScript sources.

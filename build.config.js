@@ -32,6 +32,7 @@ module.exports = {
     coffeescenario: [ 'src/**/*.scenario.coffee' ],
 
     atpl: [ 'src/app/**/*.tpl.html' ],
+    ltpl: [ '**/*.ltpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
 
     html: [ 'src/index.html' ],

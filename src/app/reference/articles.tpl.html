@@ -1,5 +1,5 @@
 <article ng-init=
- 'base="views/reference/articles/";
+ 'base="reference/articles/";
   articles=[
     "the-green-deal",
     "single-room-ventilation-solutions",
@@ -9,14 +9,14 @@
     "turning-our-victorian-terrace-into-an-ecohome",
     "protecting-properties-against-flooding"
   ];
-  selected={url:base+articles[0]+".html"}'>
+  selected={url:base+articles[0]+".ltpl.html"}'>
   <h1>Articles</h1>
   <tabset>
     <tab heading='Article'>
       <div class='dropdown'>
         <a class="dropdown-toggle">Full Article List</a>
         <ul class='dropdown-menu'>
-          <li ng-repeat='article in articles'><a ng-init='href=base+article+".html"' href='{{href}}' eat-click ng-click='selected.url=href'>{{article | titleize}}</a></li>
+          <li ng-repeat='article in articles'><a ng-init='href=base+article+".ltpl.html"' href='{{href}}' no-bubble="click" ng-click='selected.url=href'>{{article | titlize}}</a></li> 
         </ul>
       </div>
       <div ng-include='selected.url'></div>  

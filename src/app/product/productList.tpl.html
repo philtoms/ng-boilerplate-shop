@@ -1,6 +1,6 @@
 <ul ng-class='classname'>
   <li ng-class='productClassname' ng-repeat='product in products'>
-      <a href='#/products/{{product.url}}'>
+      <a ngbps-href='/products/{{product.url}}'>
         <img ng-if='product.imageUrl' ng-src='assets/products/{{product.imageUrl}}'>
         <p>{{product.title}}</p>
       </a>

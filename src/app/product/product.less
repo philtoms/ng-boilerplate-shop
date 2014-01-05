@@ -10,8 +10,24 @@
   cursor: pointer;
 }
 .products {
-  li {list-style: none;}
-  img {width:70px;}
+  li {
+    list-style: none;
+    display: table;
+    width: 95%;
+    padding: 10px;
+    img {
+      width:70px;
+      display: inline-block;
+    }
+    p {
+      display: inline-block;
+    }
+    .cart-item {
+      display:table-cell;
+      text-align: right;
+      vertical-align: top;
+    }
+  }
 }
 
 .product {

@@ -4,7 +4,7 @@ describe( 'checkout page', function() {
   
   beforeEach(function(){
 
-      browser().navigateTo('/base/build/index.html#'+startUrl);
+      browser().navigateTo('/base/build/index.html#!'+startUrl);
       element('.buy').click();
 
   });

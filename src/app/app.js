@@ -81,7 +81,8 @@ angular.module( 'ngBoilerplateShop', [
   'templates-common'
 ])
 
-.config( function myAppConfig ( $urlRouterProvider ) {
+.config( function myAppConfig ( $urlRouterProvider , $locationProvider) {
+  $locationProvider.hashPrefix('!');
   $urlRouterProvider.otherwise( '/home' );
 })
 
@@ -98,6 +99,14 @@ angular.module( 'ngBoilerplateShop', [
   });
   $scope.search = Search;
   $scope.app={title:'ngBoilerplateShop'};
+})
+
+.directive('ngbpsHref', function($compile) {
+  return function(scope, el, attrs) {
+    el.removeAttr('ngbps-href');
+    el.attr('ng-href','#!' + attrs['ngbpsHref']);
+    $compile(el)(scope);
+  };
 })
 
 .factory ('$animator', function AnimatorBackFill ($animate){

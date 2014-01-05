@@ -11,4 +11,13 @@ angular.module( 'utilities.directives', [])
   };
 }])
 
+.directive('noBubble', function() {
+    return function(scope, el, attrs) {
+        el.bind(attrs.noBubble, function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+        });
+    };
+})
+
 ;

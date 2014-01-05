@@ -34,7 +34,7 @@
       <div ng-switch on='link.type'>
         <div ng-switch-when='template'><div ng-include='link.links[0]'></div></div>
         <div ng-switch-when='link'>
-          <ul><li ng-repeat='lo in link.links'><a ng-href='{{lo.href}}' target>{{lo.title}}</a></li></ul>
+          <ul><li ng-repeat='lo in link.links'><a ngbps-href='{{lo.href}}' target>{{lo.title}}</a></li></ul>
         </div>
         <product-list ng-switch-default products='link.links'></product-list>
       </div>
