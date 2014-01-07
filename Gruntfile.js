@@ -638,7 +638,7 @@ module.exports = function ( grunt ) {
               if (!requestUri) {
                 return 'index';
               } else {
-                return requestUri.replace(/#\//g, '');
+                return requestUri.replace(/#!\//g, '');
               }
           },
           removeScripts: true,
@@ -683,11 +683,10 @@ module.exports = function ( grunt ) {
    * The `compile` task gets your app ready for deployment by concatenating and
    * minifying your code.
    */
-  grunt.registerTask( 'compile', 'releae complile', function(){
-    console.log(this);
+  grunt.registerTask( 'compile', 'release complile', function(){
     grunt.option('release',true);
     grunt.task.run([
-      'html2js:app', 'recess:compile', 'copy:compile_assets', 'copy:lazyload_templates', 'ngmin', 'concat', 'uglify', 'index:compile', 'htmlSnapshot'
+      'htmlSnapshot', 'html2js:app', 'recess:compile', 'copy:compile_assets', 'copy:lazyload_templates', 'ngmin', 'concat', 'uglify', 'index:compile'
     ]);
   });
 
