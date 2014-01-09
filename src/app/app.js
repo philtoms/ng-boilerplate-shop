@@ -104,7 +104,12 @@ angular.module( 'ngBoilerplateShop', [
 .directive('ngbpsHref', function($compile) {
   return function(scope, el, attrs) {
     el.removeAttr('ngbps-href');
-    el.attr('ng-href','#!' + attrs['ngbpsHref']);
+    if (attrs.ngbpsHref.indexOf('http')===0){
+      el.attr('href', attrs.ngbpsHref);
+    }
+    else {
+      el.attr('ng-href','#!' + attrs.ngbpsHref);
+    }
     $compile(el)(scope);
   };
 })
