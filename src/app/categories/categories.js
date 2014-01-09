@@ -25,6 +25,7 @@ angular.module( 'ngbps.categories', [
 .controller( 'CategoryCtrl', function CategoryController( $stateParams, $scope, Categories ) {
   Categories.getCategory('url', $stateParams.category).then(function(category){
     $scope.category = category;
+    $scope.app.title = category.title;
   });
 })
 
