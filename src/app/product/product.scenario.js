@@ -80,8 +80,9 @@ describe( 'product page', function() {
 
     describe ('embedded features', function(){
       
-      it( 'should be expanded', function () {
-        expect(element('.feature-link:first').html()).toEqual('<span class="ng-scope"><a class="ng-scope" popover-placement="right" popover="msg">text</a></span>');
+      it( 'should be translated into markup', function () {
+        var markup = element('.feature-link:first').html();
+        expect(markup).toMatch(/<span .*><a .*>text<\/a><\/span>/);
       });
 
       it( 'should be active', function(){
