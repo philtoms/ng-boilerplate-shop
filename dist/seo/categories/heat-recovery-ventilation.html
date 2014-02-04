@@ -1,0 +1,407 @@
+<html xmlns="http://www.w3.org/1999/xhtml" class=" js flexbox canvas canvastext no-webgl touch no-geolocation postmessage websqldatabase no-indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms no-csstransforms3d csstransitions fontface no-video no-audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><head>
+<script type="text/javascript">window.location.href = "http:/dampexpert.com/v2.1/categories/heat-recovery-ventilation"; </script><style type="text/css"></style>
+    <title>Dampexpert - Menu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta name="description" content="A one stop solution for all damp problems">
+    <meta name="keywords" content="">
+    <meta name="google-site-verification" content="XWrWEzrwn_gQ6RcprWx6P_Vap7feuZiNn1EC1nJrVK8">
+    <base href="http://www.dampexpert.com/">
+    <link rel="stylesheet" href="default.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="style.css?id=2" type="text/css" media="screen">
+    <script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script><script src="assets/js/modernizr-1.6.min.js"></script> 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script> 
+    <script type="text/javascript">// <![CDATA[
+$(function(){
+window.setTimeout(function() {
+	$('.skype_pnh_container').html('');
+	$('.skype_pnh_print_container').removeClass('skype_pnh_print_container');
+}, 800);
+
+var searchVisible;
+$("#ajaxSearch_submit").val("");
+$("#search").prependTo("#center");
+ $('a[href*="search"]').click(function(){
+  if (searchVisible) {$("#search").hide();searchVisible=0;}
+  else{
+    $("#search").css({height:0}).animate({height:80}  ,function(){$("#search").find("input")[1].focus()});
+    searchVisible=1;
+  }
+  return false;
+});
+$("#menu,#search-results").each(function(){searchVisible=1;});
+
+    $("h1:contains('®'),.name:contains('®')").each(function(){
+        $(this).html( $(this).text().replace("®","<sup>®</sup>"));
+    });
+    $("h1:contains('©'),.name:contains('©')").each(function(){
+        $(this).html( $(this).text().replace("©","<sup>©</sup>"));
+    });
+    //DD_roundies.addRule(".border_radius", '30px');
+    //var ch=$(window).height() - ($("#center").position().top+50);
+    //if (ch>$("#center").height()) $("#center").height(ch);
+    // category gap
+    $(".leftlinks > li").addClass("category");
+
+    var $url=0,urlY = -1000;
+
+    // on pointer link?
+    var href=document.location.href.substr("http://www.dampexpert.com/".length);
+    if (href) {
+        $url=$(".leftlinks a[href*="+href+"]");
+        if (!$url.length) {
+           $url=$(".leftlinks ."+href.split("=")[1]+" a");
+        }
+    }
+    if ($url.length) {
+         urlY = $url.position().top;
+        $url.add($url.parents("ul")).add($url.next("ul")).css("display","block");
+    }
+
+    $("#submenu a").click(function(evt){
+       //$("#pointer").css({ top: -1000});
+        this.blur();
+        if (this.target=="slide"){
+            var $li = $(evt.target).closest("li");
+            if ($li.find("ul").length){
+               $li.siblings().children("ul").slideUp("fast");
+               $li.children("ul").slideDown("fast",function(){resize(sm.height());});
+            }
+            return false;
+        }
+    });
+    if ($url.length) urlY = $url.position().top;
+
+    var st=16;//$("#submenu").position().top;
+    var ti = 0, sm = $("#submenu"),sma = $("a",sm),h=sm.hover(
+      function() { 
+        ti = 1; 
+        $("#submenu1-t").stop().animate({ "opacity": "1" }, 300); sma.each(function(){this.className="white";}); 
+      },
+      function() {
+        ti = 0;
+        fadeOut();
+    }).height();
+
+    sma.addClass("white").mouseover(function(evt) {
+      var top = $(evt.target).position().top-st;
+      $("#pointer").css({ top: top });
+    });
+    resize(h);
+    function resize(h){
+        $("#submenu-t,#submenu1-t").height(h);
+        $(",#submenu-s,#submenu1-s").height(h-18);
+        if ($url.length) urlY = $url.position().top;
+    }
+   
+    function fadeOut(){
+      setTimeout(function(){
+        if (ti) return;
+       opr=[0.75,0.5,0.25,0],opid=0;
+        $("#submenu1-t").animate({ opacity: "0" },{step:function(op){
+            if (op<opr[opid]){
+             opid++;
+             sma.not($url).addClass("white"+opid);
+             $("#pointer").css({ top: urlY-st});
+            }
+        },duration:600});
+      },600);
+    }
+   $("#pointer").css({ top: urlY-st});
+
+   $(".product_thumb").hover(
+        function(){$(this).addClass("hover")},
+        function(){$(this).removeClass("hover")}
+    )
+    .click(function(){
+        document.location.href=$(this).find("a")[0].href;
+   });
+   $(document).one("mousemove",function(evt){
+      fadeOut();
+   });
+
+  //popups
+ $("a[href^='#']").each(function(){
+  var href="#"+this.href.split("#")[1];
+  if (href!="#" && $(href).length){
+    $(href).addClass("note").hide().append("<a href='#close'><br/>Close</a>").find("a[href='#close']").click(function(){$(href).hide();return false;});
+    $(href).find("a[href='#close']").not(":first").remove();
+    $(this).addClass("popup");
+  }
+ });
+ var href;
+ $(".popup").click(function(){
+  if (href) $(href).hide();
+  var nxthref="#"+this.href.split("#")[1];
+  if (nxthref!=href){
+    href=nxthref;
+    if (href!="#"){
+      $(href).show();
+    }
+  }
+  else {href="";}
+  return false;
+ });
+ // comments 
+ $("#jot").click(function(evt){
+   if ($(evt.target).text()=='Write a comment'){
+     $(".jot-list,.jot-cfm,.jot-form").toggle();
+   }
+/*
+   if ($(evt.target).is("input:submit")){
+    var data = $("#jot input, #jot textarea").map(function(i,e){
+      return e.name+"="+encodeURIComponent(e.value);
+    }).get().join("&");
+    $.post($(".jot-form").attr("action"),data,function(ret){
+       $(".jot-err").remove();
+       var $ret=$(ret);
+       var $err = $ret.find(".jot-err");
+       if ($err.length) 
+          $("#jot").html($ret.find("#jot").html());
+    });
+  }
+  return false;
+*/
+ });
+ if ($(".jot-cfm").length) $(".jot-cfm").show();
+});
+// ]]></script>
+	<script type="text/javascript" charset="#utf-8'">
+            var cart_doc = 'index.php?id=31';
+            var cart_items=0;
+            var cart_el='.treasure_cart';
+            var class_add='treasureChest';
+        </script>
+	<script type="text/javascript" src="assets/snippets/treasure_chest/script/treasurechest_generic.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/snippets/treasure_chest/style/thickbox.css">
+</head>
+<body id="menu" class="p2">
+<div id="content">
+  <div id="head">
+    <div id="logo"></div>
+    <div id="cookie">
+      In order to make purchases from this site cookies must be enabled.
+      <a href="information/privacy.html">See our cookie policy</a>
+    </div>
+<p>
+    </p><div class="contact">
+    <div class="tel">0800 16 91 106</div>
+    <div class="mbl">10am - 6pm Mon to Fri (sales only)</div>
+    <div class="mbl"> enquiries@dampexpert.com</div>
+</div>
+
+    <div id="menubar">
+      <div id="options">
+        <a href="index.php">Home</a>
+        <a href="ask-our-experts.html">Ask our experts</a>
+        <a href="damp-detective.html">Damp detective</a>
+        <a href="products.html">Shop</a>
+        <a href="search">Search</a>
+        <a id="basket" href="basket.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Basket<span id="count"></span></a>
+        <div class="treasure_cart" style="display: none; "></div>
+      </div>
+    </div>
+  </div>
+<div id="left">
+    <div id="submenu">
+  <div id="submenu-t" style="height: 297px; "><div id="submenu-s" style="height: 279px; "></div></div>
+  <div id="submenu1-t" style="height: 297px; "><div id="submenu1-s" style="height: 279px; "></div></div>
+  <div id="pointer" style="top: -1016px; "></div>
+  <div id="submenu-m">
+    <ul class="leftlinks"><li class="66 category"><a href="/menu/what-is.html" title="What Is?" class="white">What Is?</a><ul><li class="62"><a href="/menu/what-is/rising-damp.html" title="Rising damp" class="white">Rising damp</a></li>
+<li class="60"><a href="/menu/what-is/penetrating-damp.html" title="Penetrating damp" class="white">Penetrating damp</a></li>
+<li class="61"><a href="/menu/what-is/salt-damp.html" title="Salt damp" class="white">Salt damp</a></li>
+<li class="59"><a href="/menu/what-is/condensation.html" title="Condensation" class="white">Condensation</a></li>
+<li class="63"><a href="/menu/what-is/lateral-penetrating-damp.html" title="Lateral penetrating damp" class="white">Lateral penetrating damp</a></li>
+<li class="235"><a href="/menu/what-is/dry-rot.html" title="Dry rot" class="white">Dry rot</a></li>
+<li class="234 last"><a href="/menu/what-is/wet-rot.html" title="Wet rot" class="white">Wet rot</a></li>
+</ul></li>
+<li class="237 category"><a href="/menu/faqs.html" title="FAQ's" class="white">FAQ's</a></li>
+<li class="361 category"><a href="articles/the-green-deal.html" title="Articles" class="white">Articles</a></li>
+<li class="435 category"><a href="/menu/news-and-media.html" title="News and media" class="white">News and media</a><ul><li class="437"><a href="/menu/news-and-media/press-releases.html" title="Press releases" class="white">Press releases</a></li>
+<li class="438"><a href="/menu/news-and-media/news.html" title="News" class="white">News</a></li>
+<li class="436"><a href="/menu/news-and-media/image-library.html" title="Image library" class="white">Image library</a></li>
+<li class="444 last"><a href="/menu/news-and-media/product-brochures.html" title="Product Brochures" class="white">Product Brochures</a></li>
+</ul></li>
+<li class="64 category"><a href="/menu/advertisers.html" title="Advertise with us" class="white">Advertise with us</a></li>
+<li class="239 category"><a href="/menu/independent-surveys.html" title="Independent surveys" class="white">Independent surveys</a></li>
+<li class="238 category"><a href="/menu/contractors-directory.html" title="Trade directory" class="white">Trade directory</a></li>
+<li class="8 category"><a href="/menu/blog.html" title="Surveyor's blog" class="white">Surveyor's blog</a><ul><li class="224"><a href="/menu/blog/224-condensation-the-blame-game.html" title="The blame game" class="white">The blame game</a></li>
+<li class="227"><a href="/menu/blog/227-a-day-in-the-life.html" title="A Day In the Life" class="white">A Day In the Life</a></li>
+<li class="225"><a href="/menu/blog/225-passive-versus-heat-recovery.html" title="Passive vs Heat Recovery?" class="white">Passive vs Heat Recovery?</a></li>
+<li class="231"><a href="/menu/blog/231-before-and-nearly-after.html" title="Before and nearly after" class="white">Before and nearly after</a></li>
+<li class="244"><a href="/menu/blog/244-lettuces-and-cabbages.html" title="Lettuces and cabbages" class="white">Lettuces and cabbages</a></li>
+<li class="247"><a href="/menu/blog/247-split-liability-all-too-often-means.html" title="Split liability " class="white">Split liability </a></li>
+<li class="465"><a href="/menu/blog/465-180.html" title="180!" class="white">180!</a></li>
+<li class="470 last"><a href="/menu/blog/470-sick-building-syndrome.html" title="Sick Building Syndrome" class="white">Sick Building Syndrome</a></li>
+</ul></li>
+<li class="262 last category"><a href="products.html" title="Shop" class="white">Shop</a></li>
+</ul>
+  </div>
+</div>
+<div id="leftb">
+   <div class="newsletter border_radius10">
+     <h3>Subscribe to our newsletter</h3>
+    <p>for latest news and special offers</p>
+   <script language="javascript">
+<!--
+function validate_signup(frm) {
+	var emailAddress = frm.Email.value;
+	var errorString = '';
+	if (emailAddress == '' || emailAddress.indexOf('@') == -1) {
+		errorString = 'Please enter your email address';
+	}
+var els = frm.getElementsByTagName('input');
+for (var i = 0; i < els.length; i++)
+{
+    if (els[i].className == 'text' || els[i].className == 'date' || els[i].className == 'number') 
+    {
+        if (els[i].value == '')
+            errorString = 'Please complete all required fields.';
+    }
+    else if (els[i].className == 'radio')
+    {
+        var toCheck = document.getElementsByName(els[i].name);
+        var radioChecked = false;
+        for (var j = 0; j < toCheck.length; j++)
+        {
+            if (toCheck[j].name == els[i].name && toCheck[j].checked)
+                radioChecked = true;
+        }
+        if (!radioChecked)
+            errorString = 'Please complete all required fields.';
+    }
+}
+
+
+
+	var isError = false;
+    if (errorString.length > 0)
+        isError = true;
+
+    if (isError)
+        alert(errorString);
+	return !isError;
+}
+
+//-->
+</script>
+
+<form name="signup" id="signup" action="https://dampexpert-offers.com/signup.ashx" method="post" onsubmit="return validate_signup(this)">
+<input type="hidden" name="addressbookid" value="519812">
+<!-- UserID - required field, do not remove -->
+<input type="hidden" name="userid" value="46412">
+<!-- ReturnURL - when the user hits submit, they'll get sent here -->
+<input type="hidden" name="ReturnURL" value="http://www.dampexpert.com">
+<!-- Email - the user's email address -->
+<p><label>Email </label><input type="text" name="Email"></p>
+<p><label>Name </label><input class="text" type="text" name="cd_FULLNAME"></p>
+<input type="Submit" name="Submit" value="Subscribe Now"> 
+</form>
+<!-- End of signup -->
+
+   </div>
+  <div class="detective">
+    <a href="damp-detective.html" title="The Damp Detective">
+      <img alt="Damp Detective" src="/assets/images/diagnose/sherlock.gif">
+       <p>Have a go at diagnosing your own damp problems, with the help of our online damp detective<em> - Its just for fun!</em></p>
+    </a>
+  </div>
+</div>
+
+    
+</div>
+<div id="middle">
+    <div id="mtop"></div>
+    <div id="center"><div id="search">
+      
+<form id="ajaxSearch_form" action="information/search-results.html" method="post">
+    <fieldset>
+    <input type="hidden" name="advSearch" value="oneword">
+    <label for="ajaxSearch_input">
+      <input id="ajaxSearch_input" class="cleardefault" type="text" name="search" value="Search our site..." onfocus="this.value=(this.value=='Search our site...')? '' : this.value ;">
+    </label>
+    <label for="ajaxSearch_submit">
+      <input id="ajaxSearch_submit" type="submit" name="sub" value="">
+    </label>
+    </fieldset>
+</form>
+
+
+
+
+</div>
+      
+      <div id="welcome">
+  <a href="ask-our-experts.html" title="Ask our Experts"><div id="dd">
+   <p>Our damp expert David Prince is on hand to help with any of your damp related problems. David is also the damp expert at Which? Magazine and is a surveyor examiner for the Property Care Association. He has over 30 years experience in the damp industry and has been involved in a number of television programmes including Room For Improvement, Location, Location, Location and Tricks of the Rogue Traders. He also provides expert advice to the Guardian Newspaper's Weekend Magazine.</p>
+  </div></a>
+  <a href="ask-our-experts.html" title="Ask our Experts"><div id="ask">
+   <h1>Ask our experts</h1>
+   <div id="quote">
+   "Your expertise and knowledge in the area of water proofing is impressive particularly as you were able to diagnose 
+    the problem and identify a solution after discussing the matter, viewing photographs and through exchange of e-mails."
+    <p>Paula, London</p>
+   </div>
+  </div></a>
+</div>
+
+<div id="shop">
+  <a href="products.html"><h2>Shop online at Dampexpert.com</h2></a>
+    <!--<script language="JavaScript" src="https://secure.wp3.rbsworldpay.com/wcc/logo?instId=243021"></script>-->
+<table cellspacing="2" border="0" align="center"><tbody><tr>
+<td><a target="_blank" href="http://www.mastercard.com"><img border="0" alt="MasterCard Credit" src="https://secure.wp3.rbsworldpay.com/jsp/shopper/icons/WP_ECMC.gif"></a></td>
+<td><a target="_blank" href="http://www.jcbusa.com"><img border="0" alt="JCB" src="https://secure.wp3.rbsworldpay.com/jsp/shopper/icons/WP_JCB.gif"></a></td>
+<td><a target="_blank" href="http://www.maestrocard.com"><img border="0" alt="Maestro" src="https://secure.wp3.rbsworldpay.com/jsp/shopper/icons/WP_MAESTRO.gif"></a></td>
+<td><a target="_blank" href="http://www.visa.com"><img border="0" alt="Visa Credit" src="https://secure.wp3.rbsworldpay.com/jsp/shopper/icons/WP_VISA.gif"></a></td>
+</tr><tr><td align="center" colspan="8"><a target="_blank" href="http://www.rbsworldpay.com/support/index.php?CMP=BA22713"><img border="0" alt="Powered by RBS WorldPay" src="https://secure.wp3.rbsworldpay.com/jsp/shopper/icons/../pictures/poweredByRBSWorldPay.gif"></a></td>
+</tr></tbody></table>
+</div>
+    </div>
+    <div id="right"><div id="social">
+    <a href="http://www.facebook.com/pages/dampexpertcom/260284257598" target="_facebook"><img src="/assets/style/facebook.png" alt="Become a friend on Facebook"></a>
+    <a href="http://twitter.com/dampexpert" target="_twitter"><img src="/assets/style/twitter.png" alt="Follow us on twitter"></a>
+    <a href="http://youtube.com/dampexpert" target="_youtube"><img src="/assets/style/youtube.png" alt="Watch our Youtube videos"></a>
+    <a href="rss.xml"><img src="/assets/style/rss.png" alt="Subscribe to our RSS feed"></a>
+</div>
+<div class="features"><div class="featurelink border_radius10">
+    <a href="articles/protecting-properties-against-flooding.html"><h4>Protecting properties against flooding</h4><img src="/assets/images/insideline/protecting-properties-against-flooding/pic1.jpg" id="pic1" alt=""></a>
+    <a href="articles/protecting-properties-against-flooding.html" class="more">..more</a>
+</div><div class="featurelink border_radius10">
+    <a href="articles/the-green-deal.html"><h4>The green deal</h4><img src="assets/images/insideline/single-room-ventilation/DavidPrince.jpg" id="pic1" alt=""></a>
+    <a href="articles/the-green-deal.html" class="more">..more</a>
+</div><div class="featurelink border_radius10">
+    <a href="menu/what-is/dry-rot.html"><h4>Dry rot</h4><img src="assets/images/whatis/dryrot1.jpg" id="pic1" alt=""></a>
+    <a href="menu/what-is/dry-rot.html" class="more">..more</a>
+</div><div class="featurelink border_radius10">
+    <a href="menu/what-is/condensation.html"><h4>Condensation</h4><img src="/assets/images/whatis/condensation3.jpg" id="pic1" alt=""></a>
+    <a href="menu/what-is/condensation.html" class="more">..more</a>
+</div><div class="featurelink border_radius10">
+    <a href="menu/what-is/rising-damp.html"><h4>Rising damp</h4><img src="/assets/images/whatis/IMG_2565_3.jpg" id="pic1" alt=""></a>
+    <a href="menu/what-is/rising-damp.html" class="more">..more</a>
+</div></div></div>
+    <div id="foot"><div style="height: 25px;"></div>
+<p> 
+  <span style="padding-left:40px;">Website © 2013 Damp Expert Ltd</span>
+  <a href="/information/ip-and-copyright.html">IP &amp; Copyright</a>
+  <a href="/information/contact-us.html">Contact us</a>
+  <a href="/information/privacy.html">Privacy</a>
+  <a href="/information/conditions-of-sale.html">Conditions of sale</a>
+  <a href="/information/shipping-and-returns.html">Shipping and returns</a>
+</p></div>
+</div>
+</div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-8814132-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body></html>

@@ -1,4 +1,4 @@
-angular.module( 'ngbps.shopGateway', [
+angular.module( 'ngbps.shopGateway.checkout', [
   'ui.router'
 ])
 

@@ -1,6 +1,6 @@
 describe( 'cartItem', function() {
 
-  describe ('cartItem directive', function(){
+  describe ('directive', function(){
     var $scope, $httpBackend, $element;
     var markup = '<cart-item></cart-item>';
     var directiveTpl = '<div class="cart-item"></div>';

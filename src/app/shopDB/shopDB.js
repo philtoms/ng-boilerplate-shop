@@ -1,4 +1,9 @@
-angular.module('ngbps.shopDB', [])
+angular.module('ngbps.shopDB', [
+  'ngbps.shopDB.admin',
+  'ngbps.shopDB.categories',
+  'ngbps.shopDB.products',
+  'ngbps.shopDB.showcase'
+])
 
 .factory('ShopDB', function(Repository) {
     

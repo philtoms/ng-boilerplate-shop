@@ -1,4 +1,4 @@
-angular.module('ngbps.shopDB')
+angular.module('ngbps.shopDB.showcase', [])
 
 .factory('Showcase', function(ShopDB,Products,$q,$timeout) {
 

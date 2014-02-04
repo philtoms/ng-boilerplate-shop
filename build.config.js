@@ -11,6 +11,21 @@ module.exports = {
   compile_dir: 'bin',
 
   /**
+   * Seo can be configured for local or remote scraping. A local server will
+   * be fired up on the designated port.
+   */
+  seo_options: {
+    domain: 'localhost:9000',
+    server: '',
+    delay: 2000,
+    public: 'public',
+    folder: 'seo',
+    changefreq: 'daily',
+    replace: {
+    }
+  },
+
+  /**
    * This is a collection of file patterns that refer to our app code (the
    * stuff in `src/`). These file paths are used in the configuration of
    * build tasks. `js` is all project javascript, less tests. `ctpl` contains
@@ -31,10 +46,10 @@ module.exports = {
     coffeefixture: [ 'src/**/*.fixture.coffee' ],
     coffeescenario: [ 'src/**/*.scenario.coffee' ],
 
-    atpl: [ 'src/app/**/*.tpl.html' ],
-    ltpl: [ '**/*.ltpl.html' ],
+    atpl: [ 'src/app/**/*.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
 
+    views: [ '**/*.html', '!**/*.tpl.html'],
     html: [ 'src/index.html' ],
     less: 'src/less/main.less'
   },

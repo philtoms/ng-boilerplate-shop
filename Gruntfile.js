@@ -18,7 +18,8 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ngmin');
   grunt.loadNpmTasks('grunt-html2js');
-  grunt.loadNpmTasks('grunt-html-snapshot');
+  grunt.loadNpmTasks('grunt-escaped-seo');
+  //grunt.loadNpmTasks('grunt-html-snapshot');
 
   /**
    * Load in our build configuration file.
@@ -90,6 +91,7 @@ module.exports = function ( grunt ) {
      * The directories to delete when `grunt clean` is executed.
      */
     clean: [ 
+      '<%= seo_options.public %>',
       '<%= build_dir %>', 
       '<%= compile_dir %>'
     ],
@@ -106,16 +108,6 @@ module.exports = function ( grunt ) {
             src: [ '**' ],
             dest: '<%= build_dir %>/assets/',
             cwd: 'src/assets',
-            expand: true
-          }
-       ]   
-      },
-      lazyload_templates: {
-        files: [
-          { 
-            src: [ '<%= app_files.ltpl %>' ],
-            dest: '<%= compile_dir %>/',
-            cwd: 'src/app',
             expand: true
           }
        ]   
@@ -163,6 +155,16 @@ module.exports = function ( grunt ) {
             expand: true
           }
         ]
+      },
+      compile_views: {
+        files: [
+          { 
+            src: [ '<%= app_files.views %>' ],
+            dest: '<%= compile_dir %>/',
+            cwd: 'src/app',
+            expand: true
+          }
+        ]   
       }
     },
 
@@ -354,16 +356,17 @@ module.exports = function ( grunt ) {
      */
     html2js: {
       /**
-       * These are the templates from `src/app`.
+       * These are the templates from `src/app`. Views are only loaded
+       * as template in debug build
        */
       app: {
         options: {
           base: 'src/app'
         },
-        src: [ '<%= app_files.atpl %>', '<%= app_files.ltpl %>' ],
+        src: [ '<%= app_files.atpl %>' ],
         dest: '<%= build_dir %>/templates-app.js',
         filter: function(filepath){
-          return filepath.indexOf('ltpl')<0 || !grunt.option('release');
+          return filepath.indexOf('.tpl.')>0 || !grunt.option('release');
         }
       },
 
@@ -627,29 +630,9 @@ module.exports = function ( grunt ) {
       }
     },
 
-    htmlSnapshot: {
-      all: {
-        options: {
-          snapshotPath: 'bin/?_escaped_fragment_=/',
-          sitePath: 'file:///'+basePath+'/<%= build_dir %>/index.html',
-          fileNamePrefix: '',
-          msWaitForPages: 1000,
-          sanitize: function (requestUri) {
-              if (!requestUri) {
-                return 'index';
-              } else {
-                return requestUri.replace(/#!\//g, '');
-              }
-          },
-          removeScripts: true,
-          removeLinkTags: true,
-          removeMetaTags: true,
-          urls: [
-            '',
-            '#!/categories/category-1'
-          ]
-        }
-      }
+    'escaped-seo': {
+      //options:seo_options,
+      all:{}
     }
   };
 
@@ -686,8 +669,16 @@ module.exports = function ( grunt ) {
   grunt.registerTask( 'compile', 'release complile', function(){
     grunt.option('release',true);
     grunt.task.run([
-      'htmlSnapshot', 'html2js:app', 'recess:compile', 'copy:compile_assets', 'copy:lazyload_templates', 'ngmin', 'concat', 'uglify', 'index:compile'
+      //'htmlSnapshot', 
+      'html2js:app', 'recess:compile', 'copy:compile_assets', 'copy:compile_views', 'ngmin', 'concat', 'uglify', 'index:compile'
     ]);
+  });
+
+  grunt.registerTask( 'seo', '', function(){
+    if (seo_options.domain.indexOf('localhost') !==-1) {
+      // grunt.task.run(['server']);
+    }
+    grunt.task.run(['escaped-seo']);
   });
 
   /**
