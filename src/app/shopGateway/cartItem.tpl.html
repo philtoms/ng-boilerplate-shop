@@ -10,10 +10,10 @@
       <span>{{cart.taxPrice(product.price) | currency}}</span>
       <small>{{cart.taxSuffix(1)}}</small>
     </div>
-    <a class='view btn btn-default' ngbps-href='/products/{{product.url}}'>View</a>
+    <a class='view btn btn-default' ng-href='#!/products/{{product.url}}'>View</a>
     <a class='buy btn btn-primary' ng-click='cart.addItem(product.id)'>Buy</a>
   </div>
   <div ng-if='!product.price'>
-    <a class='range view btn btn-default' ngbps-href='/products/{{product.url}}'>See Product Range</a>
+    <a class='range view btn btn-default' ng-href='#!/products/{{product.url}}'>See Product Range</a>
   </div>
 </div>

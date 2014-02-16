@@ -12,63 +12,7 @@ angular.module( 'ngBoilerplateShop' ).run( function ( $httpBackend ) {
   $httpBackend.when( 'GET', 'template.html' ).respond( '<div class="template">template</div>');
 
   $httpBackend.when( 'GET', 'assets/data/shop.json' ).respond( function () {
-    return [200, {
-      "admin":{
-        "salesphone":"0800 1234 567",
-        "rates":{
-          "freeShipping":200,
-          "shipping":9.99,
-          "taxRate":0.20,
-          "taxSuffix":["exc. vat","inc. vat"]
-        }
-      },
-      "products":{
-        "p1":{
-          "title":"Product 1",
-          "offer":true,
-          "description":"<strong>The first product</strong>"
-        },
-        "p2":{
-          "title":"Product 2",
-          "imageUrl":"/img/p2.png",
-          "text":"The 2nd product to be tested",
-          "price":10,
-          "features":[{"link":"popover","placement":"right","popover":"msg","text":"{{text}}"},"f2"]
-        },
-        "p3":{
-          "title":"Product 3",
-          "links":[
-            "p2",
-            {"Template":"template.html"},
-            {"Range":["p1","p2"]},
-            {"HREFs":[{"link1":"link1.html"},{"link2":"link2.pdf"}]}
-          ]
-        }
-      },
-      "categories":{
-        "c1":{
-          "level":1,
-          "title":"Category 1",
-          "products":["p1","p2","p3"]
-        },
-        "c2":{
-          "level":1,
-          "title":"Category 2",
-          "products":["p1","p2","p3"]
-        },
-        "c2.1":{
-          "level":2,
-          "title":"Category 2.1",
-          "products":["p1","p2","p3"]
-        }
-      },
-      "showcase":{
-        "highlights":[
-          {"title":"Enjoy all the benefits of living in a well insulated cosy home","text":"","link":"#/products/ultrotherm","imageUrl":"assets/img/featured/ultrotherm-a1.jpg","class":"ultrotherm-a1","logo":"assets/img/logos/ultrotherm.png"},
-          {"title":"","text":"Dampexpert offer a competative installation service on all our ventilation systems","link":"DX-80HRV","imageUrl":"assets/img/featured/hrv-a1.jpg","class":"hrv-a1"}
-        ]
-      }
-    }];
+    return [200 /*<%= shopData %>*/];
   });
 
 })

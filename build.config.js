@@ -11,21 +11,6 @@ module.exports = {
   compile_dir: 'bin',
 
   /**
-   * Seo can be configured for local or remote scraping. A local server will
-   * be fired up on the designated port.
-   */
-  seo_options: {
-    domain: 'localhost:9000',
-    server: '',
-    delay: 2000,
-    public: 'public',
-    folder: 'seo',
-    changefreq: 'daily',
-    replace: {
-    }
-  },
-
-  /**
    * This is a collection of file patterns that refer to our app code (the
    * stuff in `src/`). These file paths are used in the configuration of
    * build tasks. `js` is all project javascript, less tests. `ctpl` contains
@@ -92,5 +77,63 @@ module.exports = {
       'vendor/angular-mocks/angular-mocks.js',
       'node_modules/ng-midway-tester/src/ngMidwayTester.js'
     ]
+  },
+
+  /**
+   * gruntfile taskOptions - build related extensions are added here
+   */
+
+  /**
+   * Seo can be configured for local or remote scraping. A local server will
+   * be fired up on the designated port.
+   */
+  seo_options: {
+    domain: '127.0.0.1:9000',
+    server: '',
+    delay: 2000,
+    public: 'public',
+    folder: 'seo',
+    changefreq: 'daily',
+    replace: {
+    }
+  },
+
+  localserver: {
+    port:9000,
+    root:'./bin'
+  },
+
+  /**
+   * the template task allows us to dynamically change the runtime behaviour
+   * of the application - great for SEO
+   */
+  template:{
+    build:{
+      src: 'src/app/app.js',
+      dir: '<%= build_dir %>',
+      expr:{
+        ngSocial:"'ngSocial',"
+      },
+      delims:['/*<%','%>*/']
+    },
+    seo:{
+      src: 'src/app/app.js',
+      dir: '<%= build_dir %>',
+      expr:{
+        ngSocial:""
+      },
+      delims:['/*<%','%>*/']
+    },
+    fixture:{
+      src: 'src/app/app.fixture.js',
+      dir: '<%= build_dir %>',
+      expr: function(grunt){
+        return {
+          shopData:',' + grunt.file.read('src/assets/data/shop.json')
+        };
+      },
+      delims:['/*<%','%>*/']
+    }
   }
+
 };

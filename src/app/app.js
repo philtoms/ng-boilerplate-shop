@@ -76,14 +76,14 @@ angular.module( 'ngBoilerplateShop', [
   'ui.router',
   'ngAnimate',
   'ngSanitize',
-  'ngSocial',
+  /*<%= ngSocial %>*/
   'templates-app',
   'templates-common'
 ])
 
-.config( function myAppConfig ( $urlRouterProvider , $locationProvider) {
-  $locationProvider.hashPrefix('!');
+.config( function myAppConfig ( $urlRouterProvider, $locationProvider ) {
   $urlRouterProvider.otherwise( '/home' );
+  $locationProvider.hashPrefix('!');
 })
 
 .run( function run ( Admin, ShoppingCart, Checkout) {
@@ -99,19 +99,6 @@ angular.module( 'ngBoilerplateShop', [
   });
   $scope.search = Search;
   $scope.app={title:'ngBoilerplateShop'};
-})
-
-.directive('ngbpsHref', function($compile) {
-  return function(scope, el, attrs) {
-    el.removeAttr('ngbps-href');
-    if (attrs.ngbpsHref.indexOf('http')===0){
-      el.attr('href', attrs.ngbpsHref);
-    }
-    else {
-      el.attr('ng-href','#!' + attrs.ngbpsHref);
-    }
-    $compile(el)(scope);
-  };
 })
 
 .factory ('$animator', function AnimatorBackFill ($animate){

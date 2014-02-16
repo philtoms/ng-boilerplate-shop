@@ -12,7 +12,7 @@ describe ('app', function() {
         AppCtrl = $controller( 'AppCtrl', { $location: $location, $scope: $scope });
       }));
 
-      it( 'should pass a dummy test', inject( function() {
+      xit( 'should pass a dummy test', inject( function() {
         expect( AppCtrl ).toBeTruthy();
       }));
     });

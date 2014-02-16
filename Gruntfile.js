@@ -19,7 +19,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-ngmin');
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-escaped-seo');
-  //grunt.loadNpmTasks('grunt-html-snapshot');
+  grunt.loadNpmTasks('grunt-http-server');
 
   /**
    * Load in our build configuration file.
@@ -595,7 +595,7 @@ module.exports = function ( grunt ) {
         files: [
           '<%= app_files.jsfixture %>'
         ],
-        tasks: [ 'jshint:fixture', 'copy:build_fixturejs' ]
+        tasks: [ 'jshint:fixture', 'copy:build_fixturejs', 'template:fixture' ]
       },
 
       /**
@@ -630,8 +630,20 @@ module.exports = function ( grunt ) {
       }
     },
 
+    'http-server': {
+      seo:{
+        root:'<%= localserver.root %>',
+        port:'<%= localserver.port %>',
+        runInBackground:true
+      },
+      dev:{
+        root:'<%= localserver.root %>',
+        port:'<%= localserver.port %>'
+      }
+    },
+
     'escaped-seo': {
-      //options:seo_options,
+      options:'<%= seo_options %>',
       all:{}
     }
   };
@@ -659,7 +671,7 @@ module.exports = function ( grunt ) {
   grunt.registerTask( 'build', [
     'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'recess:build',
     'copy:build_assets', 'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_fixturejs',
-    'index:build', 'karmaconfig', 'karma:continuous'
+    'index:build', 'template:build', 'template:fixture', 'karmaconfig', 'karma:continuous'
   ]);
 
   /**
@@ -674,11 +686,11 @@ module.exports = function ( grunt ) {
     ]);
   });
 
-  grunt.registerTask( 'seo', '', function(){
-    if (seo_options.domain.indexOf('localhost') !==-1) {
-      // grunt.task.run(['server']);
+  grunt.registerTask( 'seo', 'generate seo static files and sitemap', function(){
+    if (userConfig.seo_options.domain.indexOf('127.0.0.1') !==-1) {
+      grunt.task.run(['http-server:seo']);
     }
-    grunt.task.run(['escaped-seo']);
+    grunt.task.run(['template:seo','compile','escaped-seo']);
   });
 
   /**
@@ -748,4 +760,21 @@ module.exports = function ( grunt ) {
     });
   });
 
+  /**
+   * Add template interpolation to source files.
+   */
+  grunt.registerMultiTask( 'template', 'Process application ', function () {
+
+    var expr = typeof this.data.expr == 'function'? this.data.expr(grunt):this.data.expr;
+    var options = {data:expr};
+    if (this.data.delims){
+      grunt.template.addDelimiters('ngbps', this.data.delims[0],this.data.delims[1]);
+      options.delimiters='ngbps';
+    }
+    grunt.file.copy(this.data.src, this.data.dir + '/'+this.data.src, { 
+      process: function ( contents, path ) {
+        return grunt.template.process( contents, options);
+      }
+    });
+  });
 };
