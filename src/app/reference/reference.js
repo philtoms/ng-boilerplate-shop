@@ -14,9 +14,12 @@ angular.module( 'ngbps.reference', [
   });
 })
 
-.controller( 'ReferenceCtrl', function ReferenceController( $stateParams, $scope) {
-  var suffix = $stateParams.page.indexOf('/')>=0? '.ltpl.html':'.tpl.html';
-  $scope.page='reference/'+$stateParams.page+suffix;
+.controller( 'ReferenceCtrl', function ReferenceController( $stateParams, $scope, $templateCache) {
+  var pageUrl = 'reference/'+$stateParams.page+'.tpl.html';
+  if (!$templateCache.get(pageUrl)) {
+    pageUrl = 'reference/'+$stateParams.page+'.html';
+  }
+  $scope.page=pageUrl;
   $scope.app.title=$stateParams.page;
 })
 

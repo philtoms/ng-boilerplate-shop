@@ -88,7 +88,7 @@ module.exports = {
    * be fired up on the designated port.
    */
   seo_options: {
-    domain: '127.0.0.1:9000',
+    domain: 'http://127.0.0.1:9000',
     server: '',
     delay: 2000,
     public: 'public',
